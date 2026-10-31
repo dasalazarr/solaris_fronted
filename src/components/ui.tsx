@@ -37,7 +37,7 @@ export function Logo({
             tone === 'light' ? 'text-white/50' : 'text-ink/50',
           )}
         >
-          por Illarium
+          un producto de Illarium
         </span>
       )}
     </span>
