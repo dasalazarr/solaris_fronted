@@ -1,0 +1,265 @@
+@import '@fontsource/schibsted-grotesk/latin-500.css';
+@import '@fontsource/schibsted-grotesk/latin-600.css';
+@import '@fontsource/newsreader/latin-400.css';
+@import '@fontsource/newsreader/latin-400-italic.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #0d0f14;
+  --color-ink-2: #151821;
+  --color-ink-3: #1e2230;
+  --color-paper: #f4f5f7;
+  --color-sheet: #fbfaf7;
+  --color-solar: #f2b544;
+  --color-solar-ink: #8a5a00;
+  --color-lavanda: #eee9ff;
+  --color-lavanda-ink: #4b3aa8;
+  --color-salvia: #e3eedf;
+  --color-salvia-ink: #1e6b3a;
+  --color-niebla: #dfe8f3;
+  --color-niebla-ink: #23476e;
+  --color-arcilla: #f6e1d8;
+  --color-arcilla-ink: #8c2a1f;
+  --color-solar-soft: #fbecc9;
+
+  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Newsreader', ui-serif, Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --ease-solar: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+html {
+  scroll-padding-top: 64px;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-solar);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.headline {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+/* ---------- Firma visual: resaltado de evidencia ---------- */
+.evidence {
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--color-solar) 85%, transparent),
+    color-mix(in srgb, var(--color-solar) 85%, transparent)
+  );
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 0% 0.42em;
+  padding: 0 0.06em;
+  margin: 0 -0.06em;
+  transition: background-size 700ms var(--ease-solar) 200ms;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.evidence.is-lit {
+  background-size: 100% 0.42em;
+}
+.evidence-dark {
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--color-solar) 38%, transparent),
+    color-mix(in srgb, var(--color-solar) 38%, transparent)
+  );
+}
+
+/* ---------- Entradas de bloque ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 500ms var(--ease-solar),
+    transform 500ms var(--ease-solar);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Titular palabra a palabra */
+.word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.25em);
+  animation: word-in 520ms var(--ease-solar) forwards;
+}
+@keyframes word-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Haz solar ---------- */
+.sunbeam {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sunbeam::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -30%;
+  width: 1100px;
+  height: 900px;
+  translate: -50% 0;
+  background:
+    radial-gradient(
+      ellipse 30% 55% at 50% 0%,
+      rgba(242, 181, 68, 0.34),
+      rgba(242, 181, 68, 0.08) 55%,
+      transparent 75%
+    ),
+    conic-gradient(
+      from 180deg at 50% 0%,
+      transparent 160deg,
+      rgba(242, 181, 68, 0.1) 175deg,
+      rgba(255, 220, 150, 0.16) 180deg,
+      rgba(242, 181, 68, 0.1) 185deg,
+      transparent 200deg
+    );
+  filter: blur(8px);
+  animation: beam-drift 20s ease-in-out infinite alternate;
+  animation-play-state: var(--beam-play, running);
+}
+@keyframes beam-drift {
+  0% {
+    transform: rotate(-3deg) scale(1);
+  }
+  100% {
+    transform: rotate(3deg) scale(1.06);
+  }
+}
+
+/* Cifra metálica */
+.metal {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.5), transparent 40%),
+    linear-gradient(180deg, #fff6df 0%, #f2b544 55%, #c98e22 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 20px 60px rgba(242, 181, 68, 0.25));
+}
+.blur-in {
+  filter: blur(18px);
+  opacity: 0;
+  transition:
+    filter 600ms var(--ease-solar),
+    opacity 600ms var(--ease-solar);
+}
+.blur-in.is-in {
+  filter: blur(0);
+  opacity: 1;
+}
+
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+/* Campo de documentos */
+.sheet-cell {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+.sheet-cell.lit {
+  animation: sheet-glow 2.4s ease-in-out both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes sheet-glow {
+  0% {
+    background: rgba(255, 255, 255, 0.035);
+  }
+  40% {
+    background: rgba(242, 181, 68, var(--a, 0.5));
+    border-color: rgba(242, 181, 68, 0.6);
+    box-shadow: 0 0 18px rgba(242, 181, 68, calc(var(--a, 0.5) * 0.6));
+  }
+  100% {
+    background: rgba(242, 181, 68, calc(var(--a, 0.5) * 0.35));
+    border-color: rgba(242, 181, 68, 0.12);
+  }
+}
+
+/* Cursor de escritura */
+.caret::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .blur-in {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+  .word {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .evidence {
+    background-size: 100% 0.42em;
+    transition: none;
+  }
+  .sunbeam::before,
+  .caret::after {
+    animation: none;
+  }
+  .sheet-cell.lit {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
