@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { AlertTriangle, Check, CircleCheck, OctagonX, RotateCcw, X } from 'lucide-react'

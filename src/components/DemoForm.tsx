@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { CalendarDays, CircleCheck, X } from 'lucide-react'
@@ -141,7 +143,7 @@ export function DemoForm() {
     // Prototype: the real endpoint emails Illarium (+ CRM). Payload keeps UTM params.
     const payload = { ...f, origen: origin, ...getUtm() }
     await new Promise((r) => setTimeout(r, 700))
-    if (import.meta.env.DEV) console.debug('[form] envío', payload)
+    if (process.env.NODE_ENV === 'development') console.debug('[form] envío', payload)
     track('form_enviado', { proceso: f.proceso, section: origin })
     setSending(false)
     setSent(true)

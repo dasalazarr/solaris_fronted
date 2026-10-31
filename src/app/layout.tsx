@@ -1,0 +1,32 @@
+import type { Metadata, Viewport } from 'next'
+import type { ReactNode } from 'react'
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/lib/site'
+import './globals.css'
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  icons: { icon: { url: '/favicon.svg', type: 'image/svg+xml' } },
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    locale: 'es_ES',
+    siteName: 'Solaris',
+    title: SITE_TITLE,
+    description: 'Sus procesos, con contrato.',
+    // Imagen Open Graph 1200×630 pendiente de contenido (PRD landing §10).
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#0d0f14',
+}
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="es">
+      <body>{children}</body>
+    </html>
+  )
+}

@@ -1,3 +1,5 @@
+'use client'
+
 import { useInView } from '../lib/hooks'
 import { Container, cx } from './ui'
 

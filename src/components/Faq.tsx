@@ -1,3 +1,5 @@
+'use client'
+
 import { Plus } from 'lucide-react'
 import { FAQ } from '../data/content'
 import { track } from '../lib/analytics'

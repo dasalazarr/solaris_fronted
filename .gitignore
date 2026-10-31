@@ -1,8 +1,7 @@
-tempo/.tempo/
-tempo/node_modules/
-tempo/dist/
 node_modules/
-dist/
-.tempo/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
 *.log
 .DS_Store

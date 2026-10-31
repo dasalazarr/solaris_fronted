@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { LOOP_NODES } from '../data/content'
 import { usePrefersReducedMotion } from '../lib/hooks'

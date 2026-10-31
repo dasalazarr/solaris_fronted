@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import { Pause, Play, Sparkles, X } from 'lucide-react'
 import { DEMO_QA } from '../data/content'

@@ -1,3 +1,5 @@
+'use client'
+
 import { Check, Cloud, HardDrive } from 'lucide-react'
 import { useDemoRequest } from '../lib/demoRequest'
 import { Button, Container, Evidence, Reveal, SectionTitle } from './ui'

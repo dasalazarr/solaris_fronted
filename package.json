@@ -2,12 +2,11 @@
   "name": "solaris-landing",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "npx serve@14 out",
+    "lint": "oxlint && tsc --noEmit",
     "format": "prettier --write src"
   },
   "dependencies": {
@@ -17,19 +16,16 @@
     "lucide-react": "^1.66.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-router-dom": "^7.18.5"
+    "next": "15.5.28"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.2",
     "oxlint": "^1.89.0",
     "prettier": "^3.9.10",
     "tailwindcss": "^4.3.3",
-    "tempo-sdk": "sdk-v2-latest",
-    "typescript": "~7.0.2",
-    "vite": "^8.3.5"
+    "typescript": "~5.9.3",
+    "@tailwindcss/postcss": "^4.3.3"
   }
 }
