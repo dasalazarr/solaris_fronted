@@ -35,7 +35,7 @@ export function Logo({
         <span
           className={cx(
             'font-mono text-[11px]',
-            tone === 'light' ? 'text-white/50' : 'text-ink/50',
+            tone === 'light' ? 'text-white/50' : 'text-ink/60',
           )}
         >
           un producto de Illarium
@@ -103,7 +103,7 @@ export function Eyebrow({
     <p
       className={cx(
         'font-mono text-[12px] tracking-[0.08em] uppercase',
-        tone === 'light' ? 'text-solar/90' : 'text-ink/55',
+        tone === 'light' ? 'text-solar/90' : 'text-ink/60',
         className,
       )}
     >
