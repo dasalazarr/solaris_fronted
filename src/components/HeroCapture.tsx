@@ -55,11 +55,14 @@ export function HeroCapture() {
         <ProductWindow className="text-left" active="Preguntar">
           <div aria-hidden="true" className="flex h-[440px] md:h-[500px]">
             <div className="flex min-w-0 flex-1 flex-col p-5 md:p-7">
-              <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-ink px-4 py-2.5 text-[14px] text-white">
-                <span className={cx(typed < QA.question.length && !reduced && 'caret')}>
-                  {QA.question.slice(0, Math.max(0, typed))}
+              {/* La pregunta completa e invisible reserva el tamaño final: escribir no mueve el layout (CLS). */}
+              <div className="relative ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-ink px-4 py-2.5 text-[14px] text-white">
+                <span className="invisible">{QA.question}</span>
+                <span className="absolute inset-x-4 top-2.5">
+                  <span className={cx(typed < QA.question.length && !reduced && 'caret')}>
+                    {QA.question.slice(0, Math.max(0, typed))}
+                  </span>
                 </span>
-                {typed <= 0 && <span className="opacity-0">.</span>}
               </div>
 
               <div className="mt-5 flex gap-3">
@@ -68,7 +71,7 @@ export function HeroCapture() {
                 </span>
                 <div className="min-w-0 flex-1">
                   {thinking && (
-                    <p className="flex items-center gap-2 pt-1 font-mono text-[12px] text-ink/50">
+                    <p className="flex items-center gap-2 pt-1 font-mono text-[12px] text-ink/60">
                       <Sparkles className="size-3.5" /> Buscando en 4 documentos…
                     </p>
                   )}
@@ -105,7 +108,7 @@ export function HeroCapture() {
                 </div>
               </div>
 
-              <div className="mt-auto flex items-center gap-2 rounded-xl border border-ink/10 bg-white px-4 py-3 text-[13px] text-ink/40">
+              <div className="mt-auto flex items-center gap-2 rounded-xl border border-ink/10 bg-white px-4 py-3 text-[13px] text-ink/60">
                 Pregunte sobre sus documentos…
                 <span className="ml-auto rounded-md bg-ink/5 px-2 py-0.5 font-mono text-[10.5px]">
                   ⏎
@@ -121,22 +124,22 @@ export function HeroCapture() {
             >
               <div className="w-[300px] p-5 lg:w-[360px]">
                 <div className="flex items-center justify-between">
-                  <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/50 uppercase">
+                  <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/60 uppercase">
                     Evidencia · cita 1
                   </p>
-                  <X className="size-3.5 text-ink/40" />
+                  <X className="size-3.5 text-ink/60" />
                 </div>
                 <p className="mt-3 text-[13.5px] font-medium">{QA.citations[0].doc}</p>
-                <p className="font-mono text-[11px] text-ink/50">
+                <p className="font-mono text-[11px] text-ink/60">
                   pág. {QA.citations[0].page} · {QA.citations[0].section}
                 </p>
                 <div className="mt-4 rounded-lg bg-sheet p-4 ring-1 ring-ink/6">
-                  <p className="mb-2 font-mono text-[10px] text-ink/35">3.1 · Ámbito</p>
+                  <p className="mb-2 font-mono text-[10px] text-ink/60">3.1 · Ámbito</p>
                   <div className="mb-3 space-y-1.5">
                     <div className="h-1.5 w-full rounded bg-ink/8" />
                     <div className="h-1.5 w-4/5 rounded bg-ink/8" />
                   </div>
-                  <p className="mb-1.5 font-mono text-[10px] text-ink/35">3.2 · Umbrales</p>
+                  <p className="mb-1.5 font-mono text-[10px] text-ink/60">3.2 · Umbrales</p>
                   <EvidenceQuote
                     quote={QA.citations[0].quote}
                     mark={QA.citations[0].mark}

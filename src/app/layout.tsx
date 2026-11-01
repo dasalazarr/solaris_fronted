@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/lib/site'
+import { jetbrains, newsreader, schibsted } from './fonts'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="es">
+    <html lang="es" className={`${schibsted.variable} ${newsreader.variable} ${jetbrains.variable}`}>
       <body>{children}</body>
     </html>
   )
