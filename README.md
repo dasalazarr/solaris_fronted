@@ -1,32 +1,28 @@
-# React + TypeScript + Vite
+# Solaris · landing
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Landing comercial de Solaris, un producto de Illarium. Requisitos en `docs/prd-landing.md` del repositorio raíz `solaris`; identidad en `docs/marca.md`.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Next.js 15 (App Router) con exportación estática (`output: 'export'`), Tailwind 4 con los tokens de marca en `src/app/globals.css`, fuentes autoalojadas con `@fontsource`.
 
-## React Compiler
+## Comandos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+pnpm install
+pnpm dev        # desarrollo en http://localhost:3000
+pnpm lint       # oxlint + tsc
+pnpm build      # genera out/ (HTML estático)
+pnpm start      # sirve out/ en local
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Estructura
+
+- `src/app/` — rutas: `/`, `/demo`, `/solicitar`, 404, `sitemap.xml`, `robots.txt`.
+- `src/pages-content/` — composición de las páginas (no se llama `pages/` para no activar el Pages Router).
+- `src/components/` — secciones. Solo las que tienen estado llevan `'use client'`; el resto se renderiza en el build.
+- `src/data/content.ts` — textos, packs, FAQ (también alimenta el JSON-LD de FAQPage).
+
+## Despliegue
+
+Vercel, como sitio estático. Variable de entorno: `NEXT_PUBLIC_SITE_URL` (URL pública, para canonical, sitemap y Open Graph). Sin ella se usa `http://localhost:3000`.

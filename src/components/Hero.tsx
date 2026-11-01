@@ -1,3 +1,5 @@
+'use client'
+
 import { ArrowDown } from 'lucide-react'
 import { useDemoRequest } from '../lib/demoRequest'
 import { track } from '../lib/analytics'

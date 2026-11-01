@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { CalendarDays, CircleCheck, X } from 'lucide-react'
@@ -61,7 +63,7 @@ function Field({
     <div>
       <label htmlFor={id} className="mb-1.5 flex justify-between text-[13.5px] font-medium">
         {label}
-        {optional && <span className="font-normal text-ink/45">Opcional</span>}
+        {optional && <span className="font-normal text-ink/60">Opcional</span>}
       </label>
       {children}
       {error && (
@@ -75,7 +77,7 @@ function Field({
 
 const inputCls = (err?: string) =>
   cx(
-    'w-full rounded-xl bg-white px-3.5 py-2.5 text-[15px] ring-1 transition-shadow outline-none placeholder:text-ink/35 focus:ring-2 focus:ring-solar',
+    'w-full rounded-xl bg-white px-3.5 py-2.5 text-[15px] ring-1 transition-shadow outline-none placeholder:text-ink/60 focus:ring-2 focus:ring-solar',
     err ? 'ring-arcilla-ink/60' : 'ring-ink/12',
   )
 
@@ -141,7 +143,7 @@ export function DemoForm() {
     // Prototype: the real endpoint emails Illarium (+ CRM). Payload keeps UTM params.
     const payload = { ...f, origen: origin, ...getUtm() }
     await new Promise((r) => setTimeout(r, 700))
-    if (import.meta.env.DEV) console.debug('[form] envío', payload)
+    if (process.env.NODE_ENV === 'development') console.debug('[form] envío', payload)
     track('form_enviado', { proceso: f.proceso, section: origin })
     setSending(false)
     setSent(true)
@@ -329,7 +331,7 @@ export function DemoForm() {
             <Button type="submit" size="lg" className="mt-2 w-full" disabled={sending}>
               {sending ? 'Enviando…' : 'Solicitar demostración'}
             </Button>
-            <p className="text-center font-mono text-[11px] text-ink/45">
+            <p className="text-center font-mono text-[11px] text-ink/60">
               Sin cookies de seguimiento. Sus datos solo se usan para responderle.
             </p>
           </form>

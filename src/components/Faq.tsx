@@ -1,3 +1,5 @@
+'use client'
+
 import { Plus } from 'lucide-react'
 import { FAQ } from '../data/content'
 import { track } from '../lib/analytics'
@@ -20,7 +22,7 @@ export function Faq() {
     <section id="preguntas" className="border-t border-ink/6 bg-sheet py-24 md:py-32">
       <Container className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
         <Reveal>
-          <p className="mb-5 font-mono text-[12px] tracking-[0.08em] text-ink/55 uppercase">
+          <p className="mb-5 font-mono text-[12px] tracking-[0.08em] text-ink/60 uppercase">
             Preguntas
           </p>
           <h2 className="headline text-[40px] md:text-[56px]">

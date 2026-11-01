@@ -37,7 +37,7 @@ export function BuildInPublic() {
                 href={DIARY_URL}
                 className="group flex h-full flex-col rounded-2xl bg-white p-7 ring-1 ring-ink/6 transition-shadow duration-180 hover:shadow-[0_12px_40px_-16px_rgba(13,15,20,.18)]"
               >
-                <time dateTime={d.date} className="font-mono text-[12px] text-ink/50">
+                <time dateTime={d.date} className="font-mono text-[12px] text-ink/60">
                   {formatDate(d.date)}
                 </time>
                 <h3 className="mt-6 text-[20px] leading-snug font-semibold tracking-[-0.01em]">

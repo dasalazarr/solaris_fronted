@@ -34,11 +34,11 @@ export function ProductWindow({
           <span className="size-2.5 rounded-full bg-ink/15" />
           <span className="size-2.5 rounded-full bg-ink/15" />
         </div>
-        <div className="mx-auto flex min-w-0 items-center gap-1.5 truncate rounded-md bg-white/70 px-3 py-1 whitespace-nowrap font-mono text-[11px] text-ink/55">
+        <div className="mx-auto flex min-w-0 items-center gap-1.5 truncate rounded-md bg-white/70 px-3 py-1 whitespace-nowrap font-mono text-[11px] text-ink/60">
           <Lock className="size-3" aria-hidden="true" />
           solaris · Hortícola Ribera · Compras
         </div>
-        <span className="hidden font-mono text-[10.5px] text-ink/45 sm:block">{env}</span>
+        <span className="hidden font-mono text-[10.5px] text-ink/60 sm:block">{env}</span>
       </div>
       <div className="flex min-h-0">
         <aside className="hidden w-[176px] shrink-0 flex-col gap-0.5 border-r border-ink/8 bg-[#f7f6f2] p-3 md:flex">
@@ -53,7 +53,7 @@ export function ProductWindow({
                 'flex items-center gap-2 rounded-md px-2 py-1.5 text-[12.5px]',
                 label === active
                   ? 'bg-white font-medium shadow-sm ring-1 ring-ink/6'
-                  : 'text-ink/55',
+                  : 'text-ink/60',
               )}
             >
               <Icon className="size-3.5" aria-hidden="true" />

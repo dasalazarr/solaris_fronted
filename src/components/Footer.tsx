@@ -47,7 +47,7 @@ export function Footer() {
           </div>
           {COLUMNS.map((c) => (
             <div key={c.title}>
-              <p className="font-mono text-[11px] tracking-[0.08em] text-white/40 uppercase">
+              <p className="font-mono text-[11px] tracking-[0.08em] text-white/50 uppercase">
                 {c.title}
               </p>
               <ul className="mt-4 space-y-2.5">
@@ -62,7 +62,7 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-14 flex flex-col justify-between gap-3 border-t border-white/8 pt-6 font-mono text-[11.5px] text-white/40 sm:flex-row">
+        <div className="mt-14 flex flex-col justify-between gap-3 border-t border-white/8 pt-6 font-mono text-[11.5px] text-white/50 sm:flex-row">
           <span>© {new Date().getFullYear()} Illarium</span>
           <a href="https://dasalazarr.com" className="hover:text-white/70">
             dasalazarr.com

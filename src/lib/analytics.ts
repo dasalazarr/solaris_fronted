@@ -10,7 +10,7 @@ declare global {
 export function track(event: string, props?: Props) {
   if (typeof window === 'undefined') return
   window.plausible?.(event, props ? { props } : undefined)
-  if (import.meta.env.DEV) console.debug('[analytics]', event, props ?? '')
+  if (process.env.NODE_ENV === 'development') console.debug('[analytics]', event, props ?? '')
 }
 
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']

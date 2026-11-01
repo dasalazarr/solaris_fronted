@@ -63,11 +63,11 @@ export function Bento() {
           >
             <div className="relative m-3 mb-0 flex gap-4 rounded-xl bg-sheet p-5 ring-1 ring-ink/6 md:p-6">
               <div className="min-w-0 flex-1">
-                <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/45 uppercase">
+                <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/60 uppercase">
                   Evidencia · cita 1
                 </p>
                 <p className="mt-2 text-[14px] font-medium">{CITE.doc}</p>
-                <p className="font-mono text-[11px] text-ink/50">
+                <p className="font-mono text-[11px] text-ink/60">
                   pág. {CITE.page} · {CITE.section}
                 </p>
                 <div className="mt-4 rounded-lg bg-white p-4 ring-1 ring-ink/6">
@@ -88,7 +88,7 @@ export function Bento() {
                       pg === 4 ? 'ring-ink/10 group-hover:ring-solar' : 'ring-ink/6',
                     )}
                   >
-                    <p className="font-mono text-[9.5px] text-ink/40">pág. {pg}</p>
+                    <p className="font-mono text-[9.5px] text-ink/60">pág. {pg}</p>
                     <div className="mt-1.5 space-y-1">
                       <div className="h-1 w-full rounded bg-ink/8" />
                       <div
@@ -116,7 +116,7 @@ export function Bento() {
                 <span className="rounded bg-arcilla px-2 py-0.5 font-mono text-[10.5px] text-arcilla-ink">
                   Requiere aprobación
                 </span>
-                <span className="font-mono text-[11px] text-ink/45">PC-0412</span>
+                <span className="font-mono text-[11px] text-ink/60">PC-0412</span>
               </div>
               <p className="mt-4 text-[15px] font-medium">Envases metálicos · Metalúrgica Duero</p>
               <p className="mt-1 text-[22px] font-semibold tracking-[-0.02em]">18.400 €</p>
@@ -172,7 +172,7 @@ export function Bento() {
           >
             <div className="flex items-center gap-3 px-6 pt-6 md:px-7 md:pt-7">
               <span className="relative grid h-11 w-[132px] overflow-hidden rounded-xl bg-paper font-mono text-[12px] ring-1 ring-ink/6">
-                <span className="flex items-center justify-center gap-2 text-ink/55 transition-transform duration-180 group-hover:-translate-y-full group-focus-visible:-translate-y-full">
+                <span className="flex items-center justify-center gap-2 text-ink/60 transition-transform duration-180 group-hover:-translate-y-full group-focus-visible:-translate-y-full">
                   <Cloud className="size-4" strokeWidth={1.5} /> nube
                 </span>
                 <span className="absolute inset-0 flex translate-y-full items-center justify-center gap-2 bg-salvia text-salvia-ink transition-transform duration-180 group-hover:translate-y-0 group-focus-visible:translate-y-0">

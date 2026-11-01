@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useDemoRequest } from '../lib/demoRequest'

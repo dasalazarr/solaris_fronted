@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { LOOP_NODES } from '../data/content'
 import { usePrefersReducedMotion } from '../lib/hooks'
@@ -85,24 +87,23 @@ export function Loop() {
                       'relative z-10 grid size-[31px] shrink-0 place-items-center rounded-full font-mono text-[11px] transition-[background-color,color,box-shadow] duration-300',
                       lit
                         ? 'bg-solar text-ink shadow-[0_0_0_6px_rgba(242,181,68,.14)]'
-                        : 'bg-ink-2 text-white/45 ring-1 ring-white/15',
+                        : 'bg-ink-2 text-white/50 ring-1 ring-white/15',
                     )}
                   >
                     {i + 1}
                   </span>
                   <div
                     className={cx(
-                      'flex-1 rounded-xl p-4 ring-1 transition-[background-color,box-shadow,opacity] duration-300',
-                      lit
-                        ? 'bg-ink-2 opacity-100 ring-solar/35'
-                        : 'bg-ink-2/60 opacity-55 ring-white/8',
+                      // Sin opacidad en la tarjeta apagada: el texto debe seguir pasando AA (4,5:1).
+                      'flex-1 rounded-xl p-4 ring-1 transition-[background-color,box-shadow] duration-300',
+                      lit ? 'bg-ink-2 ring-solar/35' : 'bg-ink-2/60 ring-white/8',
                     )}
                   >
                     <p className="text-[16px] font-semibold">{node.step}</p>
                     <p
                       className={cx(
                         'mt-1 font-mono text-[10.5px] leading-snug',
-                        lit ? 'text-solar' : 'text-white/40',
+                        lit ? 'text-solar' : 'text-white/50',
                       )}
                     >
                       {node.code}

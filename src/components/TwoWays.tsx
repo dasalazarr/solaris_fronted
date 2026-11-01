@@ -1,3 +1,5 @@
+'use client'
+
 import { Check, Cloud, HardDrive } from 'lucide-react'
 import { useDemoRequest } from '../lib/demoRequest'
 import { Button, Container, Evidence, Reveal, SectionTitle } from './ui'
@@ -56,7 +58,7 @@ export function TwoWays() {
                 <span className="grid size-11 place-items-center rounded-xl bg-white/5 ring-1 ring-white/10">
                   <w.icon className="size-5 text-solar" strokeWidth={1.5} aria-hidden="true" />
                 </span>
-                <span className="font-mono text-[11px] text-white/45">{w.tag}</span>
+                <span className="font-mono text-[11px] text-white/50">{w.tag}</span>
               </div>
               <h3 className="mt-8 text-[28px] font-semibold tracking-[-0.02em]">{w.title}</h3>
               <p className="mt-2 text-[16px] leading-relaxed text-white/65">{w.body}</p>

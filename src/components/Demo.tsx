@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { AlertTriangle, Check, CircleCheck, OctagonX, RotateCcw, X } from 'lucide-react'
@@ -28,7 +30,7 @@ function AskTab() {
   return (
     <div className="flex min-h-[460px] flex-col lg:flex-row">
       <div className="flex min-w-0 flex-1 flex-col p-5 md:p-7">
-        <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/45 uppercase">
+        <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/60 uppercase">
           Preguntas sugeridas
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -93,20 +95,20 @@ function AskTab() {
         {active ? (
           <>
             <div className="flex items-center justify-between">
-              <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/50 uppercase">
+              <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/60 uppercase">
                 Evidencia · cita {active.n}
               </p>
               <button
                 type="button"
                 onClick={() => setCite(null)}
-                className="grid size-6 place-items-center rounded text-ink/40 hover:bg-ink/5"
+                className="grid size-6 place-items-center rounded text-ink/60 hover:bg-ink/5"
                 aria-label="Cerrar evidencia"
               >
                 <X className="size-3.5" />
               </button>
             </div>
             <p className="mt-3 text-[14px] font-medium">{active.doc}</p>
-            <p className="font-mono text-[11px] text-ink/50">
+            <p className="font-mono text-[11px] text-ink/60">
               pág. {active.page} · {active.section}
             </p>
             <div className="mt-4 rounded-lg bg-sheet p-4 ring-1 ring-ink/6">
@@ -114,7 +116,7 @@ function AskTab() {
             </div>
           </>
         ) : (
-          <p className="text-[13.5px] text-ink/50">
+          <p className="text-[13.5px] text-ink/60">
             Pulse una cita para ver el párrafo exacto del documento.
           </p>
         )}
@@ -148,7 +150,7 @@ function GapsTab({ approved, onReview }: { approved: boolean; onReview: () => vo
     <div className="min-h-[460px] p-5 md:p-7">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="text-[15px] font-semibold">Huecos detectados · Compras</p>
-        <p className="font-mono text-[11px] text-ink/45">
+        <p className="font-mono text-[11px] text-ink/60">
           4 reglas evaluadas en 14 pedidos y 22 facturas
         </p>
       </div>
@@ -168,10 +170,10 @@ function GapsTab({ approved, onReview }: { approved: boolean; onReview: () => vo
               </span>
               <div className="min-w-0 flex-1">
                 <p className="text-[14px]">
-                  <span className="font-mono text-[12px] text-ink/50">{g.id}</span> ·{' '}
+                  <span className="font-mono text-[12px] text-ink/60">{g.id}</span> ·{' '}
                   {resolved ? 'Aprobado con tres ofertas' : g.title}
                 </p>
-                <p className="mt-0.5 font-mono text-[10.5px] text-ink/45">
+                <p className="mt-0.5 font-mono text-[10.5px] text-ink/60">
                   {g.rule} · {g.ref}
                 </p>
               </div>
@@ -224,18 +226,18 @@ function ReviewTab({
                   ? 'Aprobado'
                   : 'Rechazado'}
             </span>
-            <span className="font-mono text-[11px] text-ink/45">PC-0412</span>
+            <span className="font-mono text-[11px] text-ink/60">PC-0412</span>
           </div>
           <p className="mt-4 text-[16px] font-medium">Envases metálicos · Metalúrgica Duero</p>
           <p className="mt-1 text-[26px] font-semibold tracking-[-0.02em]">18.400 €</p>
           <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-[13px]">
-            <dt className="text-ink/50">Regla</dt>
+            <dt className="text-ink/60">Regla</dt>
             <dd className="font-mono text-[12px]">R-COMP-07</dd>
-            <dt className="text-ink/50">Ofertas</dt>
+            <dt className="text-ink/60">Ofertas</dt>
             <dd>3 de 3 (tercera añadida hoy)</dd>
-            <dt className="text-ink/50">Aprobador</dt>
+            <dt className="text-ink/60">Aprobador</dt>
             <dd>Dirección Financiera</dd>
-            <dt className="text-ink/50">Fuente</dt>
+            <dt className="text-ink/60">Fuente</dt>
             <dd className="font-mono text-[12px]">Pol. compras · pág. 4 · §3.2</dd>
           </dl>
           <div className="mt-6 flex gap-2">
@@ -272,7 +274,7 @@ function ReviewTab({
         className="border-t border-ink/8 bg-white p-5 md:p-6 lg:border-t-0 lg:border-l"
         aria-label="Registro"
       >
-        <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/50 uppercase">Registro</p>
+        <p className="font-mono text-[10.5px] tracking-[0.08em] text-ink/60 uppercase">Registro</p>
         <ol className="mt-4 space-y-3" aria-live="polite">
           {log.map((l, i) => (
             <li
@@ -282,7 +284,7 @@ function ReviewTab({
                 l.fresh && 'animate-[word-in_500ms_var(--ease-solar)] bg-solar-soft/60 p-2 -m-2',
               )}
             >
-              <span className="shrink-0 font-mono text-[11px] text-ink/45">{l.time}</span>
+              <span className="shrink-0 font-mono text-[11px] text-ink/60">{l.time}</span>
               <span className="text-ink/75">{l.text}</span>
             </li>
           ))}
