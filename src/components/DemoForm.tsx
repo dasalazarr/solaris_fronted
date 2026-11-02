@@ -5,6 +5,7 @@ import type { FormEvent, ReactNode } from 'react'
 import { CalendarDays, CircleCheck, X } from 'lucide-react'
 import { PROCESSES } from '../data/content'
 import { getUtm, track } from '../lib/analytics'
+import { AGENDA_URL, CONTACT_EMAIL, SOLICITUD_URL } from '../lib/site'
 import { useDemoRequest } from '../lib/demoRequest'
 import { Button, Logo, cx } from './ui'
 
@@ -81,12 +82,36 @@ const inputCls = (err?: string) =>
     err ? 'ring-arcilla-ink/60' : 'ring-ink/12',
   )
 
+/** Envía la solicitud al producto (`/api/solicitud`). Nunca simula un envío. */
+async function sendSolicitud(payload: Record<string, unknown>): Promise<boolean> {
+  if (!SOLICITUD_URL) {
+    if (process.env.NODE_ENV === 'development') console.debug('[form] sin NEXT_PUBLIC_SOLICITUD_URL', payload)
+    return false
+  }
+  try {
+    const res = await fetch(SOLICITUD_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    return res.ok
+  } catch {
+    return false
+  }
+}
+
+function mailtoHref(f: Fields) {
+  const body = `Nombre: ${f.nombre}\nEmpresa: ${f.empresa}\nProceso: ${f.proceso}\n\n${f.comentario}`
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Solicitud de demostración de Solaris')}&body=${encodeURIComponent(body)}`
+}
+
 export function DemoForm() {
   const { open, origin, close } = useDemoRequest()
   const [f, setF] = useState<Fields>(EMPTY)
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({})
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
   const lastFocus = useRef<Element | null>(null)
 
@@ -140,12 +165,16 @@ export function DemoForm() {
       return
     }
     setSending(true)
-    // Prototype: the real endpoint emails Illarium (+ CRM). Payload keeps UTM params.
+    setSendError(false)
     const payload = { ...f, origen: origin, ...getUtm() }
-    await new Promise((r) => setTimeout(r, 700))
-    if (process.env.NODE_ENV === 'development') console.debug('[form] envío', payload)
-    track('form_enviado', { proceso: f.proceso, section: origin })
+    const ok = await sendSolicitud(payload)
     setSending(false)
+    if (!ok) {
+      track('form_fallo', { section: origin })
+      setSendError(true)
+      return
+    }
+    track('form_enviado', { proceso: f.proceso, section: origin })
     setSent(true)
   }
 
@@ -185,12 +214,14 @@ export function DemoForm() {
             </h2>
             <p className="mt-4 text-[16px] leading-relaxed text-ink/68">
               Le escribiremos a <strong className="font-medium text-ink">{f.correo}</strong> en un
-              día laborable con una propuesta de fecha. Si lo prefiere, reserve ya la llamada de 30
-              minutos.
+              día laborable con una propuesta de fecha.
+              {AGENDA_URL && ' Si lo prefiere, reserve ya la llamada de 30 minutos.'}
             </p>
-            <Button as="a" href="#" variant="ink" size="lg" className="mt-8 w-fit">
-              <CalendarDays className="size-4" /> Reservar llamada
-            </Button>
+            {AGENDA_URL && (
+              <Button as="a" href={AGENDA_URL} target="_blank" rel="noopener noreferrer" variant="ink" size="lg" className="mt-8 w-fit">
+                <CalendarDays className="size-4" /> Reservar llamada
+              </Button>
+            )}
             <button
               type="button"
               onClick={() => {
@@ -317,7 +348,12 @@ export function DemoForm() {
                 />
                 <span>
                   He leído y acepto la{' '}
-                  <a href="#" className="text-solar-ink underline underline-offset-2">
+                  <a
+                    href="/privacidad"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-solar-ink underline underline-offset-2"
+                  >
                     política de privacidad
                   </a>
                   .
@@ -331,6 +367,22 @@ export function DemoForm() {
             <Button type="submit" size="lg" className="mt-2 w-full" disabled={sending}>
               {sending ? 'Enviando…' : 'Solicitar demostración'}
             </Button>
+            {sendError && (
+              <p role="alert" className="text-[13.5px] leading-relaxed text-arcilla-ink">
+                No hemos podido enviar su solicitud.{' '}
+                {CONTACT_EMAIL ? (
+                  <>
+                    Escríbanos a{' '}
+                    <a href={mailtoHref(f)} className="underline underline-offset-4">
+                      {CONTACT_EMAIL}
+                    </a>{' '}
+                    y le responderemos igual.
+                  </>
+                ) : (
+                  'Inténtelo de nuevo en unos minutos.'
+                )}
+              </p>
+            )}
             <p className="text-center font-mono text-[11px] text-ink/60">
               Sin cookies de seguimiento. Sus datos solo se usan para responderle.
             </p>
