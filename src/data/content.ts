@@ -130,7 +130,9 @@ export const DIARY = [
   },
 ]
 
-export const FAQ = [
+type FaqItem = { q: string; a: string; pendienteRevision?: boolean }
+
+const FAQ_ALL: FaqItem[] = [
   {
     q: '¿Dónde están mis datos?',
     a: 'En la instalación local, en su propio equipo: los documentos no salen de su organización. La demostración usa datos de muestra en la nube, nunca documentos suyos.',
@@ -158,8 +160,12 @@ export const FAQ = [
   {
     q: '¿Cómo encaja con el RGPD y el secreto profesional?',
     a: 'Con la instalación local, los datos no se ceden a terceros ni salen de su equipo. [Respuesta pendiente de revisión jurídica.]',
+    pendienteRevision: true,
   },
 ]
+
+/** Solo se publica lo revisado: una respuesta pendiente de revisión jurídica no sale en la web. */
+export const FAQ = FAQ_ALL.filter((f) => !f.pendienteRevision)
 
 /* ---------- Demo interactiva: pack Compras ---------- */
 
