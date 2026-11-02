@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from '../lib/site'
 import { Container, Logo } from './ui'
 
 const COLUMNS = [
@@ -20,7 +21,7 @@ const COLUMNS = [
     title: 'Empresa',
     links: [
       { label: 'Illarium', href: '#' },
-      { label: 'Contacto', href: 'mailto:hola@illarium.com' },
+      { label: 'Contacto', href: `mailto:${CONTACT_EMAIL}` },
     ],
   },
   {
