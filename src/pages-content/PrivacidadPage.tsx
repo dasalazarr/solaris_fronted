@@ -10,7 +10,7 @@ import {
 } from '../lib/legal'
 import { CONTACT_EMAIL } from '../lib/site'
 
-/** Dato que debe aportar Illarium. Si falta, se ve; nunca se rellena con un valor inventado. */
+/** Dato que debe aportar el responsable. Si falta, se ve; nunca se rellena con un valor inventado. */
 function Dato({ value, label }: { value: string; label: string }) {
   if (value) return <>{value}</>
   return (
@@ -70,12 +70,12 @@ export function PrivacidadPage() {
 
             <Section id="responsable" title="1. Quién es el responsable">
               <p>
-                El responsable del tratamiento es <Dato value={LEGAL_NAME} label="razón social" />,
-                que opera bajo el nombre comercial Illarium y es quien ofrece Solaris.
+                El responsable del tratamiento es <Dato value={LEGAL_NAME} label="nombre completo" />,
+                trabajador autónomo que opera bajo el nombre comercial Illarium y ofrece Solaris.
               </p>
               <ul className={LIST}>
                 <li>
-                  Identificación fiscal: <Dato value={LEGAL_ID} label="NIF o CIF" />
+                  Identificación fiscal: <Dato value={LEGAL_ID} label="NIF o NIE" />
                 </li>
                 <li>
                   Domicilio: <Dato value={LEGAL_ADDRESS} label="domicilio" />
@@ -247,7 +247,7 @@ export function PrivacidadPage() {
             <Section id="clientes" title="8. Clientes con instalación propia">
               <p>
                 Esta política cubre la web y la demo. Cuando una organización contrata Solaris y lo
-                instala con sus documentos reales, esos datos los trata Illarium por cuenta de la
+                instala con sus documentos reales, esos datos los tratamos por cuenta de la
                 organización, que es la responsable, bajo un contrato de encargo de tratamiento
                 propio. Esos documentos no pasan por esta web ni por la demo.
               </p>
