@@ -348,7 +348,12 @@ export function DemoForm() {
                 />
                 <span>
                   He leído y acepto la{' '}
-                  <a href="#" className="text-solar-ink underline underline-offset-2">
+                  <a
+                    href="/privacidad"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-solar-ink underline underline-offset-2"
+                  >
                     política de privacidad
                   </a>
                   .
