@@ -11,8 +11,8 @@ export const NOINDEX = process.env.NEXT_PUBLIC_NOINDEX === 'true'
 /** Ruta del producto que recibe el formulario (`/api/solicitud`). Sin ella no hay envío. */
 export const SOLICITUD_URL = process.env.NEXT_PUBLIC_SOLICITUD_URL || ''
 
-/** Correo de Illarium para escribir directamente si el envío falla. */
-export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || ''
+/** Canal de Solaris: contacto comercial, soporte y plan B del formulario. */
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'solaris@dasalazarr.com'
 
 /** Enlace de agenda para reservar la llamada. Sin él, el botón no se muestra. */
 export const AGENDA_URL = process.env.NEXT_PUBLIC_AGENDA_URL || ''

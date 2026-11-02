@@ -176,8 +176,12 @@ export function PrivacidadPage() {
                   la web.
                 </li>
                 <li>
-                  <strong className="font-medium text-ink">Nuestro proveedor de correo</strong>,
-                  donde se guarda el aviso de su solicitud y nuestra respuesta.
+                  <strong className="font-medium text-ink">Cloudflare, Inc.</strong>: reenvío de los
+                  correos que llegan a nuestra dirección de contacto.
+                </li>
+                <li>
+                  <strong className="font-medium text-ink">Google (Gmail)</strong>: buzón donde se
+                  guardan el aviso de su solicitud y nuestra respuesta.
                 </li>
               </ul>
               <p>

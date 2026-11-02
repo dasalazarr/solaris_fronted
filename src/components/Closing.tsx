@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useDemoRequest } from '../lib/demoRequest'
+import { CONTACT_EMAIL } from '../lib/site'
 import { useInView, usePageVisible, usePrefersReducedMotion } from '../lib/hooks'
 import { Button, Container, Evidence } from './ui'
 
@@ -89,7 +90,7 @@ export function Closing() {
           <Button size="lg" onClick={() => requestDemo('cierre')}>
             Solicitar demostración
           </Button>
-          <Button as="a" href="mailto:hola@illarium.com" size="lg" variant="ghost-dark">
+          <Button as="a" href={`mailto:${CONTACT_EMAIL}`} size="lg" variant="ghost-dark">
             Escribirnos
           </Button>
         </div>
