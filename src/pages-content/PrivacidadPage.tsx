@@ -1,6 +1,4 @@
-import type { ReactNode } from 'react'
-import { Footer } from '../components/Footer'
-import { Container, Logo } from '../components/ui'
+import { Dato, LIST, LegalShell, Section } from '../components/LegalLayout'
 import {
   LEGAL_ADDRESS,
   LEGAL_ID,
@@ -10,54 +8,9 @@ import {
 } from '../lib/legal'
 import { CONTACT_EMAIL } from '../lib/site'
 
-/** Dato que debe aportar el responsable. Si falta, se ve; nunca se rellena con un valor inventado. */
-function Dato({ value, label }: { value: string; label: string }) {
-  if (value) return <>{value}</>
-  return (
-    <mark className="rounded bg-arcilla px-1.5 text-arcilla-ink">[Pendiente: {label}]</mark>
-  )
-}
-
-function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
-  return (
-    <section aria-labelledby={id} className="mt-12">
-      <h2 id={id} className="headline text-[26px] md:text-[30px]">
-        {title}
-      </h2>
-      <div className="mt-4 space-y-4 text-[16px] leading-relaxed text-ink/80">{children}</div>
-    </section>
-  )
-}
-
-const LIST = 'list-disc space-y-2 pl-5 marker:text-ink/40'
-
 export function PrivacidadPage() {
   return (
-    <>
-      <a
-        href="#contenido"
-        className="sr-only z-50 rounded-full bg-solar px-4 py-2 text-ink focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
-      >
-        Saltar al contenido
-      </a>
-      <header className="bg-ink py-5">
-        <Container>
-          <a href="/" aria-label="Solaris, volver al inicio" className="inline-block">
-            <Logo tone="light" withBy />
-          </a>
-        </Container>
-      </header>
-      <main id="contenido" className="bg-sheet pt-14 pb-24 md:pt-20">
-        <Container>
-          <article className="mx-auto max-w-[720px]">
-            {!PRIVACY_REVIEWED && (
-              <p
-                role="note"
-                className="mb-8 rounded-xl bg-solar-soft px-4 py-3 text-[14px] leading-snug text-solar-ink"
-              >
-                Borrador sin revisión jurídica. No es el texto definitivo.
-              </p>
-            )}
+    <LegalShell draft={!PRIVACY_REVIEWED}>
             <h1 className="headline text-[40px] md:text-[52px]">Política de privacidad</h1>
             <p className="mt-4 font-mono text-[12px] text-ink/60">
               Última actualización: {PRIVACY_UPDATED}
@@ -259,10 +212,6 @@ export function PrivacidadPage() {
                 anteriores se pueden pedir al correo del apartado 1.
               </p>
             </Section>
-          </article>
-        </Container>
-      </main>
-      <Footer />
-    </>
+    </LegalShell>
   )
 }

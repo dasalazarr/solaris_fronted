@@ -12,3 +12,9 @@ export const PRIVACY_REVIEWED = process.env.NEXT_PUBLIC_PRIVACY_REVIEWED === 'tr
 
 /** Fecha de la última revisión del texto. Se cambia al editarlo. */
 export const PRIVACY_UPDATED = '2 de noviembre de 2026'
+
+/** Aviso legal y Cookies revisados por una persona cualificada. Sin esto, muestran el aviso de borrador. */
+export const LEGAL_PAGES_REVIEWED = process.env.NEXT_PUBLIC_LEGAL_PAGES_REVIEWED === 'true'
+
+/** Fecha de la última revisión de las páginas Aviso legal y Cookies. */
+export const LEGAL_PAGES_UPDATED = '2 de noviembre de 2026'
