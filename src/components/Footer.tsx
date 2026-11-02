@@ -20,16 +20,16 @@ const COLUMNS = [
   {
     title: 'Empresa',
     links: [
-      { label: 'Illarium', href: '#' },
+      { label: 'Illarium', href: '/aviso-legal' },
       { label: 'Contacto', href: `mailto:${CONTACT_EMAIL}` },
     ],
   },
   {
     title: 'Legal',
     links: [
-      { label: 'Aviso legal', href: '#' },
+      { label: 'Aviso legal', href: '/aviso-legal' },
       { label: 'Privacidad', href: '/privacidad' },
-      { label: 'Cookies', href: '#' },
+      { label: 'Cookies', href: '/cookies' },
     ],
   },
 ]
