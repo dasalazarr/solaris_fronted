@@ -21,6 +21,6 @@ export const AGENDA_URL = process.env.NEXT_PUBLIC_AGENDA_URL || ''
 export const UMAMI_WEBSITE_ID = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID || ''
 export const UMAMI_SRC = process.env.NEXT_PUBLIC_UMAMI_SRC || 'https://cloud.umami.is/script.js'
 
-export const SITE_TITLE = 'Solaris · IA privada para sus procesos'
+export const SITE_TITLE = 'Solaris · IA privada para procesos con contrato'
 export const SITE_DESCRIPTION =
   'Solaris responde con la cita exacta de sus documentos, detecta lo que incumple sus reglas y no ejecuta nada sin la aprobación de una persona.'

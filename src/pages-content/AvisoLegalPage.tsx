@@ -99,7 +99,7 @@ export function AvisoLegalPage() {
 
       <Section id="enlaces" title="6. Enlaces a otras webs">
         <p>
-          La web enlaza a páginas de terceros, por ejemplo el diario y los ensayos del autor.
+          La web puede enlazar a páginas de terceros, por ejemplo la web personal del autor.
           No controlamos su contenido y no respondemos de él.
         </p>
       </Section>

@@ -184,8 +184,8 @@ export function Bento() {
           <Cell
             delay={240}
             className="xl:col-span-3"
-            title="Una base, muchas vistas"
-            body="Los mismos documentos sirven a compras, calidad y dirección, cada uno con su vista."
+            title="Un motor, muchos procesos"
+            body="Cada proceso con su contrato, sus reglas y su vista."
           >
             <SmallIcon>
               <Layers className="size-5" strokeWidth={1.5} />
