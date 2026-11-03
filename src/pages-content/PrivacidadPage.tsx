@@ -49,8 +49,8 @@ export function PrivacidadPage() {
             <Section id="datos" title="2. Qué datos tratamos y de dónde salen">
               <p>
                 <strong className="font-medium text-ink">Si solicita una demostración.</strong>{' '}
-                Los datos que escribe en el formulario: nombre, empresa, correo profesional, proceso
-                que le interesa y, si quiere, un comentario. Además guardamos desde qué parte de la
+                Los datos que escribe en el formulario: perfil (cliente, aliado o inversor), nombre,
+                empresa, correo profesional, proceso que le interesa y, si quiere, un comentario. Además guardamos desde qué parte de la
                 página lo envió y los parámetros de campaña de la dirección (por ejemplo,{' '}
                 <code className="font-mono text-[14px]">utm_source</code>), que se conservan en la
                 memoria de su navegador solo mientras dura la visita.

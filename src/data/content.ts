@@ -2,13 +2,58 @@
 // demo data belongs to a fictitious company (Hortícola Ribera S.L.).
 
 export const NAV_LINKS = [
-  { label: 'Producto', href: '#producto' },
-  { label: 'Cómo funciona', href: '#demo' },
+  { label: 'Cómo funciona', href: '#producto' },
+  { label: 'Demo', href: '#demo' },
   { label: 'Packs', href: '#packs' },
+  { label: 'Visión', href: '#vision' },
   { label: 'Preguntas', href: '#preguntas' },
 ]
 
 export const PROCESSES = ['Compras', 'Jurídico', 'Calidad', 'EUDR', 'Otro'] as const
+
+/** Quién escribe. Coincide con PERFILES de product/lib/solicitud.ts. */
+export const PROFILES = [
+  { id: 'cliente', label: 'Cliente' },
+  { id: 'aliado', label: 'Aliado o consultora' },
+  { id: 'inversor', label: 'Inversor' },
+] as const
+export type Profile = (typeof PROFILES)[number]['id']
+
+// «Hoy · Siguiente · Visión» (ADR-0009). Fuente: docs/fundacional.md §6 (raíz).
+// Hoy = existe en el producto; Siguiente = solo lo comprometido para el piloto, sin
+// fechas; Visión = hipótesis de la Visión v2 del PRD, siempre rotuladas.
+export const ROADMAP_UPDATED = 'noviembre 2026'
+export const ROADMAP = [
+  {
+    id: 'hoy',
+    label: 'Hoy',
+    note: 'En la demostración, con datos de muestra',
+    items: [
+      'Cada respuesta cita documento, página y fragmento literal; la cita que no está en sus documentos se descarta.',
+      'Las reglas las evalúa un motor con tests: el mismo expediente da el mismo resultado.',
+      'Huecos: lo que incumple o falta, y el dato que no tiene evidencia.',
+      'Ninguna acción sin una persona: borrador, rol que aprueba y registro exportable.',
+    ],
+  },
+  {
+    id: 'siguiente',
+    label: 'Siguiente',
+    note: 'Comprometido para el primer piloto',
+    items: [
+      'Instalación en su equipo, sin salida a internet, con sus documentos reales.',
+      'Registro de aprobaciones que se conserva entre sesiones.',
+    ],
+  },
+  {
+    id: 'vision',
+    label: 'Visión',
+    note: 'Hipótesis por validar; no forman parte de la oferta',
+    items: [
+      'Modelos por proceso: cada proceso usa el modelo que mejor rinde con sus documentos.',
+      'Federación entre procesos: Compras consulta a Calidad por el certificado de un proveedor sin mezclar sus contratos.',
+    ],
+  },
+] as const
 
 export const THESIS_CARDS = [
   {
@@ -28,38 +73,127 @@ export const THESIS_CARDS = [
   },
 ] as const
 
-export const LOOP_NODES = [
+// «Cómo funciona»: el bucle con su primitiva debajo, en dos packs. Datos copiados de
+// product/lib/solaris-data.ts (el producto es la fuente, O3 de la auditoría); los estados
+// son los que da el motor de reglas del producto (product/tests/rules-engine.test.ts).
+export type Primitive =
+  'Proceso' | 'Objeto' | 'Relación' | 'Evidencia' | 'Regla' | 'Acción' | 'Revisión'
+
+export type LoopNode = {
+  step: string
+  code: string
+  example: string
+  primitives: { name: Primitive; value: string }[]
+}
+
+export const ONTOLOGY_PACKS = [
   {
-    step: 'Pregunta',
-    code: 'Q-118',
-    example: '¿Puede aprobarse el pedido PC-0412?',
+    id: 'compras',
+    label: 'Compras',
+    nodes: [
+      {
+        step: 'Pregunta',
+        code: 'PROC-COMP-01 · PC-0412',
+        example:
+          '¿Por qué está retenido el pedido PC-0412 y qué exige el contrato del proceso para emitirlo?',
+        primitives: [
+          { name: 'Proceso', value: 'Compras · responsable: Dirección financiera' },
+          { name: 'Objeto', value: 'Pedido PC-0412 · 18.450,00 €' },
+          { name: 'Relación', value: 'Emitido a Suministros Industriales del Norte S.L.' },
+        ],
+      },
+      {
+        step: 'Cita',
+        code: 'Política Corporativa de Compras y Gasto v3.2 · pág. 4 · § 2.1',
+        example:
+          '«Todo pedido de compra cuyo importe neto supere los quince mil euros (15.000,00 €) requerirá la firma de aprobación expresa de la Dirección Financiera…»',
+        primitives: [{ name: 'Evidencia', value: 'Fragmento literal, con documento y página' }],
+      },
+      {
+        step: 'Regla',
+        code: 'R-03',
+        example: 'Importe neto > 15.000 € ⇒ firma de Dirección financiera antes de emitir',
+        primitives: [{ name: 'Regla', value: 'La evalúa el código, no el modelo' }],
+      },
+      {
+        step: 'Hueco',
+        code: 'PC-0412',
+        example:
+          'Tiene sus 3 ofertas, pero supera 15.000 € y falta la firma de Dirección financiera.',
+        primitives: [{ name: 'Regla', value: 'R-03 · requiere aprobación' }],
+      },
+      {
+        step: 'Aprobación',
+        code: 'Dirección financiera',
+        example:
+          'Borrador: emitir la orden de compra PC-0412 a Suministros Industriales del Norte S.L.',
+        primitives: [
+          { name: 'Acción', value: 'Borrador editable; no se envía solo' },
+          { name: 'Revisión', value: 'Aprueba o rechaza el rol que exige R-03' },
+        ],
+      },
+      {
+        step: 'Registro',
+        code: 'REV-COMP-01',
+        example: 'Aprobación registrada con step_id, args_hash y la evidencia enlazada.',
+        primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
+      },
+    ],
   },
   {
-    step: 'Cita',
-    code: 'Política de compras · pág. 4 · §3.2',
-    example: '«Pedidos superiores a 15.000 € requieren tres ofertas.»',
+    id: 'juridico',
+    label: 'Jurídico',
+    nodes: [
+      {
+        step: 'Pregunta',
+        code: 'PROC-JUR-01 · AV-9041',
+        example: '¿Qué contratos tienen garantías próximas a vencer y qué falta en el expediente?',
+        primitives: [
+          { name: 'Proceso', value: 'Vigencia contractual · responsable: Socio director' },
+          { name: 'Objeto', value: 'Aval bancario AV-9041 · 85.000,00 €' },
+          { name: 'Relación', value: 'Garantiza el contrato principal del expediente M-219' },
+        ],
+      },
+      {
+        step: 'Cita',
+        code: 'Póliza de Afianzamiento Mercantil M-219 · pág. 6 · Estipulación Novena',
+        example:
+          '«El aval bancario solidario n.º AV-9041 por importe de 85.000,00 € vencerá improrrogablemente el día 15 de noviembre de 2026…»',
+        primitives: [{ name: 'Evidencia', value: 'Fragmento literal, con documento y página' }],
+      },
+      {
+        step: 'Regla',
+        code: 'R-JUR-03',
+        example:
+          'Aval a menos de 30 días de vencer ⇒ requerimiento de renovación aprobado por el socio',
+        primitives: [{ name: 'Regla', value: 'La evalúa el código, no el modelo' }],
+      },
+      {
+        step: 'Hueco',
+        code: 'AV-9041',
+        example: 'Vence el 15/11/2026: quedan menos de 30 días y no consta la renovación.',
+        primitives: [{ name: 'Regla', value: 'R-JUR-03 · requiere aprobación' }],
+      },
+      {
+        step: 'Aprobación',
+        code: 'Socio director del expediente',
+        example: 'Borrador: instrucción de renovación del aval AV-9041.',
+        primitives: [
+          { name: 'Acción', value: 'Borrador editable; no se envía solo' },
+          { name: 'Revisión', value: 'Aprueba o rechaza el rol que exige R-JUR-03' },
+        ],
+      },
+      {
+        step: 'Registro',
+        code: 'REV-JUR-02',
+        example: 'Aprobación registrada con step_id, args_hash y la evidencia enlazada.',
+        primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
+      },
+    ],
   },
-  {
-    step: 'Regla',
-    code: 'R-COMP-07',
-    example: 'Importe > 15.000 € ⇒ 3 ofertas + firma de Dirección Financiera',
-  },
-  {
-    step: 'Hueco',
-    code: 'PC-0412',
-    example: 'PC-0412 supera 15.000 € y solo adjunta 2 ofertas.',
-  },
-  {
-    step: 'Aprobación',
-    code: 'Dir. Financiera',
-    example: 'M. Ortega aprueba con la tercera oferta adjunta.',
-  },
-  {
-    step: 'Registro',
-    code: 'LOG-2291',
-    example: '09:42 · PC-0412 aprobado · evidencia enlazada',
-  },
-]
+] as const satisfies readonly { id: string; label: string; nodes: readonly LoopNode[] }[]
+
+export type OntologyPackId = (typeof ONTOLOGY_PACKS)[number]['id']
 
 export const PACKS = [
   {
