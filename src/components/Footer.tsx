@@ -11,13 +11,6 @@ const COLUMNS = [
     ],
   },
   {
-    title: 'Recursos',
-    links: [
-      { label: 'Diario', href: 'https://dasalazarr.com/diario' },
-      { label: 'Ensayos', href: 'https://dasalazarr.com/ensayos' },
-    ],
-  },
-  {
     title: 'Empresa',
     links: [
       { label: 'Illarium', href: '/aviso-legal' },
@@ -38,7 +31,7 @@ export function Footer() {
   return (
     <footer className="border-t border-white/8 bg-ink py-16 text-white">
       <Container>
-        <div className="grid gap-12 md:grid-cols-[1.4fr_repeat(4,1fr)]">
+        <div className="grid gap-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
             <Logo withBy />
             <p className="mt-4 max-w-[260px] text-[14px] leading-relaxed text-white/50">

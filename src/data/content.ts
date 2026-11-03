@@ -6,7 +6,6 @@ export const NAV_LINKS = [
   { label: 'Cómo funciona', href: '#demo' },
   { label: 'Packs', href: '#packs' },
   { label: 'Preguntas', href: '#preguntas' },
-  { label: 'Diario', href: '#diario' },
 ]
 
 export const PROCESSES = ['Compras', 'Jurídico', 'Calidad', 'EUDR', 'Otro'] as const
@@ -80,7 +79,7 @@ export const PACKS = [
   {
     name: 'Calidad IFS Food',
     line: 'Alérgenos, registros, auditorías.',
-    status: 'Piloto en curso',
+    status: 'Demo disponible bajo petición',
     tone: 'salvia',
     icon: 'shield',
   },
@@ -109,24 +108,6 @@ export const STEPS = [
   {
     title: 'Acompañamiento',
     body: 'Ajustamos reglas y vistas a medida que el proceso cambia.',
-  },
-]
-
-export const DIARY = [
-  {
-    date: '2026-10-24',
-    title: 'Por qué cada respuesta lleva su párrafo',
-    line: 'La decisión de no mostrar nada que no pueda citarse, y lo que nos costó.',
-  },
-  {
-    date: '2026-10-10',
-    title: 'El primer piloto en calidad alimentaria',
-    line: 'Qué aprendimos cruzando registros de alérgenos con la norma IFS.',
-  },
-  {
-    date: '2026-09-27',
-    title: 'Un error que no volveremos a cometer',
-    line: 'Una regla mal escrita, un hueco que nadie vio y cómo lo detectamos.',
   },
 ]
 

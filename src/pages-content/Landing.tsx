@@ -1,5 +1,4 @@
 import { Bento } from '../components/Bento'
-import { BuildInPublic } from '../components/BuildInPublic'
 import { Closing } from '../components/Closing'
 import { Demo } from '../components/Demo'
 import { DemoForm } from '../components/DemoForm'
@@ -37,7 +36,6 @@ export function Landing({ formOpen = false }: { formOpen?: boolean }) {
         <Packs />
         <TwoWays />
         <HowWeWork />
-        <BuildInPublic />
         <Faq />
         <Closing />
       </main>
