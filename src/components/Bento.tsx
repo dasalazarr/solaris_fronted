@@ -118,14 +118,16 @@ export function Bento() {
                 </span>
                 <span className="font-mono text-[11px] text-ink/60">PC-0412</span>
               </div>
-              <p className="mt-4 text-[15px] font-medium">Envases metálicos · Metalúrgica Duero</p>
-              <p className="mt-1 text-[22px] font-semibold tracking-[-0.02em]">18.400 €</p>
+              <p className="mt-4 text-[15px] font-medium">
+                Válvulas DN80 INOX · Suministros Industriales del Norte
+              </p>
+              <p className="mt-1 text-[22px] font-semibold tracking-[-0.02em]">18.450,00 €</p>
               <ul className="mt-3 space-y-1.5 text-[13px] text-ink/65">
                 <li className="flex items-center gap-2">
-                  <Check className="size-3.5 text-salvia-ink" /> Tercera oferta adjunta
+                  <Check className="size-3.5 text-salvia-ink" /> Tres ofertas comparativas
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="size-3.5 text-salvia-ink" /> Proveedor homologado
+                  <Check className="size-3.5 text-salvia-ink" /> Regla R-03 evaluada
                 </li>
               </ul>
               <div className="mt-5 flex gap-2">

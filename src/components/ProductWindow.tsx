@@ -36,7 +36,7 @@ export function ProductWindow({
         </div>
         <div className="mx-auto flex min-w-0 items-center gap-1.5 truncate rounded-md bg-white/70 px-3 py-1 whitespace-nowrap font-mono text-[11px] text-ink/60">
           <Lock className="size-3" aria-hidden="true" />
-          solaris · Hortícola Ribera · Compras
+          solaris · caso de muestra · Compras
         </div>
         <span className="hidden font-mono text-[10.5px] text-ink/60 sm:block">{env}</span>
       </div>
