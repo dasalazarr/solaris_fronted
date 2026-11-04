@@ -49,6 +49,9 @@ const COPY: Record<Profile, { title: string; sub: string; submit: string }> = {
   },
 }
 
+// La API corta en 2000 y las fricciones ocupan hasta 383: así nunca se pierde lo escrito.
+const COMMENT_MAX = 1600
+
 const FREE_MAIL = /@(gmail|hotmail|outlook|yahoo|icloud|live|proton)\./i
 
 function validate(f: Fields) {
@@ -443,6 +446,7 @@ export function DemoForm() {
               <textarea
                 id="f-comentario"
                 rows={3}
+                maxLength={COMMENT_MAX}
                 value={f.comentario}
                 onChange={(e) => set('comentario', e.target.value)}
                 placeholder="Cuéntenos brevemente su caso"
