@@ -50,7 +50,7 @@ export function HeroCapture() {
     <div ref={ref} className="relative">
       <div
         role="img"
-        aria-label="Captura de Solaris: la pregunta «¿Puede aprobarse el pedido PC-0412?» recibe una respuesta con dos citas a la Política de compras; la cita 1 abre el panel de evidencia con el párrafo de la página 4 resaltado."
+        aria-label="Captura de Solaris: la pregunta «¿Por qué está retenido el pedido PC-0412?» recibe una respuesta con dos citas, a la Política de compras y a la solicitud del pedido; la cita 1 abre el panel de evidencia con el párrafo de la página 4 resaltado."
       >
         <ProductWindow className="text-left" active="Preguntar">
           <div aria-hidden="true" className="flex h-[440px] md:h-[500px]">
@@ -134,12 +134,14 @@ export function HeroCapture() {
                   pág. {QA.citations[0].page} · {QA.citations[0].section}
                 </p>
                 <div className="mt-4 rounded-lg bg-sheet p-4 ring-1 ring-ink/6">
-                  <p className="mb-2 font-mono text-[10px] text-ink/60">3.1 · Ámbito</p>
+                  <p className="mb-2 font-mono text-[10px] text-ink/60">
+                    2 · Autorizaciones previas
+                  </p>
                   <div className="mb-3 space-y-1.5">
                     <div className="h-1.5 w-full rounded bg-ink/8" />
                     <div className="h-1.5 w-4/5 rounded bg-ink/8" />
                   </div>
-                  <p className="mb-1.5 font-mono text-[10px] text-ink/60">3.2 · Umbrales</p>
+                  <p className="mb-1.5 font-mono text-[10px] text-ink/60">2.1 · Umbrales</p>
                   <EvidenceQuote
                     quote={QA.citations[0].quote}
                     mark={QA.citations[0].mark}

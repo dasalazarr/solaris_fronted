@@ -10,6 +10,7 @@ import { HowWeWork } from '../components/HowWeWork'
 import { Loop } from '../components/Loop'
 import { Nav } from '../components/Nav'
 import { Packs } from '../components/Packs'
+import { Roadmap } from '../components/Roadmap'
 import { Thesis } from '../components/Thesis'
 import { TwoWays } from '../components/TwoWays'
 import { PageEffects } from '../components/PageEffects'
@@ -34,6 +35,7 @@ export function Landing({ formOpen = false }: { formOpen?: boolean }) {
         <Figure />
         <Demo />
         <Packs />
+        <Roadmap />
         <TwoWays />
         <HowWeWork />
         <Faq />

@@ -10,6 +10,7 @@ import { EvidenceQuote, ProductWindow, WithCites } from './ProductWindow'
 import { Container, Evidence, SectionTitle, cx } from './ui'
 
 const TABS = ['Preguntar', 'Huecos', 'Revisar'] as const
+const OPEN_GAPS = DEMO_GAPS.filter((g) => g.severity !== 'cumplido').length
 type Tab = (typeof TABS)[number]
 
 function nowHHMM() {
@@ -133,9 +134,14 @@ const SEVERITY: Record<Gap['severity'], { label: string; cls: string; Icon: type
     cls: 'bg-arcilla text-arcilla-ink',
     Icon: OctagonX,
   },
-  aviso: {
-    label: 'Aviso',
+  aprobacion: {
+    label: 'Requiere aprobación',
     cls: 'bg-solar-soft text-solar-ink',
+    Icon: AlertTriangle,
+  },
+  sin_evidencia: {
+    label: 'Sin evidencia',
+    cls: 'bg-niebla text-niebla-ink',
     Icon: AlertTriangle,
   },
   cumplido: {
@@ -151,15 +157,19 @@ function GapsTab({ approved, onReview }: { approved: boolean; onReview: () => vo
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="text-[15px] font-semibold">Huecos detectados · Compras</p>
         <p className="font-mono text-[11px] text-ink/60">
-          4 reglas evaluadas en 14 pedidos y 22 facturas
+          3 reglas evaluadas por el motor en 2 pedidos
         </p>
       </div>
       <ul className="mt-5 divide-y divide-ink/8 rounded-xl bg-white ring-1 ring-ink/8">
         {DEMO_GAPS.map((g) => {
-          const resolved = approved && g.id === 'PC-0412'
+          const isReview = g.id === 'PC-0412' && g.rule === 'R-03'
+          const resolved = approved && isReview
           const sev = SEVERITY[resolved ? 'cumplido' : g.severity]
           return (
-            <li key={g.id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+            <li
+              key={`${g.id}-${g.rule}`}
+              className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center"
+            >
               <span
                 className={cx(
                   'inline-flex w-fit items-center gap-1.5 rounded px-2 py-0.5 font-mono text-[10.5px]',
@@ -171,13 +181,13 @@ function GapsTab({ approved, onReview }: { approved: boolean; onReview: () => vo
               <div className="min-w-0 flex-1">
                 <p className="text-[14px]">
                   <span className="font-mono text-[12px] text-ink/60">{g.id}</span> ·{' '}
-                  {resolved ? 'Aprobado con tres ofertas' : g.title}
+                  {resolved ? 'Aprobado por Dirección financiera' : g.title}
                 </p>
                 <p className="mt-0.5 font-mono text-[10.5px] text-ink/60">
                   {g.rule} · {g.ref}
                 </p>
               </div>
-              {g.id === 'PC-0412' && !resolved && (
+              {isReview && !resolved && (
                 <button
                   type="button"
                   onClick={onReview}
@@ -228,17 +238,19 @@ function ReviewTab({
             </span>
             <span className="font-mono text-[11px] text-ink/60">PC-0412</span>
           </div>
-          <p className="mt-4 text-[16px] font-medium">Envases metálicos · Metalúrgica Duero</p>
-          <p className="mt-1 text-[26px] font-semibold tracking-[-0.02em]">18.400 €</p>
+          <p className="mt-4 text-[16px] font-medium">
+            Válvulas DN80 INOX · Suministros Industriales del Norte
+          </p>
+          <p className="mt-1 text-[26px] font-semibold tracking-[-0.02em]">18.450,00 €</p>
           <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-[13px]">
             <dt className="text-ink/60">Regla</dt>
-            <dd className="font-mono text-[12px]">R-COMP-07</dd>
+            <dd className="font-mono text-[12px]">R-03</dd>
             <dt className="text-ink/60">Ofertas</dt>
-            <dd>3 de 3 (tercera añadida hoy)</dd>
+            <dd>3 verificadas (R-02 conforme)</dd>
             <dt className="text-ink/60">Aprobador</dt>
-            <dd>Dirección Financiera</dd>
+            <dd>Dirección financiera</dd>
             <dt className="text-ink/60">Fuente</dt>
-            <dd className="font-mono text-[12px]">Pol. compras · pág. 4 · §3.2</dd>
+            <dd className="font-mono text-[12px]">Pol. compras v3.2 · pág. 4 · § 2.1</dd>
           </dl>
           <div className="mt-6 flex gap-2">
             {status === 'pendiente' ? (
@@ -328,7 +340,7 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
         time: nowHHMM(),
         text:
           d === 'aprobado'
-            ? 'PC-0412 aprobado por usted · evidencia enlazada'
+            ? 'PC-0412 aprobado por usted · R-03 · evidencia enlazada'
             : 'PC-0412 rechazado por usted · motivo pendiente',
         fresh: true,
       },
@@ -386,7 +398,7 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
                       tab === t ? 'bg-white/15' : 'bg-arcilla text-arcilla-ink',
                     )}
                   >
-                    {status === 'aprobado' ? 1 : 2}
+                    {OPEN_GAPS - (status === 'aprobado' ? 1 : 0)}
                   </span>
                 )}
               </button>

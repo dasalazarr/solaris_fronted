@@ -1,14 +1,59 @@
-// Copy and sample data for the Solaris landing. Drafts from the landing PRD;
-// demo data belongs to a fictitious company (Hortícola Ribera S.L.).
+// Copy and sample data for the Solaris landing. Drafts from the landing PRD; the demo
+// data is the product's fictitious Compras case (product/lib/solaris-data.ts).
 
 export const NAV_LINKS = [
-  { label: 'Producto', href: '#producto' },
-  { label: 'Cómo funciona', href: '#demo' },
+  { label: 'Cómo funciona', href: '#producto' },
+  { label: 'Demo', href: '#demo' },
   { label: 'Packs', href: '#packs' },
+  { label: 'Visión', href: '#vision' },
   { label: 'Preguntas', href: '#preguntas' },
 ]
 
 export const PROCESSES = ['Compras', 'Jurídico', 'Calidad', 'EUDR', 'Otro'] as const
+
+/** Quién escribe. Coincide con PERFILES de product/lib/solicitud.ts. */
+export const PROFILES = [
+  { id: 'cliente', label: 'Cliente' },
+  { id: 'aliado', label: 'Aliado o consultora' },
+  { id: 'inversor', label: 'Inversor' },
+] as const
+export type Profile = (typeof PROFILES)[number]['id']
+
+// «Hoy · Siguiente · Visión» (ADR-0009). Fuente: docs/fundacional.md §6 (raíz).
+// Hoy = existe en el producto; Siguiente = solo lo comprometido para el piloto, sin
+// fechas; Visión = hipótesis de la Visión v2 del PRD, siempre rotuladas.
+export const ROADMAP_UPDATED = 'noviembre 2026'
+export const ROADMAP = [
+  {
+    id: 'hoy',
+    label: 'Hoy',
+    note: 'En la demostración, con datos de muestra',
+    items: [
+      'Cada respuesta cita documento, página y fragmento literal; la cita que no está en sus documentos se descarta.',
+      'Las reglas las evalúa un motor con tests: el mismo expediente da el mismo resultado.',
+      'Huecos: lo que incumple o falta, y el dato que no tiene evidencia.',
+      'Ninguna acción sin una persona: borrador, rol que aprueba y registro exportable.',
+    ],
+  },
+  {
+    id: 'siguiente',
+    label: 'Siguiente',
+    note: 'Comprometido para el primer piloto',
+    items: [
+      'Instalación en su equipo, sin salida a internet, con sus documentos reales.',
+      'Registro de aprobaciones que se conserva entre sesiones.',
+    ],
+  },
+  {
+    id: 'vision',
+    label: 'Visión',
+    note: 'Hipótesis por validar; no forman parte de la oferta',
+    items: [
+      'Modelos por proceso: cada proceso usa el modelo que mejor rinde con sus documentos.',
+      'Federación entre procesos: Compras consulta a Calidad por el certificado de un proveedor sin mezclar sus contratos.',
+    ],
+  },
+] as const
 
 export const THESIS_CARDS = [
   {
@@ -28,38 +73,127 @@ export const THESIS_CARDS = [
   },
 ] as const
 
-export const LOOP_NODES = [
+// «Cómo funciona»: el bucle con su primitiva debajo, en dos packs. Datos copiados de
+// product/lib/solaris-data.ts (el producto es la fuente, O3 de la auditoría); los estados
+// son los que da el motor de reglas del producto (product/tests/rules-engine.test.ts).
+export type Primitive =
+  'Proceso' | 'Objeto' | 'Relación' | 'Evidencia' | 'Regla' | 'Acción' | 'Revisión'
+
+export type LoopNode = {
+  step: string
+  code: string
+  example: string
+  primitives: { name: Primitive; value: string }[]
+}
+
+export const ONTOLOGY_PACKS = [
   {
-    step: 'Pregunta',
-    code: 'Q-118',
-    example: '¿Puede aprobarse el pedido PC-0412?',
+    id: 'compras',
+    label: 'Compras',
+    nodes: [
+      {
+        step: 'Pregunta',
+        code: 'PROC-COMP-01 · PC-0412',
+        example:
+          '¿Por qué está retenido el pedido PC-0412 y qué exige el contrato del proceso para emitirlo?',
+        primitives: [
+          { name: 'Proceso', value: 'Compras · responsable: Dirección financiera' },
+          { name: 'Objeto', value: 'Pedido PC-0412 · 18.450,00 €' },
+          { name: 'Relación', value: 'Emitido a Suministros Industriales del Norte S.L.' },
+        ],
+      },
+      {
+        step: 'Cita',
+        code: 'Política Corporativa de Compras y Gasto v3.2 · pág. 4 · § 2.1',
+        example:
+          '«Todo pedido de compra cuyo importe neto supere los quince mil euros (15.000,00 €) requerirá la firma de aprobación expresa de la Dirección Financiera…»',
+        primitives: [{ name: 'Evidencia', value: 'Fragmento literal, con documento y página' }],
+      },
+      {
+        step: 'Regla',
+        code: 'R-03',
+        example: 'Importe neto > 15.000 € ⇒ firma de Dirección financiera antes de emitir',
+        primitives: [{ name: 'Regla', value: 'La evalúa el código, no el modelo' }],
+      },
+      {
+        step: 'Hueco',
+        code: 'PC-0412',
+        example:
+          'Tiene sus 3 ofertas, pero supera 15.000 € y falta la firma de Dirección financiera.',
+        primitives: [{ name: 'Regla', value: 'R-03 · requiere aprobación' }],
+      },
+      {
+        step: 'Aprobación',
+        code: 'Dirección financiera',
+        example:
+          'Borrador: emitir la orden de compra PC-0412 a Suministros Industriales del Norte S.L.',
+        primitives: [
+          { name: 'Acción', value: 'Borrador editable; no se envía solo' },
+          { name: 'Revisión', value: 'Aprueba o rechaza el rol que exige R-03' },
+        ],
+      },
+      {
+        step: 'Registro',
+        code: 'REV-COMP-01',
+        example: 'Aprobación registrada con step_id, args_hash y la evidencia enlazada.',
+        primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
+      },
+    ],
   },
   {
-    step: 'Cita',
-    code: 'Política de compras · pág. 4 · §3.2',
-    example: '«Pedidos superiores a 15.000 € requieren tres ofertas.»',
+    id: 'juridico',
+    label: 'Jurídico',
+    nodes: [
+      {
+        step: 'Pregunta',
+        code: 'PROC-JUR-01 · AV-9041',
+        example: '¿Qué contratos tienen garantías próximas a vencer y qué falta en el expediente?',
+        primitives: [
+          { name: 'Proceso', value: 'Vigencia contractual · responsable: Socio director' },
+          { name: 'Objeto', value: 'Aval bancario AV-9041 · 85.000,00 €' },
+          { name: 'Relación', value: 'Garantiza el contrato principal del expediente M-219' },
+        ],
+      },
+      {
+        step: 'Cita',
+        code: 'Póliza de Afianzamiento Mercantil M-219 · pág. 6 · Estipulación Novena',
+        example:
+          '«El aval bancario solidario n.º AV-9041 por importe de 85.000,00 € vencerá improrrogablemente el día 15 de noviembre de 2026…»',
+        primitives: [{ name: 'Evidencia', value: 'Fragmento literal, con documento y página' }],
+      },
+      {
+        step: 'Regla',
+        code: 'R-JUR-03',
+        example:
+          'Aval a menos de 30 días de vencer ⇒ requerimiento de renovación aprobado por el socio',
+        primitives: [{ name: 'Regla', value: 'La evalúa el código, no el modelo' }],
+      },
+      {
+        step: 'Hueco',
+        code: 'AV-9041',
+        example: 'Vence el 15/11/2026: quedan menos de 30 días y no consta la renovación.',
+        primitives: [{ name: 'Regla', value: 'R-JUR-03 · requiere aprobación' }],
+      },
+      {
+        step: 'Aprobación',
+        code: 'Socio director del expediente',
+        example: 'Borrador: instrucción de renovación del aval AV-9041.',
+        primitives: [
+          { name: 'Acción', value: 'Borrador editable; no se envía solo' },
+          { name: 'Revisión', value: 'Aprueba o rechaza el rol que exige R-JUR-03' },
+        ],
+      },
+      {
+        step: 'Registro',
+        code: 'REV-JUR-02',
+        example: 'Aprobación registrada con step_id, args_hash y la evidencia enlazada.',
+        primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
+      },
+    ],
   },
-  {
-    step: 'Regla',
-    code: 'R-COMP-07',
-    example: 'Importe > 15.000 € ⇒ 3 ofertas + firma de Dirección Financiera',
-  },
-  {
-    step: 'Hueco',
-    code: 'PC-0412',
-    example: 'PC-0412 supera 15.000 € y solo adjunta 2 ofertas.',
-  },
-  {
-    step: 'Aprobación',
-    code: 'Dir. Financiera',
-    example: 'M. Ortega aprueba con la tercera oferta adjunta.',
-  },
-  {
-    step: 'Registro',
-    code: 'LOG-2291',
-    example: '09:42 · PC-0412 aprobado · evidencia enlazada',
-  },
-]
+] as const satisfies readonly { id: string; label: string; nodes: readonly LoopNode[] }[]
+
+export type OntologyPackId = (typeof ONTOLOGY_PACKS)[number]['id']
 
 export const PACKS = [
   {
@@ -166,70 +300,66 @@ export type DemoAnswer = {
   citations: Citation[]
 }
 
+// Datos del caso de muestra de Compras, copiados de product/lib/solaris-data.ts (el
+// producto es la fuente, O3). Las citas son fragmentos literales de sus evidencias.
+const POLITICA = 'Política Corporativa de Compras y Gasto v3.2'
+const SOLICITUD_PC0412 = 'Solicitud de Pedido PC-0412'
+
 export const DEMO_QA: DemoAnswer[] = [
   {
-    question: '¿Puede aprobarse el pedido PC-0412?',
+    question: '¿Por qué está retenido el pedido PC-0412?',
     answer:
-      'Todavía no. PC-0412 asciende a 18.400 € y la política exige tres ofertas para pedidos superiores a 15.000 € [1]. El expediente solo adjunta dos. Además, requiere la firma de Dirección Financiera [2].',
+      'Falta una firma. La política exige la aprobación expresa de la Dirección Financiera para todo pedido que supere 15.000 € [1]. PC-0412 asciende a 18.450,00 € y ya adjunta las tres ofertas comparativas [2].',
     citations: [
       {
         n: 1,
-        doc: 'Política de compras v3.2',
+        doc: POLITICA,
         page: 4,
-        section: '§3.2',
+        section: '§ 2.1',
         quote:
-          'Los pedidos cuyo importe supere los 15.000 € (IVA excluido) requerirán la presentación de al menos tres ofertas comparables de proveedores distintos.',
-        mark: 'supere los 15.000 €',
+          'Todo pedido de compra cuyo importe neto supere los quince mil euros (15.000,00 €) requerirá la firma de aprobación expresa de la Dirección Financiera antes de su emisión al proveedor, además de tres (3) ofertas comparativas verificables.',
+        mark: 'requerirá la firma de aprobación expresa de la Dirección Financiera',
       },
       {
         n: 2,
-        doc: 'Política de compras v3.2',
-        page: 5,
-        section: '§3.4',
+        doc: SOLICITUD_PC0412,
+        page: 1,
+        section: 'Cuadro económico',
         quote:
-          'La aprobación de pedidos por encima del umbral corresponde a la Dirección Financiera, que dejará constancia escrita de su decisión.',
-        mark: 'corresponde a la Dirección Financiera',
+          'Base imponible total del pedido PC-0412: 18.450,00 € (dieciocho mil cuatrocientos cincuenta euros) correspondiente a 12 unidades de válvula neumática DN80 INOX 316L. Anexos adjuntos: 3 ofertas técnicas comparativas.',
+        mark: 'Anexos adjuntos: 3 ofertas técnicas comparativas',
       },
     ],
   },
   {
-    question: '¿Está homologado Metalúrgica Duero?',
+    question: '¿Puedo emitir un pedido a Logística y Embalajes Delta?',
     answer:
-      'Sí, pero la homologación vence el 30 de noviembre de 2026 [1]. La renovación exige el certificado ISO 9001 vigente, que aún no consta en el expediente [2].',
+      'Todavía no. Su certificado de obligaciones tributarias (AEAT) caducó el 12/10/2026 [1]. La regla R-01 retiene el pedido PC-0419 hasta que el proveedor aporte la renovación.',
     citations: [
       {
         n: 1,
-        doc: 'Registro de proveedores 2026',
+        doc: 'Certificado de Homologación y Solvencia PROV-024',
         page: 2,
-        section: 'fila 14',
+        section: 'Vigencia de certificados',
         quote:
-          'Metalúrgica Duero S.A. · Homologado · Fecha de vencimiento: 30/11/2026 · Categoría: Material de envasado.',
-        mark: 'Fecha de vencimiento: 30/11/2026',
-      },
-      {
-        n: 2,
-        doc: 'Manual de homologación',
-        page: 7,
-        section: '§5.1',
-        quote:
-          'Para renovar la homologación, el proveedor aportará el certificado ISO 9001 en vigor con una antelación mínima de 15 días.',
-        mark: 'certificado ISO 9001 en vigor',
+          'Certificado de encontrarse al corriente de obligaciones tributarias (AEAT) expedido el 12/10/2025 con fecha de caducidad 12/10/2026. Póliza de responsabilidad civil vigente hasta 31/12/2026.',
+        mark: 'con fecha de caducidad 12/10/2026',
       },
     ],
   },
   {
-    question: '¿Qué hago con una factura sin pedido?',
+    question: '¿Hay penalización si PC-0412 no llega en 48 horas?',
     answer:
-      'No debe contabilizarse. Hay que retenerla y pedir al solicitante que regularice el pedido en un máximo de 5 días hábiles [1].',
+      'No consta en los documentos. El pedido solo fija el pago a 60 días mediante confirming [1]. La entrega en 48 horas se comentó en una llamada y no tiene documento, así que Solaris no la presenta como hecho.',
     citations: [
       {
         n: 1,
-        doc: 'Procedimiento de cuentas a pagar',
-        page: 3,
-        section: '§2.6',
+        doc: SOLICITUD_PC0412,
+        page: 1,
+        section: 'Cuadro económico',
         quote:
-          'Toda factura recibida sin pedido asociado quedará retenida. El solicitante dispondrá de 5 días hábiles para regularizar el pedido antes de su devolución.',
-        mark: 'quedará retenida',
+          'Condiciones de pago propuestas: 60 días fecha factura mediante confirming bancario.',
+        mark: '60 días fecha factura',
       },
     ],
   },
@@ -240,45 +370,47 @@ export type Gap = {
   title: string
   rule: string
   ref: string
-  severity: 'bloqueo' | 'aviso' | 'cumplido'
+  severity: 'bloqueo' | 'aprobacion' | 'sin_evidencia' | 'cumplido'
 }
 
+// Lo que da el motor de reglas del producto sobre los pedidos de muestra
+// (product/tests/rules-engine.test.ts).
 export const DEMO_GAPS: Gap[] = [
   {
     id: 'PC-0412',
-    title: 'Supera 15.000 € con solo 2 ofertas',
-    rule: 'R-COMP-07',
-    ref: 'Política de compras · pág. 4 · §3.2',
+    title: 'Supera 15.000 €: falta la firma de Dirección financiera',
+    rule: 'R-03',
+    ref: 'Política de compras v3.2 · pág. 4 · § 2.1',
+    severity: 'aprobacion',
+  },
+  {
+    id: 'PC-0419',
+    title: 'Certificado AEAT del proveedor caducado el 12/10/2026',
+    rule: 'R-01',
+    ref: 'Certificado PROV-024 · pág. 2',
     severity: 'bloqueo',
   },
   {
-    id: 'FAC-2209',
-    title: 'Factura de 2.130 € sin pedido asociado',
-    rule: 'R-CXP-03',
-    ref: 'Cuentas a pagar · pág. 3 · §2.6',
-    severity: 'bloqueo',
+    id: 'PC-0419',
+    title: 'Supera 6.000 € y no hay evidencia de las tres ofertas',
+    rule: 'R-02',
+    ref: 'Política de compras v3.2 · pág. 4 · § 2.1',
+    severity: 'sin_evidencia',
   },
   {
-    id: 'PRV-014',
-    title: 'Homologación de Metalúrgica Duero vence en 30 días',
-    rule: 'R-HOM-02',
-    ref: 'Manual de homologación · pág. 7 · §5.1',
-    severity: 'aviso',
-  },
-  {
-    id: 'PC-0409',
-    title: 'Tres ofertas adjuntas y firma registrada',
-    rule: 'R-COMP-07',
-    ref: 'Política de compras · pág. 4 · §3.2',
+    id: 'PC-0412',
+    title: 'Tres ofertas comparativas adjuntas',
+    rule: 'R-02',
+    ref: 'Solicitud de pedido PC-0412 · pág. 1',
     severity: 'cumplido',
   },
 ]
 
 export const DEMO_LOG_SEED = [
   {
-    time: '09:12',
-    text: 'PC-0409 aprobado por M. Ortega · evidencia enlazada',
+    time: '31/10 08:21',
+    text: 'FAC-2026-889 · recargo de 680,00 € retenido como candidato (confianza 0,74 < 0,80)',
   },
-  { time: '08:55', text: 'Regla R-COMP-07 evaluada en 14 pedidos · 1 hueco' },
-  { time: '08:31', text: 'Política de compras v3.2 indexada · 12 páginas' },
+  { time: '30/10 14:12', text: 'R-01 evaluada · PC-0419 retenido por certificado AEAT caducado' },
+  { time: '29/10 09:15', text: 'Política de compras v3.2 indexada' },
 ]
