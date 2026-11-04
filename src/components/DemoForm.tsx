@@ -7,6 +7,7 @@ import { PROCESSES, PROFILES } from '../data/content'
 import type { Profile } from '../data/content'
 import { getUtm, track } from '../lib/analytics'
 import { AGENDA_URL, CONTACT_EMAIL, SOLICITUD_URL } from '../lib/site'
+import { composeComment, FORM_PAINS } from '../data/formPains'
 import { useDemoRequest } from '../lib/demoRequest'
 import { Button, Logo, cx } from './ui'
 
@@ -21,11 +22,10 @@ type Fields = {
   web: string // honeypot
 }
 
-const EMPTY: Omit<Fields, 'perfil'> = {
+const EMPTY: Omit<Fields, 'perfil' | 'proceso'> = {
   nombre: '',
   empresa: '',
   correo: '',
-  proceso: '',
   comentario: '',
   privacidad: false,
   web: '',
@@ -48,6 +48,9 @@ const COPY: Record<Profile, { title: string; sub: string; submit: string }> = {
     submit: 'Enviar',
   },
 }
+
+// La API corta en 2000 y las fricciones ocupan hasta 383: así nunca se pierde lo escrito.
+const COMMENT_MAX = 1600
 
 const FREE_MAIL = /@(gmail|hotmail|outlook|yahoo|icloud|live|proton)\./i
 
@@ -128,15 +131,23 @@ function mailtoHref(f: Fields) {
 }
 
 export function DemoForm() {
-  const { open, origin, perfil, setPerfil, close } = useDemoRequest()
+  const { open, origin, perfil, setPerfil, proceso, setProceso, close } = useDemoRequest()
   const [rest, setF] = useState(EMPTY)
   // El perfil vive en el contexto: lo fija el botón de audiencia que abre el formulario.
   // Aliados e inversores no eligen proceso; la API lo exige, así que se envía «Otro».
   const f: Fields = {
     ...rest,
     perfil,
-    proceso: perfil && perfil !== 'cliente' ? 'Otro' : rest.proceso,
+    proceso: perfil && perfil !== 'cliente' ? 'Otro' : proceso,
   }
+  const [pains, setPains] = useState<string[]>([])
+  const isClient = !f.perfil || f.perfil === 'cliente'
+  const painOptions = isClient ? (FORM_PAINS[f.proceso] ?? []) : []
+  // Las fricciones de otro proceso no viajan: al cambiar de proceso dejan de valer.
+  const chosenPains = pains.filter((p) => painOptions.includes(p))
+  const togglePain = (p: string) =>
+    setPains((prev) => (prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]))
+  const outgoing: Fields = { ...f, comentario: composeComment(chosenPains, f.comentario) }
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({})
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
@@ -182,6 +193,10 @@ export function DemoForm() {
     }
   }, [open, close])
 
+  const chooseProceso = (p: string) => {
+    setProceso(p)
+    if (errors.proceso) setErrors((e) => ({ ...e, proceso: undefined }))
+  }
   const set = <K extends keyof typeof EMPTY>(k: K, v: Fields[K]) => {
     setF((p) => ({ ...p, [k]: v }))
     if (errors[k]) setErrors((p) => ({ ...p, [k]: undefined }))
@@ -203,7 +218,7 @@ export function DemoForm() {
     }
     setSending(true)
     setSendError(false)
-    const payload = { ...f, origen: origin, ...getUtm() }
+    const payload = { ...outgoing, origen: origin, ...getUtm() }
     const ok = await sendSolicitud(payload)
     setSending(false)
     if (!ok) {
@@ -272,6 +287,8 @@ export function DemoForm() {
               onClick={() => {
                 setSent(false)
                 setF(EMPTY)
+                setPains([])
+                setProceso('')
                 setPerfil('')
                 close()
               }}
@@ -293,6 +310,11 @@ export function DemoForm() {
               <p className="mt-2 text-[15px] leading-relaxed text-ink/62">
                 {COPY[f.perfil || 'cliente'].sub}
               </p>
+              {isClient && f.proceso && f.proceso !== 'Otro' && (
+                <p className="mt-2 text-[14px] font-medium text-solar-ink">
+                  Para el proceso de {f.proceso}
+                </p>
+              )}
             </div>
 
             <fieldset>
@@ -383,7 +405,7 @@ export function DemoForm() {
                         name="proceso"
                         value={p}
                         checked={f.proceso === p}
-                        onChange={() => set('proceso', p)}
+                        onChange={() => chooseProceso(p)}
                         className="sr-only"
                       />
                       {p}
@@ -395,10 +417,36 @@ export function DemoForm() {
                 )}
               </fieldset>
             )}
-            <Field id="f-comentario" label="Comentario" optional>
+            {painOptions.length > 0 && (
+              <fieldset>
+                <legend className="mb-2 text-[13.5px] font-medium">
+                  ¿Qué le gustaría resolver primero? <span className="font-normal text-ink/60">Opcional</span>
+                </legend>
+                <div className="flex flex-col gap-2">
+                  {painOptions.map((p) => (
+                    <button
+                      key={p}
+                      type="button"
+                      aria-pressed={chosenPains.includes(p)}
+                      onClick={() => togglePain(p)}
+                      className={cx(
+                        'rounded-xl px-3.5 py-2 text-left text-[14px] leading-snug ring-1 transition-colors',
+                        chosenPains.includes(p)
+                          ? 'bg-ink text-white ring-ink'
+                          : 'bg-white ring-ink/12 hover:ring-ink/30',
+                      )}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+            )}
+            <Field id="f-comentario" label={isClient ? 'Algo más' : 'Comentario'} optional>
               <textarea
                 id="f-comentario"
                 rows={3}
+                maxLength={COMMENT_MAX}
                 value={f.comentario}
                 onChange={(e) => set('comentario', e.target.value)}
                 placeholder="Cuéntenos brevemente su caso"
@@ -446,6 +494,17 @@ export function DemoForm() {
               )}
             </div>
 
+            {isClient && (
+              <div className="rounded-xl bg-paper p-4 text-[13.5px] leading-relaxed ring-1 ring-ink/8">
+                <p className="font-medium">Qué ocurre en los 30 minutos</p>
+                <ul className="mt-1.5 text-ink/70">
+                  <li>10 min · su proceso, sus reglas y sus documentos</li>
+                  <li>15 min · demostración con datos de muestra: citas, huecos y aprobación</li>
+                  <li>5 min · siguientes pasos: piloto e instalación local</li>
+                </ul>
+              </div>
+            )}
+
             <Button type="submit" size="lg" className="mt-2 w-full" disabled={sending}>
               {sending ? 'Enviando…' : COPY[f.perfil || 'cliente'].submit}
             </Button>
@@ -455,7 +514,7 @@ export function DemoForm() {
                 {CONTACT_EMAIL ? (
                   <>
                     Escríbanos a{' '}
-                    <a href={mailtoHref(f)} className="underline underline-offset-4">
+                    <a href={mailtoHref(outgoing)} className="underline underline-offset-4">
                       {CONTACT_EMAIL}
                     </a>{' '}
                     y le responderemos igual.

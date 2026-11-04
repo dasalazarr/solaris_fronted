@@ -23,7 +23,7 @@ const WAYS = [
     icon: HardDrive,
     tag: 'Sus documentos',
     title: 'Instalación en su equipo',
-    body: 'Sus documentos reales, sin salir de su organización. Se prepara con el primer piloto.',
+    body: 'Sus documentos reales, sin salir de su organización.',
     items: [
       'Diagnóstico de un proceso y sus reglas',
       'Piloto con sus documentos reales',

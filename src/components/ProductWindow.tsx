@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { FileText, MessageSquareText, ListChecks, ShieldCheck, Lock } from 'lucide-react'
+import { Database, MessageSquareText, ListChecks, ShieldCheck, Lock } from 'lucide-react'
 import { cx } from './ui'
 
 /** Window chrome around Solaris product surfaces (hero capture, demo, bento crops). */
@@ -8,17 +8,20 @@ export function ProductWindow({
   active = 'Preguntar',
   className,
   env = 'Demostración · datos de muestra',
+  sidebar = true,
 }: {
   children: ReactNode
-  active?: 'Preguntar' | 'Huecos' | 'Revisar'
+  active?: 'Preguntar' | 'Explorar' | 'Huecos' | 'Revisar'
   className?: string
   env?: string
+  /** Menú lateral decorativo. Se oculta donde ya hay pestañas de verdad. */
+  sidebar?: boolean
 }) {
   const nav = [
     { label: 'Preguntar', icon: MessageSquareText },
+    { label: 'Explorar', icon: Database },
     { label: 'Huecos', icon: ListChecks },
     { label: 'Revisar', icon: ShieldCheck },
-    { label: 'Documentos', icon: FileText },
   ]
   return (
     <div
@@ -41,6 +44,7 @@ export function ProductWindow({
         <span className="hidden font-mono text-[10.5px] text-ink/60 sm:block">{env}</span>
       </div>
       <div className="flex min-h-0">
+        {sidebar && (
         <aside className="hidden w-[176px] shrink-0 flex-col gap-0.5 border-r border-ink/8 bg-[#f7f6f2] p-3 md:flex">
           <div className="mb-3 flex items-center gap-2 px-2 pt-1">
             <span className="size-3.5 rounded-full bg-solar" />
@@ -61,9 +65,10 @@ export function ProductWindow({
             </div>
           ))}
           <div className="mt-auto rounded-md bg-salvia px-2 py-1.5 font-mono text-[10.5px] text-salvia-ink">
-            Pack Compras · 4 docs
+            Pack Compras · 5 docs
           </div>
         </aside>
+        )}
         <div className="min-w-0 flex-1">{children}</div>
       </div>
     </div>

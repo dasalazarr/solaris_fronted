@@ -170,7 +170,7 @@ export function Bento() {
             delay={160}
             className="xl:col-span-3"
             title="Se instala en su equipo"
-            body="Con documentos reales, Solaris trabajará dentro de su organización. Se prepara con el primer piloto."
+            body="Con documentos reales, Solaris trabaja dentro de su organización."
           >
             <div className="flex items-center gap-3 px-6 pt-6 md:px-7 md:pt-7">
               <span className="relative grid h-11 w-[132px] overflow-hidden rounded-xl bg-paper font-mono text-[12px] ring-1 ring-ink/6">

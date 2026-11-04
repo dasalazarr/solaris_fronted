@@ -200,6 +200,7 @@ export const PACKS = [
     name: 'Compras',
     line: 'Umbrales, homologación, facturas sin pedido.',
     status: 'Demo disponible',
+    process: 'Compras',
     tone: 'solar',
     icon: 'cart',
   },
@@ -207,6 +208,7 @@ export const PACKS = [
     name: 'Jurídico y mercantil',
     line: 'Vencimientos, cláusulas, anexos sin firmar.',
     status: 'Disponible bajo petición',
+    process: 'Jurídico',
     tone: 'lavanda',
     icon: 'scale',
   },
@@ -214,6 +216,7 @@ export const PACKS = [
     name: 'Calidad IFS Food',
     line: 'Alérgenos, registros, auditorías.',
     status: 'Demo disponible bajo petición',
+    process: 'Calidad',
     tone: 'salvia',
     icon: 'shield',
   },
@@ -221,6 +224,7 @@ export const PACKS = [
     name: 'Diligencia EUDR',
     line: 'Geolocalización de parcelas, lotes, proveedores.',
     status: 'Disponible bajo petición',
+    process: 'EUDR',
     tone: 'niebla',
     icon: 'map',
   },
@@ -250,11 +254,11 @@ type FaqItem = { q: string; a: string; pendienteRevision?: boolean }
 const FAQ_ALL: FaqItem[] = [
   {
     q: '¿Dónde están mis datos?',
-    a: 'En la instalación local, comprometida para el primer piloto, los documentos se quedan en su propio equipo y no salen de su organización. La demostración usa datos de muestra en la nube, nunca documentos suyos.',
+    a: 'En la instalación local, que preparamos con usted durante el piloto, los documentos se quedan en su propio equipo y no salen de su organización. La demostración usa datos de muestra en la nube, nunca documentos suyos.',
   },
   {
     q: '¿Qué modelo usa?',
-    a: 'En la instalación local, comprometida para el primer piloto, un modelo de pesos abiertos que se ejecutará en su equipo. Le indicamos cuál y por qué durante el diagnóstico, según su volumen de documentos.',
+    a: 'En la instalación local, un modelo de pesos abiertos que se ejecuta en su equipo. Le indicamos cuál y por qué durante el diagnóstico, según su volumen de documentos.',
   },
   {
     q: '¿Qué pasa si se equivoca?',
@@ -298,6 +302,8 @@ export type DemoAnswer = {
   question: string
   answer: string
   citations: Citation[]
+  /** Regla que la respuesta activa. Sin ella, la respuesta no propone nada. */
+  action?: { rule: string; text: string; review?: boolean }
 }
 
 // Datos del caso de muestra de Compras, copiados de product/lib/solaris-data.ts (el
@@ -330,6 +336,11 @@ export const DEMO_QA: DemoAnswer[] = [
         mark: 'Anexos adjuntos: 3 ofertas técnicas comparativas',
       },
     ],
+    action: {
+      rule: 'R-03',
+      text: 'requiere aprobación de Dirección financiera',
+      review: true,
+    },
   },
   {
     question: '¿Puedo emitir un pedido a Logística y Embalajes Delta?',
@@ -346,6 +357,7 @@ export const DEMO_QA: DemoAnswer[] = [
         mark: 'con fecha de caducidad 12/10/2026',
       },
     ],
+    action: { rule: 'R-01', text: 'pedido PC-0419 retenido hasta que se renueve el certificado' },
   },
   {
     question: '¿Hay penalización si PC-0412 no llega en 48 horas?',
@@ -392,7 +404,7 @@ export const DEMO_GAPS: Gap[] = [
   },
   {
     id: 'PC-0419',
-    title: 'Supera 6.000 € y no hay evidencia de las tres ofertas',
+    title: 'Desde 6.000 € y no hay evidencia de las tres ofertas',
     rule: 'R-02',
     ref: 'Política de compras v3.2 · pág. 4 · § 2.1',
     severity: 'sin_evidencia',
@@ -414,3 +426,31 @@ export const DEMO_LOG_SEED = [
   { time: '30/10 14:12', text: 'R-01 evaluada · PC-0419 retenido por certificado AEAT caducado' },
   { time: '29/10 09:15', text: 'Política de compras v3.2 indexada' },
 ]
+
+export const DEMO_PENDING_DATA =
+  'FAC-2026-889 · recargo de transporte de 680,00 €: lectura con confianza 0,74 (< 0,80). No evalúa ninguna regla hasta que una persona lo valide.'
+
+// Revisar: rol que exige R-03 y uno sin permiso. Borrador copiado de REV-COMP-01.
+export const DEMO_REQUIRED_ROLE = 'Dirección financiera'
+export const DEMO_ROLES = [DEMO_REQUIRED_ROLE, 'Solicitante (sin permiso de firma)'] as const
+export const DEMO_DRAFT =
+  'AUTORIZACIÓN DE EMISIÓN — Pedido PC-0412\nDestinatario: Suministros Industriales del Norte S.L. (PROV-018)\nImporte neto autorizado: 18.450,00 € (12 uds. válvula neumática DN80 INOX 316L)\nFundamento: Verificadas 3 ofertas comparativas conforme a § 2.1 (R-02) y autorizada excepción de umbral superior a 15.000,00 € (R-03) por Dirección Financiera.'
+
+// Explorar: el objeto PC-0412 y su cruce, tal como da el motor del producto
+// (product/tests/gaps.test.ts). R-01 no se evalúa sobre PC-0412: el motor mínimo no sigue relaciones.
+export const DEMO_OBJECT = {
+  id: 'PC-0412',
+  type: 'Pedido',
+  title: 'Válvulas DN80 INOX',
+  relation: 'Emitido a Suministros Industriales del Norte S.L. (PROV-018)',
+  attributes: [
+    { label: 'Importe neto', value: '18.450,00 €', source: 'Solicitud de pedido PC-0412 · pág. 1', rule: 'Lo usa el motor' },
+    { label: 'Ofertas comparativas', value: '3 presupuestos verificados', source: 'Solicitud de pedido PC-0412 · pág. 1', rule: 'Lo usa el motor' },
+    { label: 'Plazo de entrega verbal', value: '48 horas (comentado en llamada)', source: 'Sin fuente', rule: 'Excluido: sin evidencia' },
+  ],
+  crossCheck: [
+    { rule: 'R-03', state: 'Requiere aprobación' },
+    { rule: 'R-01', state: 'No evaluada' },
+    { rule: 'R-02', state: '✓ Conforme' },
+  ],
+} as const
