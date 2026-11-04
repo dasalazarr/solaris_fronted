@@ -29,7 +29,7 @@ export function Thesis() {
         </div>
         <Reveal className="mt-12 max-w-[640px] text-[19px] leading-relaxed text-ink/75">
           Necesitan que sus procesos tengan <span className="font-serif italic">contrato</span>:
-          reglas escritas, respuestas con fuente y una persona que aprueba.
+          reglas que el código evalúa siempre igual, respuestas con su fuente y una persona que aprueba.
         </Reveal>
       </Container>
     </section>

@@ -135,7 +135,7 @@ export const ONTOLOGY_PACKS = [
       {
         step: 'Registro',
         code: 'REV-COMP-01',
-        example: 'Aprobación registrada con step_id, args_hash y la evidencia enlazada.',
+        example: 'Aprobación registrada con la versión del contrato y la evidencia enlazada. Repetir el paso no duplica la acción.',
         primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
       },
     ],
@@ -186,7 +186,7 @@ export const ONTOLOGY_PACKS = [
       {
         step: 'Registro',
         code: 'REV-JUR-02',
-        example: 'Aprobación registrada con step_id, args_hash y la evidencia enlazada.',
+        example: 'Aprobación registrada con la versión del contrato y la evidencia enlazada. Repetir el paso no duplica la acción.',
         primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
       },
     ],
@@ -250,11 +250,11 @@ type FaqItem = { q: string; a: string; pendienteRevision?: boolean }
 const FAQ_ALL: FaqItem[] = [
   {
     q: '¿Dónde están mis datos?',
-    a: 'En la instalación local, en su propio equipo: los documentos no salen de su organización. La demostración usa datos de muestra en la nube, nunca documentos suyos.',
+    a: 'En la instalación local, comprometida para el primer piloto, los documentos se quedan en su propio equipo y no salen de su organización. La demostración usa datos de muestra en la nube, nunca documentos suyos.',
   },
   {
     q: '¿Qué modelo usa?',
-    a: 'En la instalación local, un modelo de pesos abiertos que se ejecuta en su equipo. Le indicamos cuál y por qué durante el diagnóstico, según su volumen de documentos.',
+    a: 'En la instalación local, comprometida para el primer piloto, un modelo de pesos abiertos que se ejecutará en su equipo. Le indicamos cuál y por qué durante el diagnóstico, según su volumen de documentos.',
   },
   {
     q: '¿Qué pasa si se equivoca?',
