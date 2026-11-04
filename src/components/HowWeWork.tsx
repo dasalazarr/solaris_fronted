@@ -1,7 +1,11 @@
+'use client'
+
 import { STEPS } from '../data/content'
-import { Container, Evidence, Reveal, SectionTitle } from './ui'
+import { useDemoRequest } from '../lib/demoRequest'
+import { Button, Container, Evidence, Reveal, SectionTitle } from './ui'
 
 export function HowWeWork() {
+  const { requestDemo } = useDemoRequest()
   return (
     <section id="como-trabajamos" className="bg-ink pb-24 text-white md:pb-32">
       <Container>
@@ -40,6 +44,16 @@ export function HowWeWork() {
                 </Reveal>
               ))}
             </ol>
+          </div>
+          <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <Button
+              size="lg"
+              variant="ghost-dark"
+              onClick={() => requestDemo('como-trabajamos', 'aliado')}
+            >
+              Implantar Solaris con Illarium
+            </Button>
+            <p className="text-[14px] text-white/60">Para consultoras y socios de canal.</p>
           </div>
         </div>
       </Container>

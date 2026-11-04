@@ -3,13 +3,15 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { CalendarDays, CircleCheck, X } from 'lucide-react'
-import { PROCESSES } from '../data/content'
+import { PROCESSES, PROFILES } from '../data/content'
+import type { Profile } from '../data/content'
 import { getUtm, track } from '../lib/analytics'
 import { AGENDA_URL, CONTACT_EMAIL, SOLICITUD_URL } from '../lib/site'
 import { useDemoRequest } from '../lib/demoRequest'
 import { Button, Logo, cx } from './ui'
 
 type Fields = {
+  perfil: Profile | ''
   nombre: string
   empresa: string
   correo: string
@@ -19,7 +21,7 @@ type Fields = {
   web: string // honeypot
 }
 
-const EMPTY: Fields = {
+const EMPTY: Omit<Fields, 'perfil'> = {
   nombre: '',
   empresa: '',
   correo: '',
@@ -29,10 +31,29 @@ const EMPTY: Fields = {
   web: '',
 }
 
+const COPY: Record<Profile, { title: string; sub: string; submit: string }> = {
+  cliente: {
+    title: 'Solicitar demostración',
+    sub: '30 minutos, su sector, datos de muestra. Le respondemos en un día laborable.',
+    submit: 'Solicitar demostración',
+  },
+  aliado: {
+    title: 'Implantar Solaris con Illarium',
+    sub: 'Cuéntenos qué procesos y sectores trabaja. Le respondemos en un día laborable.',
+    submit: 'Enviar',
+  },
+  inversor: {
+    title: 'Hablemos',
+    sub: 'Cuéntenos qué le interesa del proyecto. Le respondemos en un día laborable.',
+    submit: 'Enviar',
+  },
+}
+
 const FREE_MAIL = /@(gmail|hotmail|outlook|yahoo|icloud|live|proton)\./i
 
 function validate(f: Fields) {
   const e: Partial<Record<keyof Fields, string>> = {}
+  if (!f.perfil) e.perfil = 'Indique si escribe como cliente, aliado o inversor.'
   if (!f.nombre.trim()) e.nombre = 'Falta su nombre. Escriba cómo quiere que nos dirijamos a usted.'
   if (!f.empresa.trim()) e.empresa = 'Falta la empresa. Indique el nombre de su organización.'
   if (!f.correo.trim()) e.correo = 'Falta el correo. Use su correo profesional.'
@@ -41,7 +62,7 @@ function validate(f: Fields) {
   else if (FREE_MAIL.test(f.correo))
     e.correo =
       'Use un correo de su empresa, no uno personal, para preparar la demostración de su sector.'
-  if (!f.proceso)
+  if (f.perfil === 'cliente' && !f.proceso)
     e.proceso = 'Elija el proceso que le interesa; si no está en la lista, elija «Otro».'
   if (!f.privacidad) e.privacidad = 'Para enviar el formulario, acepte la política de privacidad.'
   return e
@@ -85,7 +106,8 @@ const inputCls = (err?: string) =>
 /** Envía la solicitud al producto (`/api/solicitud`). Nunca simula un envío. */
 async function sendSolicitud(payload: Record<string, unknown>): Promise<boolean> {
   if (!SOLICITUD_URL) {
-    if (process.env.NODE_ENV === 'development') console.debug('[form] sin NEXT_PUBLIC_SOLICITUD_URL', payload)
+    if (process.env.NODE_ENV === 'development')
+      console.debug('[form] sin NEXT_PUBLIC_SOLICITUD_URL', payload)
     return false
   }
   try {
@@ -101,13 +123,20 @@ async function sendSolicitud(payload: Record<string, unknown>): Promise<boolean>
 }
 
 function mailtoHref(f: Fields) {
-  const body = `Nombre: ${f.nombre}\nEmpresa: ${f.empresa}\nProceso: ${f.proceso}\n\n${f.comentario}`
+  const body = `Perfil: ${f.perfil}\nNombre: ${f.nombre}\nEmpresa: ${f.empresa}\nProceso: ${f.proceso}\n\n${f.comentario}`
   return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Solicitud de demostración de Solaris')}&body=${encodeURIComponent(body)}`
 }
 
 export function DemoForm() {
-  const { open, origin, close } = useDemoRequest()
-  const [f, setF] = useState<Fields>(EMPTY)
+  const { open, origin, perfil, setPerfil, close } = useDemoRequest()
+  const [rest, setF] = useState(EMPTY)
+  // El perfil vive en el contexto: lo fija el botón de audiencia que abre el formulario.
+  // Aliados e inversores no eligen proceso; la API lo exige, así que se envía «Otro».
+  const f: Fields = {
+    ...rest,
+    perfil,
+    proceso: perfil && perfil !== 'cliente' ? 'Otro' : rest.proceso,
+  }
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({})
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
@@ -120,7 +149,11 @@ export function DemoForm() {
     lastFocus.current = document.activeElement
     document.body.style.overflow = 'hidden'
     const t = window.setTimeout(
-      () => panelRef.current?.querySelector<HTMLElement>('input')?.focus(),
+      () =>
+        (
+          panelRef.current?.querySelector<HTMLElement>('input[name="perfil"]:checked') ??
+          panelRef.current?.querySelector<HTMLElement>('input')
+        )?.focus(),
       50,
     )
     const onKey = (e: KeyboardEvent) => {
@@ -149,9 +182,13 @@ export function DemoForm() {
     }
   }, [open, close])
 
-  const set = <K extends keyof Fields>(k: K, v: Fields[K]) => {
+  const set = <K extends keyof typeof EMPTY>(k: K, v: Fields[K]) => {
     setF((p) => ({ ...p, [k]: v }))
     if (errors[k]) setErrors((p) => ({ ...p, [k]: undefined }))
+  }
+  const choosePerfil = (p: Profile) => {
+    setPerfil(p)
+    if (errors.perfil) setErrors((e) => ({ ...e, perfil: undefined }))
   }
 
   const submit = async (e: FormEvent) => {
@@ -174,7 +211,7 @@ export function DemoForm() {
       setSendError(true)
       return
     }
-    track('form_enviado', { proceso: f.proceso, section: origin })
+    track('form_enviado', { perfil: f.perfil, proceso: f.proceso, section: origin })
     setSent(true)
   }
 
@@ -218,7 +255,15 @@ export function DemoForm() {
               {AGENDA_URL && ' Si lo prefiere, reserve ya la llamada de 30 minutos.'}
             </p>
             {AGENDA_URL && (
-              <Button as="a" href={AGENDA_URL} target="_blank" rel="noopener noreferrer" variant="ink" size="lg" className="mt-8 w-fit">
+              <Button
+                as="a"
+                href={AGENDA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="ink"
+                size="lg"
+                className="mt-8 w-fit"
+              >
                 <CalendarDays className="size-4" /> Reservar llamada
               </Button>
             )}
@@ -227,6 +272,7 @@ export function DemoForm() {
               onClick={() => {
                 setSent(false)
                 setF(EMPTY)
+                setPerfil('')
                 close()
               }}
               className="mt-auto w-fit pt-10 text-[14px] text-solar-ink underline underline-offset-4"
@@ -242,12 +288,46 @@ export function DemoForm() {
           >
             <div>
               <h2 id="form-title" className="headline text-[34px]">
-                Solicitar demostración
+                {COPY[f.perfil || 'cliente'].title}
               </h2>
               <p className="mt-2 text-[15px] leading-relaxed text-ink/62">
-                30 minutos, su sector, datos de muestra. Le respondemos en un día laborable.
+                {COPY[f.perfil || 'cliente'].sub}
               </p>
             </div>
+
+            <fieldset>
+              <legend className="mb-2 text-[13.5px] font-medium">Escribe como</legend>
+              <div className="flex flex-wrap gap-2" id="f-perfil" tabIndex={-1}>
+                {PROFILES.map((p) => (
+                  <label
+                    key={p.id}
+                    className={cx(
+                      'cursor-pointer rounded-full px-3.5 py-1.5 text-[14px] ring-1 transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-solar',
+                      f.perfil === p.id
+                        ? 'bg-ink text-white ring-ink'
+                        : 'bg-white ring-ink/12 hover:ring-ink/30',
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      name="perfil"
+                      value={p.id}
+                      checked={f.perfil === p.id}
+                      onChange={() => choosePerfil(p.id)}
+                      aria-invalid={!!errors.perfil}
+                      aria-describedby={errors.perfil ? 'f-perfil-error' : undefined}
+                      className="sr-only"
+                    />
+                    {p.label}
+                  </label>
+                ))}
+              </div>
+              {errors.perfil && (
+                <p id="f-perfil-error" className="mt-1.5 text-[13px] text-arcilla-ink">
+                  {errors.perfil}
+                </p>
+              )}
+            </fieldset>
 
             <Field id="f-nombre" label="Nombre" error={errors.nombre}>
               <input
@@ -284,35 +364,37 @@ export function DemoForm() {
                 className={inputCls(errors.correo)}
               />
             </Field>
-            <fieldset>
-              <legend className="mb-2 text-[13.5px] font-medium">Proceso que le interesa</legend>
-              <div className="flex flex-wrap gap-2" id="f-proceso" tabIndex={-1}>
-                {PROCESSES.map((p) => (
-                  <label
-                    key={p}
-                    className={cx(
-                      'cursor-pointer rounded-full px-3.5 py-1.5 text-[14px] ring-1 transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-solar',
-                      f.proceso === p
-                        ? 'bg-ink text-white ring-ink'
-                        : 'bg-white ring-ink/12 hover:ring-ink/30',
-                    )}
-                  >
-                    <input
-                      type="radio"
-                      name="proceso"
-                      value={p}
-                      checked={f.proceso === p}
-                      onChange={() => set('proceso', p)}
-                      className="sr-only"
-                    />
-                    {p}
-                  </label>
-                ))}
-              </div>
-              {errors.proceso && (
-                <p className="mt-1.5 text-[13px] text-arcilla-ink">{errors.proceso}</p>
-              )}
-            </fieldset>
+            {(!f.perfil || f.perfil === 'cliente') && (
+              <fieldset>
+                <legend className="mb-2 text-[13.5px] font-medium">Proceso que le interesa</legend>
+                <div className="flex flex-wrap gap-2" id="f-proceso" tabIndex={-1}>
+                  {PROCESSES.map((p) => (
+                    <label
+                      key={p}
+                      className={cx(
+                        'cursor-pointer rounded-full px-3.5 py-1.5 text-[14px] ring-1 transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-solar',
+                        f.proceso === p
+                          ? 'bg-ink text-white ring-ink'
+                          : 'bg-white ring-ink/12 hover:ring-ink/30',
+                      )}
+                    >
+                      <input
+                        type="radio"
+                        name="proceso"
+                        value={p}
+                        checked={f.proceso === p}
+                        onChange={() => set('proceso', p)}
+                        className="sr-only"
+                      />
+                      {p}
+                    </label>
+                  ))}
+                </div>
+                {errors.proceso && (
+                  <p className="mt-1.5 text-[13px] text-arcilla-ink">{errors.proceso}</p>
+                )}
+              </fieldset>
+            )}
             <Field id="f-comentario" label="Comentario" optional>
               <textarea
                 id="f-comentario"
@@ -365,7 +447,7 @@ export function DemoForm() {
             </div>
 
             <Button type="submit" size="lg" className="mt-2 w-full" disabled={sending}>
-              {sending ? 'Enviando…' : 'Solicitar demostración'}
+              {sending ? 'Enviando…' : COPY[f.perfil || 'cliente'].submit}
             </Button>
             {sendError && (
               <p role="alert" className="text-[13.5px] leading-relaxed text-arcilla-ink">

@@ -1,18 +1,54 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { LOOP_NODES } from '../data/content'
+import type { KeyboardEvent } from 'react'
+import { ONTOLOGY_PACKS } from '../data/content'
+import type { OntologyPackId } from '../data/content'
+import { track } from '../lib/analytics'
 import { usePrefersReducedMotion } from '../lib/hooks'
 import { Container, Evidence, SectionTitle, cx } from './ui'
 
 /**
- * Scroll-scrubbed diagram: a solar dot travels the line and lights each node as
- * it arrives. With reduced motion every node is shown lit.
+ * «Cómo funciona»: el bucle con la primitiva de la ontología bajo cada paso, en
+ * Compras o Jurídico. Diagrama ligado al scroll: un punto solar recorre la línea
+ * y enciende cada nodo al llegar. Con movimiento reducido, todos encendidos.
  */
 export function Loop() {
   const reduced = usePrefersReducedMotion()
   const trackRef = useRef<HTMLDivElement>(null)
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
   const [progress, setProgress] = useState(0)
+  const [packId, setPackId] = useState<OntologyPackId>('compras')
+  const pack = ONTOLOGY_PACKS.find((x) => x.id === packId) ?? ONTOLOGY_PACKS[0]
+
+  const choose = (id: OntologyPackId) => {
+    if (id === packId) return
+    setPackId(id)
+    track('ontologia_pack', { pack: id })
+  }
+
+  // Pestañas WAI-ARIA: flechas, Inicio y Fin mueven el foco y seleccionan.
+  const onTabKey = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
+    const last = ONTOLOGY_PACKS.length - 1
+    const next =
+      e.key === 'ArrowRight'
+        ? i === last
+          ? 0
+          : i + 1
+        : e.key === 'ArrowLeft'
+          ? i === 0
+            ? last
+            : i - 1
+          : e.key === 'Home'
+            ? 0
+            : e.key === 'End'
+              ? last
+              : -1
+    if (next < 0) return
+    e.preventDefault()
+    choose(ONTOLOGY_PACKS[next].id)
+    tabRefs.current[next]?.focus()
+  }
 
   useEffect(() => {
     if (reduced) return
@@ -44,21 +80,66 @@ export function Loop() {
   }, [reduced])
 
   const p = reduced ? 1 : progress
-  const n = LOOP_NODES.length
+  const n = pack.nodes.length
   const litCount = reduced ? n : Math.floor(p * (n - 1) + 0.15) + (p > 0.02 ? 1 : 0)
 
   return (
     <section id="producto" className="relative overflow-hidden bg-ink py-24 text-white md:py-32">
       <Container>
-        <SectionTitle eyebrow="El bucle · pack Compras" tone="light">
-          De la pregunta a la{' '}
+        <SectionTitle
+          eyebrow="La ontología de procesos"
+          tone="light"
+          sub="Siete primitivas: Proceso, Objeto, Relación, Evidencia, Regla, Acción y Revisión. El motor es el mismo en cada sector; cada pack define sus tipos."
+        >
+          Cómo{' '}
           <Evidence italic onDark>
-            decisión
+            funciona
           </Evidence>
-          , con registro.
+          .
         </SectionTitle>
 
-        <div ref={trackRef} className="relative mt-16 md:mt-20">
+        <div
+          role="tablist"
+          aria-label="Pack de ejemplo"
+          className="mt-10 inline-flex rounded-full bg-ink-2 p-1 ring-1 ring-white/10"
+        >
+          {ONTOLOGY_PACKS.map((x, i) => {
+            const selected = x.id === packId
+            return (
+              <button
+                key={x.id}
+                ref={(el) => {
+                  tabRefs.current[i] = el
+                }}
+                type="button"
+                role="tab"
+                id={`ontologia-tab-${x.id}`}
+                aria-selected={selected}
+                aria-controls="ontologia-panel"
+                tabIndex={selected ? 0 : -1}
+                onClick={() => choose(x.id)}
+                onKeyDown={(e) => onTabKey(e, i)}
+                className={cx(
+                  'rounded-full px-4 py-1.5 text-[14px] font-medium transition-colors duration-180',
+                  selected ? 'bg-solar text-ink' : 'text-white/70 hover:text-white',
+                )}
+              >
+                {x.label}
+              </button>
+            )
+          })}
+        </div>
+        <p className="sr-only" aria-live="polite">
+          Ejemplo del pack {pack.label}
+        </p>
+
+        <div
+          ref={trackRef}
+          id="ontologia-panel"
+          role="tabpanel"
+          aria-labelledby={`ontologia-tab-${pack.id}`}
+          className="relative mt-12 md:mt-14"
+        >
           {/* Line: horizontal on desktop, vertical on mobile */}
           <div
             aria-hidden="true"
@@ -78,7 +159,7 @@ export function Loop() {
           </div>
 
           <ol className="relative grid gap-8 lg:grid-cols-6 lg:gap-4">
-            {LOOP_NODES.map((node, i) => {
+            {pack.nodes.map((node, i) => {
               const lit = i < litCount
               return (
                 <li key={node.step} className="flex gap-5 lg:flex-col lg:gap-5">
@@ -116,6 +197,16 @@ export function Loop() {
                     >
                       {node.example}
                     </p>
+                    <dl className="mt-4 space-y-2 border-t border-white/8 pt-3">
+                      {node.primitives.map((pr) => (
+                        <div key={pr.name}>
+                          <dt className="font-mono text-[10.5px] tracking-[0.08em] text-lavanda uppercase">
+                            {pr.name}
+                          </dt>
+                          <dd className="text-[12.5px] leading-snug text-white/70">{pr.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
                   </div>
                 </li>
               )
