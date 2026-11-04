@@ -1,5 +1,5 @@
-// Copy and sample data for the Solaris landing. Drafts from the landing PRD;
-// demo data belongs to a fictitious company (Hortícola Ribera S.L.).
+// Copy and sample data for the Solaris landing. Drafts from the landing PRD; the demo
+// data is the product's fictitious Compras case (product/lib/solaris-data.ts).
 
 export const NAV_LINKS = [
   { label: 'Cómo funciona', href: '#producto' },
@@ -300,70 +300,66 @@ export type DemoAnswer = {
   citations: Citation[]
 }
 
+// Datos del caso de muestra de Compras, copiados de product/lib/solaris-data.ts (el
+// producto es la fuente, O3). Las citas son fragmentos literales de sus evidencias.
+const POLITICA = 'Política Corporativa de Compras y Gasto v3.2'
+const SOLICITUD_PC0412 = 'Solicitud de Pedido PC-0412'
+
 export const DEMO_QA: DemoAnswer[] = [
   {
-    question: '¿Puede aprobarse el pedido PC-0412?',
+    question: '¿Por qué está retenido el pedido PC-0412?',
     answer:
-      'Todavía no. PC-0412 asciende a 18.400 € y la política exige tres ofertas para pedidos superiores a 15.000 € [1]. El expediente solo adjunta dos. Además, requiere la firma de Dirección Financiera [2].',
+      'Falta una firma. La política exige la aprobación expresa de la Dirección Financiera para todo pedido que supere 15.000 € [1]. PC-0412 asciende a 18.450,00 € y ya adjunta las tres ofertas comparativas [2].',
     citations: [
       {
         n: 1,
-        doc: 'Política de compras v3.2',
+        doc: POLITICA,
         page: 4,
-        section: '§3.2',
+        section: '§ 2.1',
         quote:
-          'Los pedidos cuyo importe supere los 15.000 € (IVA excluido) requerirán la presentación de al menos tres ofertas comparables de proveedores distintos.',
-        mark: 'supere los 15.000 €',
+          'Todo pedido de compra cuyo importe neto supere los quince mil euros (15.000,00 €) requerirá la firma de aprobación expresa de la Dirección Financiera antes de su emisión al proveedor, además de tres (3) ofertas comparativas verificables.',
+        mark: 'requerirá la firma de aprobación expresa de la Dirección Financiera',
       },
       {
         n: 2,
-        doc: 'Política de compras v3.2',
-        page: 5,
-        section: '§3.4',
+        doc: SOLICITUD_PC0412,
+        page: 1,
+        section: 'Cuadro económico',
         quote:
-          'La aprobación de pedidos por encima del umbral corresponde a la Dirección Financiera, que dejará constancia escrita de su decisión.',
-        mark: 'corresponde a la Dirección Financiera',
+          'Base imponible total del pedido PC-0412: 18.450,00 € (dieciocho mil cuatrocientos cincuenta euros) correspondiente a 12 unidades de válvula neumática DN80 INOX 316L. Anexos adjuntos: 3 ofertas técnicas comparativas.',
+        mark: 'Anexos adjuntos: 3 ofertas técnicas comparativas',
       },
     ],
   },
   {
-    question: '¿Está homologado Metalúrgica Duero?',
+    question: '¿Puedo emitir un pedido a Logística y Embalajes Delta?',
     answer:
-      'Sí, pero la homologación vence el 30 de noviembre de 2026 [1]. La renovación exige el certificado ISO 9001 vigente, que aún no consta en el expediente [2].',
+      'Todavía no. Su certificado de obligaciones tributarias (AEAT) caducó el 12/10/2026 [1]. La regla R-01 retiene el pedido PC-0419 hasta que el proveedor aporte la renovación.',
     citations: [
       {
         n: 1,
-        doc: 'Registro de proveedores 2026',
+        doc: 'Certificado de Homologación y Solvencia PROV-024',
         page: 2,
-        section: 'fila 14',
+        section: 'Vigencia de certificados',
         quote:
-          'Metalúrgica Duero S.A. · Homologado · Fecha de vencimiento: 30/11/2026 · Categoría: Material de envasado.',
-        mark: 'Fecha de vencimiento: 30/11/2026',
-      },
-      {
-        n: 2,
-        doc: 'Manual de homologación',
-        page: 7,
-        section: '§5.1',
-        quote:
-          'Para renovar la homologación, el proveedor aportará el certificado ISO 9001 en vigor con una antelación mínima de 15 días.',
-        mark: 'certificado ISO 9001 en vigor',
+          'Certificado de encontrarse al corriente de obligaciones tributarias (AEAT) expedido el 12/10/2025 con fecha de caducidad 12/10/2026. Póliza de responsabilidad civil vigente hasta 31/12/2026.',
+        mark: 'con fecha de caducidad 12/10/2026',
       },
     ],
   },
   {
-    question: '¿Qué hago con una factura sin pedido?',
+    question: '¿Hay penalización si PC-0412 no llega en 48 horas?',
     answer:
-      'No debe contabilizarse. Hay que retenerla y pedir al solicitante que regularice el pedido en un máximo de 5 días hábiles [1].',
+      'No consta en los documentos. El pedido solo fija el pago a 60 días mediante confirming [1]. La entrega en 48 horas se comentó en una llamada y no tiene documento, así que Solaris no la presenta como hecho.',
     citations: [
       {
         n: 1,
-        doc: 'Procedimiento de cuentas a pagar',
-        page: 3,
-        section: '§2.6',
+        doc: SOLICITUD_PC0412,
+        page: 1,
+        section: 'Cuadro económico',
         quote:
-          'Toda factura recibida sin pedido asociado quedará retenida. El solicitante dispondrá de 5 días hábiles para regularizar el pedido antes de su devolución.',
-        mark: 'quedará retenida',
+          'Condiciones de pago propuestas: 60 días fecha factura mediante confirming bancario.',
+        mark: '60 días fecha factura',
       },
     ],
   },
@@ -374,45 +370,47 @@ export type Gap = {
   title: string
   rule: string
   ref: string
-  severity: 'bloqueo' | 'aviso' | 'cumplido'
+  severity: 'bloqueo' | 'aprobacion' | 'sin_evidencia' | 'cumplido'
 }
 
+// Lo que da el motor de reglas del producto sobre los pedidos de muestra
+// (product/tests/rules-engine.test.ts).
 export const DEMO_GAPS: Gap[] = [
   {
     id: 'PC-0412',
-    title: 'Supera 15.000 € con solo 2 ofertas',
-    rule: 'R-COMP-07',
-    ref: 'Política de compras · pág. 4 · §3.2',
+    title: 'Supera 15.000 €: falta la firma de Dirección financiera',
+    rule: 'R-03',
+    ref: 'Política de compras v3.2 · pág. 4 · § 2.1',
+    severity: 'aprobacion',
+  },
+  {
+    id: 'PC-0419',
+    title: 'Certificado AEAT del proveedor caducado el 12/10/2026',
+    rule: 'R-01',
+    ref: 'Certificado PROV-024 · pág. 2',
     severity: 'bloqueo',
   },
   {
-    id: 'FAC-2209',
-    title: 'Factura de 2.130 € sin pedido asociado',
-    rule: 'R-CXP-03',
-    ref: 'Cuentas a pagar · pág. 3 · §2.6',
-    severity: 'bloqueo',
+    id: 'PC-0419',
+    title: 'Supera 6.000 € y no hay evidencia de las tres ofertas',
+    rule: 'R-02',
+    ref: 'Política de compras v3.2 · pág. 4 · § 2.1',
+    severity: 'sin_evidencia',
   },
   {
-    id: 'PRV-014',
-    title: 'Homologación de Metalúrgica Duero vence en 30 días',
-    rule: 'R-HOM-02',
-    ref: 'Manual de homologación · pág. 7 · §5.1',
-    severity: 'aviso',
-  },
-  {
-    id: 'PC-0409',
-    title: 'Tres ofertas adjuntas y firma registrada',
-    rule: 'R-COMP-07',
-    ref: 'Política de compras · pág. 4 · §3.2',
+    id: 'PC-0412',
+    title: 'Tres ofertas comparativas adjuntas',
+    rule: 'R-02',
+    ref: 'Solicitud de pedido PC-0412 · pág. 1',
     severity: 'cumplido',
   },
 ]
 
 export const DEMO_LOG_SEED = [
   {
-    time: '09:12',
-    text: 'PC-0409 aprobado por M. Ortega · evidencia enlazada',
+    time: '31/10 08:21',
+    text: 'FAC-2026-889 · recargo de 680,00 € retenido como candidato (confianza 0,74 < 0,80)',
   },
-  { time: '08:55', text: 'Regla R-COMP-07 evaluada en 14 pedidos · 1 hueco' },
-  { time: '08:31', text: 'Política de compras v3.2 indexada · 12 páginas' },
+  { time: '30/10 14:12', text: 'R-01 evaluada · PC-0419 retenido por certificado AEAT caducado' },
+  { time: '29/10 09:15', text: 'Política de compras v3.2 indexada' },
 ]
