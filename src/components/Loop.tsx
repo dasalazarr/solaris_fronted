@@ -89,7 +89,7 @@ export function Loop() {
         <SectionTitle
           eyebrow="La ontología de procesos"
           tone="light"
-          sub="Siete piezas conectadas: Proceso, Objeto, Relación, Evidencia, Regla, Acción y Revisión. La IA lee y redacta, el código evalúa las reglas y las personas deciden. El motor es el mismo en cada sector; cada pack define sus tipos."
+          sub="Siete piezas conectadas: Proceso, Objeto, Relación, Evidencia, Regla, Acción y Revisión. La IA redacta y explica, el código evalúa las reglas y las personas deciden. El motor es el mismo en cada sector; cada pack define sus tipos."
         >
           Cómo{' '}
           <Evidence italic onDark>
