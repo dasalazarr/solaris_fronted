@@ -135,7 +135,7 @@ export const ONTOLOGY_PACKS = [
       {
         step: 'Registro',
         code: 'REV-COMP-01',
-        example: 'Aprobación registrada con step_id, args_hash y la evidencia enlazada.',
+        example: 'Aprobación registrada con la versión del contrato y la evidencia enlazada. Repetir el paso no duplica la acción.',
         primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
       },
     ],
@@ -186,7 +186,7 @@ export const ONTOLOGY_PACKS = [
       {
         step: 'Registro',
         code: 'REV-JUR-02',
-        example: 'Aprobación registrada con step_id, args_hash y la evidencia enlazada.',
+        example: 'Aprobación registrada con la versión del contrato y la evidencia enlazada. Repetir el paso no duplica la acción.',
         primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
       },
     ],

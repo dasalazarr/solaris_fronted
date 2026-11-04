@@ -35,8 +35,8 @@ export function Hero() {
           </span>
         </h1>
         <p className="mx-auto mt-7 max-w-[640px] text-[17px] leading-relaxed text-white/68 md:text-[19px]">
-          Solaris responde con la cita exacta de sus documentos, detecta lo que incumple sus reglas
-          y no ejecuta nada sin su aprobación.
+          Solaris cruza sus documentos con sus reglas: responde con la cita exacta, señala lo que
+          incumple o falta y prepara la acción, que no se ejecuta sin la aprobación del responsable.
         </p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button size="lg" onClick={() => requestDemo('hero')}>
