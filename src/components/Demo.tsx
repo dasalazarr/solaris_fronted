@@ -15,8 +15,9 @@ import {
 } from '../data/content'
 import type { Gap } from '../data/content'
 import { track } from '../lib/analytics'
+import { useDemoRequest } from '../lib/demoRequest'
 import { EvidenceQuote, ProductWindow, WithCites } from './ProductWindow'
-import { Container, Evidence, SectionTitle, cx } from './ui'
+import { Button, Container, Evidence, SectionTitle, cx } from './ui'
 
 const TABS = ['Preguntar', 'Explorar', 'Huecos', 'Revisar'] as const
 const OPEN_GAPS = DEMO_GAPS.filter((g) => g.severity !== 'cumplido').length
@@ -422,6 +423,18 @@ function ReviewTab({
 
 /* ---------- Section ---------- */
 
+function DemoCta() {
+  const { requestDemo } = useDemoRequest()
+  return (
+    <div className="mt-8 flex flex-wrap items-center gap-4">
+      <p className="text-[16px] text-ink/75">¿Lo vemos con un proceso como el suyo?</p>
+      <Button size="lg" onClick={() => requestDemo('demo', 'cliente', 'Compras')}>
+        Solicitar demostración
+      </Button>
+    </div>
+  )
+}
+
 export function Demo({ standalone = false }: { standalone?: boolean }) {
   const [tab, setTab] = useState<Tab>('Preguntar')
   const [status, setStatus] = useState<'pendiente' | 'aprobado' | 'rechazado'>('pendiente')
@@ -565,6 +578,7 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
               Demostración con datos de muestra
             </p>
           </div>
+          {!standalone && <DemoCta />}
         </div>
       </Container>
     </section>
