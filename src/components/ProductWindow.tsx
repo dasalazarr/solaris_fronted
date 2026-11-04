@@ -61,7 +61,7 @@ export function ProductWindow({
             </div>
           ))}
           <div className="mt-auto rounded-md bg-salvia px-2 py-1.5 font-mono text-[10.5px] text-salvia-ink">
-            Pack Compras · 4 docs
+            Pack Compras · 5 docs
           </div>
         </aside>
         <div className="min-w-0 flex-1">{children}</div>
