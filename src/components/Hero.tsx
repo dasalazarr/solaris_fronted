@@ -21,7 +21,7 @@ function Words({ text, start = 0 }: { text: string; start?: number }) {
 export function Hero() {
   const { requestDemo } = useDemoRequest()
   return (
-    <section id="top" className="relative overflow-hidden bg-ink pt-32 pb-20 md:pt-40 md:pb-28">
+    <section id="top" className="relative overflow-hidden bg-ink pt-28 pb-20 md:pt-32 md:pb-28">
       <div className="sunbeam" aria-hidden="true" />
       <Container className="relative text-center">
         <Eyebrow tone="light">IA privada para procesos</Eyebrow>
@@ -52,7 +52,7 @@ export function Hero() {
             Ver cómo funciona <ArrowDown className="size-4" aria-hidden="true" />
           </Button>
         </div>
-        <div className="relative mx-auto mt-16 max-w-[1200px] md:mt-20">
+        <div className="relative mx-auto mt-10 max-w-[1200px] md:mt-12">
           <HeroCapture />
         </div>
       </Container>

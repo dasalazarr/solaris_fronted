@@ -45,15 +45,16 @@ export function HeroCapture() {
     : 0
   const panelOpen = time >= 4900
   const lit = time >= 5500
+  const actionOn = time >= 6300
 
   return (
     <div ref={ref} className="relative">
       <div
         role="img"
-        aria-label="Captura de Solaris: la pregunta «¿Por qué está retenido el pedido PC-0412?» recibe una respuesta con dos citas, a la Política de compras y a la solicitud del pedido; la cita 1 abre el panel de evidencia con el párrafo de la página 4 resaltado."
+        aria-label="Captura de Solaris: la pregunta «¿Por qué está retenido el pedido PC-0412?» recibe una respuesta con dos citas, a la Política de compras y a la solicitud del pedido; la cita 1 abre el panel de evidencia con el párrafo de la página 4 resaltado. Al final, la regla R-03 pide la aprobación de Dirección financiera."
       >
         <ProductWindow className="text-left" active="Preguntar">
-          <div aria-hidden="true" className="flex h-[440px] md:h-[500px]">
+          <div aria-hidden="true" className="flex h-[480px] md:h-[500px]">
             <div className="flex min-w-0 flex-1 flex-col p-5 md:p-7">
               {/* La pregunta completa e invisible reserva el tamaño final: escribir no mueve el layout (CLS). */}
               <div className="relative ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-ink px-4 py-2.5 text-[14px] text-white">
@@ -72,7 +73,7 @@ export function HeroCapture() {
                 <div className="min-w-0 flex-1">
                   {thinking && (
                     <p className="flex items-center gap-2 pt-1 font-mono text-[12px] text-ink/60">
-                      <Sparkles className="size-3.5" /> Buscando en 4 documentos…
+                      <Sparkles className="size-3.5" /> Buscando en 5 documentos…
                     </p>
                   )}
                   {showAnswer && (
@@ -85,7 +86,7 @@ export function HeroCapture() {
                       </p>
                       <div
                         className={cx(
-                          'mt-4 flex flex-wrap gap-2 transition-opacity duration-500',
+                          'mt-4 mb-3 flex flex-wrap gap-2 transition-opacity duration-500',
                           answerChars >= QA.answer.length ? 'opacity-100' : 'opacity-0',
                         )}
                       >
@@ -108,7 +109,23 @@ export function HeroCapture() {
                 </div>
               </div>
 
-              <div className="mt-auto flex items-center gap-2 rounded-xl border border-ink/10 bg-white px-4 py-3 text-[13px] text-ink/60">
+              {/* Ocupa su sitio desde el principio: aparecer no mueve el layout (CLS). */}
+              <div
+                className={cx(
+                  'mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 rounded-lg bg-solar-soft px-3 py-2 text-[12.5px] leading-snug transition-opacity duration-500',
+                  actionOn ? 'opacity-100' : 'opacity-0',
+                )}
+              >
+                <span>
+                  <span className="font-mono text-[11.5px]">Regla R-03</span> · requiere aprobación de
+                  Dirección financiera
+                </span>
+                <span className="rounded-full bg-solar px-3 py-1 text-[12px] font-medium whitespace-nowrap">
+                  Abrir en Revisar →
+                </span>
+              </div>
+
+              <div className="mt-3 hidden items-center gap-2 rounded-xl border border-ink/10 bg-white px-4 py-3 text-[13px] text-ink/60 sm:flex">
                 Pregunte sobre sus documentos…
                 <span className="ml-auto rounded-md bg-ink/5 px-2 py-0.5 font-mono text-[10.5px]">
                   ⏎
