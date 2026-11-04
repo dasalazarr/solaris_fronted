@@ -1,5 +1,8 @@
+'use client'
+
 import { MapPinned, Scale, ShieldCheck, ShoppingCart } from 'lucide-react'
 import { PACKS } from '../data/content'
+import { useDemoRequest } from '../lib/demoRequest'
 import { Container, Evidence, Reveal, SectionTitle, cx } from './ui'
 
 const ICONS = {
@@ -17,6 +20,7 @@ const TONES = {
 }
 
 export function Packs() {
+  const { requestDemo } = useDemoRequest()
   return (
     <section id="packs" className="scroll-mt-10 bg-paper pb-24 md:pb-32">
       <Container>
@@ -42,6 +46,13 @@ export function Packs() {
                 <div className="mt-auto pr-24">
                   <h3 className="headline text-[32px] md:text-[40px]">{p.name}</h3>
                   <p className="mt-2 text-[16px] opacity-80">{p.line}</p>
+                  <button
+                    type="button"
+                    onClick={() => requestDemo(`pack-${p.process}`, 'cliente', p.process)}
+                    className="mt-4 text-[14.5px] font-medium underline underline-offset-4"
+                  >
+                    Solicitar demostración de este pack
+                  </button>
                 </div>
                 <Icon
                   aria-hidden="true"
