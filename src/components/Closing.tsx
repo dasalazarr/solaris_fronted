@@ -77,14 +77,14 @@ export function Closing() {
       <DocumentField />
       <Container className="relative">
         <h2 className="headline mx-auto max-w-[900px] text-[44px] md:text-[72px] lg:text-[80px]">
-          Ponga sus procesos{' '}
+          Pon tus procesos{' '}
           <Evidence italic onDark>
             bajo contrato
           </Evidence>
           .
         </h2>
         <p className="mx-auto mt-6 max-w-[520px] text-[17px] leading-relaxed text-white/65">
-          Una reunión de 30 minutos con su sector y datos de muestra. Sin compromiso.
+          Una reunión de 30 minutos con tu sector y datos de muestra. Sin compromiso.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button size="lg" onClick={() => requestDemo('cierre')}>

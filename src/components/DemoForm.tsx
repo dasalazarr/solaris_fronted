@@ -34,17 +34,17 @@ const EMPTY: Omit<Fields, 'perfil' | 'proceso'> = {
 const COPY: Record<Profile, { title: string; sub: string; submit: string }> = {
   cliente: {
     title: 'Solicitar demostración',
-    sub: '30 minutos, su sector, datos de muestra. Le respondemos en un día laborable.',
+    sub: '30 minutos, tu sector, datos de muestra. Te respondemos en un día laborable.',
     submit: 'Solicitar demostración',
   },
   aliado: {
     title: 'Implantar Solaris con Illarium',
-    sub: 'Cuéntenos qué procesos y sectores trabaja. Le respondemos en un día laborable.',
+    sub: 'Cuéntanos qué procesos y sectores trabajas. Te respondemos en un día laborable.',
     submit: 'Enviar',
   },
   inversor: {
     title: 'Hablemos',
-    sub: 'Cuéntenos qué le interesa del proyecto. Le respondemos en un día laborable.',
+    sub: 'Cuéntanos qué te interesa del proyecto. Te respondemos en un día laborable.',
     submit: 'Enviar',
   },
 }
@@ -56,18 +56,18 @@ const FREE_MAIL = /@(gmail|hotmail|outlook|yahoo|icloud|live|proton)\./i
 
 function validate(f: Fields) {
   const e: Partial<Record<keyof Fields, string>> = {}
-  if (!f.perfil) e.perfil = 'Indique si escribe como cliente, aliado o inversor.'
-  if (!f.nombre.trim()) e.nombre = 'Falta su nombre. Escriba cómo quiere que nos dirijamos a usted.'
-  if (!f.empresa.trim()) e.empresa = 'Falta la empresa. Indique el nombre de su organización.'
-  if (!f.correo.trim()) e.correo = 'Falta el correo. Use su correo profesional.'
+  if (!f.perfil) e.perfil = 'Indica si escribes como cliente, aliado o inversor.'
+  if (!f.nombre.trim()) e.nombre = 'Falta tu nombre. Escribe cómo quieres que nos dirijamos a ti.'
+  if (!f.empresa.trim()) e.empresa = 'Falta la empresa. Indica el nombre de tu organización.'
+  if (!f.correo.trim()) e.correo = 'Falta el correo. Usa tu correo profesional.'
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.correo))
-    e.correo = 'El correo no parece válido. Revise que tenga el formato nombre@empresa.com.'
+    e.correo = 'El correo no parece válido. Revisa que tenga el formato nombre@empresa.com.'
   else if (FREE_MAIL.test(f.correo))
     e.correo =
-      'Use un correo de su empresa, no uno personal, para preparar la demostración de su sector.'
+      'Usa un correo de tu empresa, no uno personal, para preparar la demostración de tu sector.'
   if (f.perfil === 'cliente' && !f.proceso)
-    e.proceso = 'Elija el proceso que le interesa; si no está en la lista, elija «Otro».'
-  if (!f.privacidad) e.privacidad = 'Para enviar el formulario, acepte la política de privacidad.'
+    e.proceso = 'Elige el proceso que te interesa; si no está en la lista, elige «Otro».'
+  if (!f.privacidad) e.privacidad = 'Para enviar el formulario, acepta la política de privacidad.'
   return e
 }
 
@@ -265,7 +265,7 @@ export function DemoForm() {
               Recibido, {f.nombre.split(' ')[0]}.
             </h2>
             <p className="mt-4 text-[16px] leading-relaxed text-ink/68">
-              Le escribiremos a <strong className="font-medium text-ink">{f.correo}</strong> en un
+              Te escribiremos a <strong className="font-medium text-ink">{f.correo}</strong> en un
               día laborable con una propuesta de fecha.
               {AGENDA_URL && ' Si lo prefiere, reserve ya la llamada de 30 minutos.'}
             </p>
@@ -388,7 +388,7 @@ export function DemoForm() {
             </Field>
             {(!f.perfil || f.perfil === 'cliente') && (
               <fieldset>
-                <legend className="mb-2 text-[13.5px] font-medium">Proceso que le interesa</legend>
+                <legend className="mb-2 text-[13.5px] font-medium">Proceso que te interesa</legend>
                 <div className="flex flex-wrap gap-2" id="f-proceso" tabIndex={-1}>
                   {PROCESSES.map((p) => (
                     <label
@@ -420,7 +420,7 @@ export function DemoForm() {
             {painOptions.length > 0 && (
               <fieldset>
                 <legend className="mb-2 text-[13.5px] font-medium">
-                  ¿Qué le gustaría resolver primero? <span className="font-normal text-ink/60">Opcional</span>
+                  ¿Qué te gustaría resolver primero? <span className="font-normal text-ink/60">Opcional</span>
                 </legend>
                 <div className="flex flex-col gap-2">
                   {painOptions.map((p) => (
@@ -449,7 +449,7 @@ export function DemoForm() {
                 maxLength={COMMENT_MAX}
                 value={f.comentario}
                 onChange={(e) => set('comentario', e.target.value)}
-                placeholder="Cuéntenos brevemente su caso"
+                placeholder="Cuéntanos brevemente tu caso"
                 className={cx(inputCls(), 'resize-none')}
               />
             </Field>
@@ -498,7 +498,7 @@ export function DemoForm() {
               <div className="rounded-xl bg-paper p-4 text-[13.5px] leading-relaxed ring-1 ring-ink/8">
                 <p className="font-medium">Qué ocurre en los 30 minutos</p>
                 <ul className="mt-1.5 text-ink/70">
-                  <li>10 min · su proceso, sus reglas y sus documentos</li>
+                  <li>10 min · tu proceso, tus reglas y tus documentos</li>
                   <li>15 min · demostración con datos de muestra: citas, huecos y aprobación</li>
                   <li>5 min · siguientes pasos: piloto e instalación local</li>
                 </ul>
@@ -510,14 +510,14 @@ export function DemoForm() {
             </Button>
             {sendError && (
               <p role="alert" className="text-[13.5px] leading-relaxed text-arcilla-ink">
-                No hemos podido enviar su solicitud.{' '}
+                No hemos podido enviar tu solicitud.{' '}
                 {CONTACT_EMAIL ? (
                   <>
-                    Escríbanos a{' '}
+                    Escríbenos a{' '}
                     <a href={mailtoHref(outgoing)} className="underline underline-offset-4">
                       {CONTACT_EMAIL}
                     </a>{' '}
-                    y le responderemos igual.
+                    y te responderemos igual.
                   </>
                 ) : (
                   'Inténtelo de nuevo en unos minutos.'
@@ -525,7 +525,7 @@ export function DemoForm() {
               </p>
             )}
             <p className="text-center font-mono text-[11px] text-ink/60">
-              Sin cookies de seguimiento. Sus datos solo se usan para responderle.
+              Sin cookies de seguimiento. Tus datos solo se usan para responderte.
             </p>
           </form>
         )}

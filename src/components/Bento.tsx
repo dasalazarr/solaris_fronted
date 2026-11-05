@@ -108,7 +108,7 @@ export function Bento() {
           <Cell
             delay={80}
             className="md:col-span-2 xl:col-span-5"
-            title="Usted aprueba"
+            title="Tú apruebas"
             body="Solaris propone; una persona decide. Nada se ejecuta sin aprobación y todo queda registrado."
           >
             <div className="m-3 mb-0 rounded-xl bg-sheet p-5 ring-1 ring-ink/6 md:p-6">
@@ -150,7 +150,7 @@ export function Bento() {
             delay={0}
             className="xl:col-span-3"
             title="Señala lo que falta"
-            body="Cruza sus reglas con cada expediente y marca el hueco antes de que llegue a auditoría."
+            body="Cruza tus reglas con cada expediente y marca el hueco antes de que llegue a auditoría."
           >
             <SmallIcon>
               <ScanSearch className="size-5" strokeWidth={1.5} />
@@ -160,7 +160,7 @@ export function Bento() {
             delay={80}
             className="xl:col-span-3"
             title="El contrato del proceso"
-            body="Sus reglas, escritas una vez y evaluadas siempre, con su fuente al lado."
+            body="Tus reglas, escritas una vez y evaluadas siempre, con su fuente al lado."
           >
             <SmallIcon>
               <FileSignature className="size-5" strokeWidth={1.5} />
@@ -169,8 +169,8 @@ export function Bento() {
           <Cell
             delay={160}
             className="xl:col-span-3"
-            title="Se instala en su equipo"
-            body="Con documentos reales, Solaris trabaja dentro de su organización."
+            title="Se instala en tu equipo"
+            body="Con documentos reales, Solaris trabaja dentro de tu organización."
           >
             <div className="flex items-center gap-3 px-6 pt-6 md:px-7 md:pt-7">
               <span className="relative grid h-11 w-[132px] overflow-hidden rounded-xl bg-paper font-mono text-[12px] ring-1 ring-ink/6">
@@ -178,7 +178,7 @@ export function Bento() {
                   <Cloud className="size-4" strokeWidth={1.5} /> nube
                 </span>
                 <span className="absolute inset-0 flex translate-y-full items-center justify-center gap-2 bg-salvia text-salvia-ink transition-transform duration-180 group-hover:translate-y-0 group-focus-visible:translate-y-0">
-                  <HardDrive className="size-4" strokeWidth={1.5} /> su equipo
+                  <HardDrive className="size-4" strokeWidth={1.5} /> tu equipo
                 </span>
               </span>
             </div>

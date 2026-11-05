@@ -26,7 +26,7 @@ export function Hero() {
       <Container className="relative text-center">
         <Eyebrow tone="light">IA privada para procesos</Eyebrow>
         <h1 className="headline mx-auto mt-6 max-w-[980px] text-[44px] text-white sm:text-[64px] lg:text-[88px]">
-          <Words text="Sus procesos," />
+          <Words text="Tus procesos," />
           <span className="word" style={{ animationDelay: '80ms' }}>
             <Evidence italic onDark>
               con contrato
@@ -35,7 +35,7 @@ export function Hero() {
           </span>
         </h1>
         <p className="mx-auto mt-7 max-w-[640px] text-[17px] leading-relaxed text-white/68 md:text-[19px]">
-          Solaris cruza sus documentos con sus reglas: responde con la cita exacta, señala lo que
+          Solaris cruza tus documentos con tus reglas: responde con la cita exacta, señala lo que
           incumple o falta y prepara la acción, que no se ejecuta sin la aprobación del responsable.
         </p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">

@@ -29,7 +29,7 @@ export function Faq() {
             Lo que suelen <Evidence italic>preguntarnos</Evidence>.
           </h2>
           <p className="mt-5 max-w-[400px] text-[17px] leading-relaxed text-ink/65">
-            Si su duda no está aquí, la resolvemos en la demostración.
+            Si tu duda no está aquí, la resolvemos en la demostración.
           </p>
           <button
             type="button"

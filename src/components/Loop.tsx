@@ -89,7 +89,7 @@ export function Loop() {
         <SectionTitle
           eyebrow="La ontología de procesos"
           tone="light"
-          sub="Siete piezas conectadas: Proceso, Objeto, Relación, Evidencia, Regla, Acción y Revisión. La IA redacta y explica, el código evalúa las reglas y las personas deciden. El motor es el mismo en cada sector; cada pack define sus tipos."
+          sub="Siete piezas conectadas: Proceso, Objeto, Relación, Evidencia, Regla, Acción y Revisión. La IA redacta y explica, el código evalúa las reglas y las personas deciden. El motor es el mismo en cada sector; cada proceso define sus tipos."
         >
           Cómo{' '}
           <Evidence italic onDark>
@@ -100,7 +100,7 @@ export function Loop() {
 
         <div
           role="tablist"
-          aria-label="Pack de ejemplo"
+          aria-label="Proceso de ejemplo"
           className="mt-10 inline-flex rounded-full bg-ink-2 p-1 ring-1 ring-white/10"
         >
           {ONTOLOGY_PACKS.map((x, i) => {
@@ -130,7 +130,7 @@ export function Loop() {
           })}
         </div>
         <p className="sr-only" aria-live="polite">
-          Ejemplo del pack {pack.label}
+          Ejemplo: {pack.label}
         </p>
 
         <div
