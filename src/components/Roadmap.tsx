@@ -13,7 +13,7 @@ export function Roadmap() {
     <section id="vision" className="scroll-mt-10 border-t border-ink/6 bg-sheet py-24 md:py-32">
       <Container>
         <SectionTitle
-          eyebrow="Hoy · Siguiente · Visión"
+          eyebrow="Hoy · En tu piloto · Visión"
           sub="Separamos lo que ya funciona de lo que viene y de lo que todavía es una hipótesis."
         >
           Lo que hay, lo que viene y lo que <Evidence italic>imaginamos</Evidence>.

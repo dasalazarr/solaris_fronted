@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, Cloud, HardDrive } from 'lucide-react'
+import { Building2, Check, Cloud } from 'lucide-react'
 import { useDemoRequest } from '../lib/demoRequest'
 import { Button, Container, Evidence, Reveal, SectionTitle } from './ui'
 
@@ -20,9 +20,9 @@ const WAYS = [
     variant: 'solar' as const,
   },
   {
-    icon: HardDrive,
+    icon: Building2,
     tag: 'Tus documentos',
-    title: 'Instalación en tu equipo',
+    title: 'Instalación en tu organización',
     body: 'Tus documentos reales, sin salir de tu organización.',
     items: [
       'Diagnóstico de un proceso y sus reglas',

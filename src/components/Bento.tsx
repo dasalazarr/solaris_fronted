@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Check, Cloud, FileSignature, HardDrive, Layers, ScanSearch } from 'lucide-react'
+import { Building2, Check, FileSignature, Layers, ScanSearch } from 'lucide-react'
 import { DEMO_QA } from '../data/content'
 import { EvidenceQuote } from './ProductWindow'
 import { Container, Evidence, Reveal, SectionTitle, cx } from './ui'
@@ -169,17 +169,12 @@ export function Bento() {
           <Cell
             delay={160}
             className="xl:col-span-3"
-            title="Se instala en tu equipo"
-            body="Con documentos reales, Solaris trabaja dentro de tu organización."
+            title="En tu organización"
+            body="Con tus documentos reales, Solaris se instala dentro y sin salida a internet."
           >
             <div className="flex items-center gap-3 px-6 pt-6 md:px-7 md:pt-7">
-              <span className="relative grid h-11 w-[132px] overflow-hidden rounded-xl bg-paper font-mono text-[12px] ring-1 ring-ink/6">
-                <span className="flex items-center justify-center gap-2 text-ink/60 transition-transform duration-180 group-hover:-translate-y-full group-focus-visible:-translate-y-full">
-                  <Cloud className="size-4" strokeWidth={1.5} /> nube
-                </span>
-                <span className="absolute inset-0 flex translate-y-full items-center justify-center gap-2 bg-salvia text-salvia-ink transition-transform duration-180 group-hover:translate-y-0 group-focus-visible:translate-y-0">
-                  <HardDrive className="size-4" strokeWidth={1.5} /> tu equipo
-                </span>
+              <span className="inline-flex h-11 items-center gap-2 rounded-xl bg-salvia px-4 font-mono text-[12px] text-salvia-ink">
+                <Building2 className="size-4" strokeWidth={1.5} aria-hidden="true" /> tu organización
               </span>
             </div>
           </Cell>
