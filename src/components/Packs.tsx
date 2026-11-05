@@ -2,6 +2,7 @@
 
 import { MapPinned, Scale, ShieldCheck, ShoppingCart } from 'lucide-react'
 import { PACKS } from '../data/content'
+import { track } from '../lib/analytics'
 import { useDemoRequest } from '../lib/demoRequest'
 import { Container, Evidence, Reveal, SectionTitle, cx } from './ui'
 
@@ -46,13 +47,24 @@ export function Packs() {
                 <div className="mt-auto pr-24">
                   <h3 className="headline text-[32px] md:text-[40px]">{p.name}</h3>
                   <p className="mt-2 text-[16px] opacity-80">{p.line}</p>
-                  <button
-                    type="button"
-                    onClick={() => requestDemo(`pack-${p.process}`, 'cliente', p.process)}
-                    className="mt-4 text-[14.5px] font-medium underline underline-offset-4"
-                  >
-                    Solicitar demostración de este proceso
-                  </button>
+                  {p.demoHere ? (
+                    <a
+                      href="#demo"
+                      onClick={() => track('ver_como_funciona', { section: 'procesos' })}
+                      className="mt-4 inline-block text-[14.5px] font-medium underline underline-offset-4"
+                    >
+                      Probar la demo
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      aria-label={`Solicitar demostración de ${p.name}`}
+                      onClick={() => requestDemo(`pack-${p.process}`, 'cliente', p.process)}
+                      className="mt-4 text-[14.5px] font-medium underline underline-offset-4"
+                    >
+                      Solicitar demostración
+                    </button>
+                  )}
                 </div>
                 <Icon
                   aria-hidden="true"

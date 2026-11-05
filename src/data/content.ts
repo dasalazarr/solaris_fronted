@@ -19,35 +19,36 @@ export const PROFILES = [
 ] as const
 export type Profile = (typeof PROFILES)[number]['id']
 
-// «Hoy · Siguiente · Visión» (ADR-0009). Fuente: docs/fundacional.md §6 (raíz).
-// Hoy = existe en el producto; Siguiente = solo lo comprometido para el piloto, sin
+// «Hoy · En tu piloto · Visión» (ADR-0009, ADR-0013). Fuente: docs/fundacional.md §6 (raíz).
+// Hoy = existe en el producto; En tu piloto = solo lo comprometido para el piloto, sin
 // fechas; Visión = hipótesis de la Visión v2 del PRD, siempre rotuladas.
 export const ROADMAP_UPDATED = 'noviembre 2026'
 export const ROADMAP = [
   {
     id: 'hoy',
     label: 'Hoy',
-    note: 'En la demostración, con datos de muestra',
+    note: 'Pruébalo en la demostración, con datos de muestra',
     items: [
-      'Cada respuesta cita documento, página y fragmento literal; la cita que no está en tus documentos se descarta.',
-      'Las reglas las evalúa un motor con tests: el mismo expediente da el mismo resultado.',
-      'Huecos: lo que incumple o falta, y el dato que no tiene evidencia.',
-      'Ninguna acción sin una persona: borrador, rol que aprueba y registro exportable.',
+      'Citas con documento, página y fragmento literal.',
+      'Reglas que evalúa el código, siempre igual.',
+      'Huecos: lo que incumple, lo que falta y el dato sin evidencia.',
+      'Aprobación por el rol que exige la regla, con registro exportable.',
     ],
   },
   {
     id: 'siguiente',
-    label: 'Siguiente',
-    note: 'Comprometido para el primer piloto',
+    label: 'En tu piloto',
+    note: 'Lo preparamos contigo para el primer piloto',
     items: [
-      'Instalación en tu equipo, sin salida a internet, con tus documentos reales.',
-      'Registro de aprobaciones que se conserva entre sesiones.',
+      'Instalación en tu organización, sin salida a internet, con tus documentos reales.',
+      'El contrato del proceso, adaptado a tus normas.',
+      'Registro permanente de aprobaciones.',
     ],
   },
   {
     id: 'vision',
     label: 'Visión',
-    note: 'Hipótesis por validar; no forman parte de la oferta',
+    note: 'Por validar; no forman parte de la oferta',
     items: [
       'Modelos por proceso: cada proceso usa el modelo que mejor rinde con sus documentos.',
       'Federación entre procesos: Compras consulta a Calidad por el certificado de un proveedor sin mezclar sus contratos.',
@@ -59,17 +60,17 @@ export const THESIS_CARDS = [
   {
     icon: 'eyeOff',
     title: 'IA usada a escondidas',
-    body: 'Documentos confidenciales en servicios que nadie controla.',
+    body: 'Contratos y pedidos subidos a herramientas públicas, sin control de la empresa.',
   },
   {
     icon: 'help',
-    title: 'Respuestas sin fuente',
-    body: 'Respuestas que nadie puede comprobar.',
+    title: 'Respuestas a ciegas',
+    body: 'Textos convincentes, sin enlace al documento ni a la página.',
   },
   {
     icon: 'files',
-    title: 'Reglas en PDFs',
-    body: 'Reglas en PDFs que nadie cruza con el día a día.',
+    title: 'Normas muertas en PDFs',
+    body: 'Políticas escritas que nadie alcanza a cruzar a mano con cada expediente.',
   },
 ] as const
 
@@ -171,7 +172,8 @@ export const ONTOLOGY_PACKS = [
       {
         step: 'Hueco',
         code: 'AV-9041',
-        example: 'Vence el 15/11/2026: quedan menos de 30 días y no consta la renovación.',
+        // Fecha fija: la landing es estática y no puede depender de cuándo se lea.
+        example: 'A fecha de la muestra (03/11/2026) quedan 12 días y no consta la renovación.',
         primitives: [{ name: 'Regla', value: 'R-JUR-03 · requiere aprobación' }],
       },
       {
@@ -198,32 +200,36 @@ export type OntologyPackId = (typeof ONTOLOGY_PACKS)[number]['id']
 export const PACKS = [
   {
     name: 'Compras',
-    line: 'Umbrales, homologación, facturas sin pedido.',
-    status: 'Demo disponible',
+    line: 'Cruza ofertas, certificados de proveedor y umbrales de firma antes de emitir el pedido.',
+    status: 'Demo en esta página',
+    demoHere: true,
     process: 'Compras',
     tone: 'solar',
     icon: 'cart',
   },
   {
     name: 'Jurídico y mercantil',
-    line: 'Vencimientos, cláusulas, anexos sin firmar.',
-    status: 'Disponible bajo petición',
+    line: 'Detecta vencimientos, anexos sin firmar y cláusulas de cambio de control en cada expediente.',
+    status: 'Bajo petición · datos de muestra',
+    demoHere: false,
     process: 'Jurídico',
     tone: 'lavanda',
     icon: 'scale',
   },
   {
     name: 'Calidad IFS Food',
-    line: 'Alérgenos, registros, auditorías.',
-    status: 'Demo disponible bajo petición',
+    line: 'Cruza registros de proceso y certificados de envase de cada lote antes de liberarlo.',
+    status: 'Bajo petición · datos de muestra',
+    demoHere: false,
     process: 'Calidad',
     tone: 'salvia',
     icon: 'shield',
   },
   {
     name: 'Diligencia EUDR',
-    line: 'Geolocalización de parcelas, lotes, proveedores.',
-    status: 'Disponible bajo petición',
+    line: 'Comprueba la geolocalización de cada parcela antes de emitir la declaración de diligencia.',
+    status: 'Bajo petición · datos de muestra',
+    demoHere: false,
     process: 'EUDR',
     tone: 'niebla',
     icon: 'map',
@@ -241,7 +247,7 @@ export const STEPS = [
   },
   {
     title: 'Instalación',
-    body: 'En tu equipo, sin que los documentos salgan de él.',
+    body: 'En tu organización, sin que los documentos salgan de ella.',
   },
   {
     title: 'Acompañamiento',
@@ -254,11 +260,11 @@ type FaqItem = { q: string; a: string; pendienteRevision?: boolean }
 const FAQ_ALL: FaqItem[] = [
   {
     q: '¿Dónde están mis datos?',
-    a: 'En la instalación local, que preparamos contigo durante el piloto, los documentos se quedan en tu propio equipo y no salen de tu organización. La demostración usa datos de muestra en la nube, nunca documentos tuyos.',
+    a: 'En la instalación local, que preparamos contigo durante el piloto, los documentos se quedan en tu organización y no salen de ella. La demostración usa datos de muestra en la nube, nunca documentos tuyos.',
   },
   {
     q: '¿Qué modelo usa?',
-    a: 'En la instalación local, un modelo de pesos abiertos que se ejecuta en tu equipo. Te indicamos cuál y por qué durante el diagnóstico, según tu volumen de documentos.',
+    a: 'En la instalación local, un modelo de pesos abiertos que se ejecuta en un equipo de tu organización. Te indicamos cuál y por qué durante el diagnóstico, según tu volumen de documentos.',
   },
   {
     q: '¿Qué pasa si se equivoca?',
@@ -278,7 +284,7 @@ const FAQ_ALL: FaqItem[] = [
   },
   {
     q: '¿Cómo encaja con el RGPD y el secreto profesional?',
-    a: 'Con la instalación local, los datos no se ceden a terceros ni salen de tu equipo. [Respuesta pendiente de revisión jurídica.]',
+    a: 'Con la instalación local, los datos no se ceden a terceros ni salen de tu organización. [Respuesta pendiente de revisión jurídica.]',
     pendienteRevision: true,
   },
 ]
