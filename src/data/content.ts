@@ -4,7 +4,7 @@
 export const NAV_LINKS = [
   { label: 'Cómo funciona', href: '#producto' },
   { label: 'Demo', href: '#demo' },
-  { label: 'Packs', href: '#packs' },
+  { label: 'Procesos', href: '#procesos' },
   { label: 'Visión', href: '#vision' },
   { label: 'Preguntas', href: '#preguntas' },
 ]
@@ -29,7 +29,7 @@ export const ROADMAP = [
     label: 'Hoy',
     note: 'En la demostración, con datos de muestra',
     items: [
-      'Cada respuesta cita documento, página y fragmento literal; la cita que no está en sus documentos se descarta.',
+      'Cada respuesta cita documento, página y fragmento literal; la cita que no está en tus documentos se descarta.',
       'Las reglas las evalúa un motor con tests: el mismo expediente da el mismo resultado.',
       'Huecos: lo que incumple o falta, y el dato que no tiene evidencia.',
       'Ninguna acción sin una persona: borrador, rol que aprueba y registro exportable.',
@@ -40,7 +40,7 @@ export const ROADMAP = [
     label: 'Siguiente',
     note: 'Comprometido para el primer piloto',
     items: [
-      'Instalación en su equipo, sin salida a internet, con sus documentos reales.',
+      'Instalación en tu equipo, sin salida a internet, con tus documentos reales.',
       'Registro de aprobaciones que se conserva entre sesiones.',
     ],
   },
@@ -236,12 +236,12 @@ export const STEPS = [
     body: 'Revisamos un proceso, sus documentos y sus reglas.',
   },
   {
-    title: 'Piloto con sus documentos',
-    body: 'Solaris trabaja con su caso real durante unas semanas.',
+    title: 'Piloto con tus documentos',
+    body: 'Solaris trabaja con tu caso real durante unas semanas.',
   },
   {
     title: 'Instalación',
-    body: 'En su equipo, sin que los documentos salgan de él.',
+    body: 'En tu equipo, sin que los documentos salgan de él.',
   },
   {
     title: 'Acompañamiento',
@@ -254,31 +254,31 @@ type FaqItem = { q: string; a: string; pendienteRevision?: boolean }
 const FAQ_ALL: FaqItem[] = [
   {
     q: '¿Dónde están mis datos?',
-    a: 'En la instalación local, que preparamos con usted durante el piloto, los documentos se quedan en su propio equipo y no salen de su organización. La demostración usa datos de muestra en la nube, nunca documentos suyos.',
+    a: 'En la instalación local, que preparamos contigo durante el piloto, los documentos se quedan en tu propio equipo y no salen de tu organización. La demostración usa datos de muestra en la nube, nunca documentos tuyos.',
   },
   {
     q: '¿Qué modelo usa?',
-    a: 'En la instalación local, un modelo de pesos abiertos que se ejecuta en su equipo. Le indicamos cuál y por qué durante el diagnóstico, según su volumen de documentos.',
+    a: 'En la instalación local, un modelo de pesos abiertos que se ejecuta en tu equipo. Te indicamos cuál y por qué durante el diagnóstico, según tu volumen de documentos.',
   },
   {
     q: '¿Qué pasa si se equivoca?',
-    a: 'Cada respuesta cita documento, página y párrafo, así que puede comprobarla en un clic. Y Solaris no ejecuta nada por su cuenta: toda acción requiere la aprobación de una persona y queda registrada.',
+    a: 'Cada respuesta cita documento, página y párrafo, así que puedes comprobarla en un clic. Y Solaris no ejecuta nada por su cuenta: toda acción requiere la aprobación de una persona y queda registrada.',
   },
   {
     q: '¿Necesito comprar hardware?',
-    a: 'Depende del volumen. Muchas organizaciones pueden usar un equipo que ya tienen; si no es así, se lo indicamos en el diagnóstico antes de cualquier compromiso.',
+    a: 'Depende del volumen. Muchas organizaciones pueden usar un equipo que ya tienen; si no es así, te lo indicamos en el diagnóstico antes de cualquier compromiso.',
   },
   {
     q: '¿Cuánto cuesta?',
-    a: 'Depende del pack y del alcance. El diagnóstico termina con una propuesta de precio cerrado para el piloto y la instalación.',
+    a: 'Depende del proceso y del alcance. El diagnóstico termina con una propuesta de precio cerrado para el piloto y la instalación.',
   },
   {
     q: '¿Sustituye a mi ERP?',
-    a: 'No. Solaris lee los documentos y las reglas que rodean a su ERP y señala lo que no cuadra. Su ERP sigue siendo el sistema de registro.',
+    a: 'No. Solaris lee los documentos y las reglas que rodean a tu ERP y señala lo que no cuadra. Tu ERP sigue siendo el sistema de registro.',
   },
   {
     q: '¿Cómo encaja con el RGPD y el secreto profesional?',
-    a: 'Con la instalación local, los datos no se ceden a terceros ni salen de su equipo. [Respuesta pendiente de revisión jurídica.]',
+    a: 'Con la instalación local, los datos no se ceden a terceros ni salen de tu equipo. [Respuesta pendiente de revisión jurídica.]',
     pendienteRevision: true,
   },
 ]

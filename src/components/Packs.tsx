@@ -22,10 +22,10 @@ const TONES = {
 export function Packs() {
   const { requestDemo } = useDemoRequest()
   return (
-    <section id="packs" className="scroll-mt-10 bg-paper pb-24 md:pb-32">
+    <section id="procesos" className="scroll-mt-10 bg-paper pb-24 md:pb-32">
       <Container>
-        <SectionTitle eyebrow="Packs por proceso">
-          Un motor. Un pack por <Evidence italic>proceso</Evidence>.
+        <SectionTitle eyebrow="Por proceso">
+          Un motor. Un contrato por <Evidence italic>proceso</Evidence>.
         </SectionTitle>
         <div className="mt-14 grid gap-4 md:grid-cols-2">
           {PACKS.map((p, i) => {
@@ -51,7 +51,7 @@ export function Packs() {
                     onClick={() => requestDemo(`pack-${p.process}`, 'cliente', p.process)}
                     className="mt-4 text-[14.5px] font-medium underline underline-offset-4"
                   >
-                    Solicitar demostración de este pack
+                    Solicitar demostración de este proceso
                   </button>
                 </div>
                 <Icon

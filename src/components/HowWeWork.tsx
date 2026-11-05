@@ -13,11 +13,11 @@ export function HowWeWork() {
           <SectionTitle
             eyebrow="Cómo trabajamos · Illarium"
             tone="light"
-            sub="Illarium implanta Solaris con usted o con su consultora. Cada pack se adapta a sus documentos y a sus reglas."
+            sub="Illarium implanta Solaris contigo o con tu consultora. Cada proceso se adapta a tus documentos y a tus reglas."
           >
             Cuatro pasos, con{' '}
             <Evidence italic onDark>
-              sus
+              tus
             </Evidence>{' '}
             documentos.
           </SectionTitle>

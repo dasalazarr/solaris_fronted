@@ -28,7 +28,7 @@ export function Figure() {
           >
             0
           </p>
-          <p className="headline mt-4 text-[32px] md:text-[48px]">documentos salen de su organización</p>
+          <p className="headline mt-4 text-[32px] md:text-[48px]">documentos salen de tu organización</p>
           <p className="mx-auto mt-6 max-w-[460px] font-mono text-[12.5px] leading-relaxed text-white/55">
             En la instalación local. La demostración usa datos de muestra en la nube.
           </p>

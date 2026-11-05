@@ -23,7 +23,7 @@ function useScrollDepth() {
   }, [])
 }
 
-/** Deep links: /#packs or /?seccion=packs scroll to that section once rendered. */
+/** Deep links: /#procesos or /?seccion=procesos scroll to that section once rendered. */
 function useInitialSection() {
   useEffect(() => {
     const id =

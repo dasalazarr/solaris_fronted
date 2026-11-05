@@ -23,4 +23,4 @@ export const UMAMI_SRC = process.env.NEXT_PUBLIC_UMAMI_SRC || 'https://cloud.uma
 
 export const SITE_TITLE = 'Solaris · IA privada para procesos con contrato'
 export const SITE_DESCRIPTION =
-  'Solaris responde con la cita exacta de sus documentos, detecta lo que incumple sus reglas y no ejecuta nada sin la aprobación de una persona.'
+  'Solaris responde con la cita exacta de tus documentos, detecta lo que incumple tus reglas y no ejecuta nada sin la aprobación de una persona.'

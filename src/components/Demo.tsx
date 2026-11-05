@@ -145,7 +145,7 @@ function AskTab({ onReview }: { onReview: () => void }) {
           </>
         ) : (
           <p className="text-[13.5px] text-ink/60">
-            Pulse una cita para ver el párrafo exacto del documento.
+            Pulsa una cita para ver el párrafo exacto del documento.
           </p>
         )}
       </aside>
@@ -427,7 +427,7 @@ function DemoCta() {
   const { requestDemo } = useDemoRequest()
   return (
     <div className="mt-8 flex flex-wrap items-center gap-4">
-      <p className="text-[16px] text-ink/75">¿Lo vemos con un proceso como el suyo?</p>
+      <p className="text-[16px] text-ink/75">¿Lo vemos con un proceso como el tuyo?</p>
       <Button size="lg" onClick={() => requestDemo('demo', 'cliente', 'Compras')}>
         Solicitar demostración
       </Button>
@@ -499,9 +499,9 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
       <Container>
         <SectionTitle
           eyebrow="Demostración interactiva"
-          sub="Empresa ficticia, datos de muestra. Pruebe a preguntar, explorar el pedido, revisar los huecos y aprobarlo con el rol que exige el contrato."
+          sub="Empresa ficticia, datos de muestra. Prueba a preguntar, explorar el pedido, revisar los huecos y aprobarlo con el rol que exige el contrato."
         >
-          Véalo en un proceso que <Evidence italic>todos</Evidence> tienen.
+          Míralo en un proceso que <Evidence italic>todos</Evidence> tienen.
         </SectionTitle>
 
         <div className="mt-12">

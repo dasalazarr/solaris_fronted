@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     locale: 'es_ES',
     siteName: 'Solaris',
     title: SITE_TITLE,
-    description: 'Sus procesos, con contrato.',
+    description: 'Tus procesos, con contrato.',
     // Imagen Open Graph 1200×630 pendiente de contenido (PRD landing §10).
   },
 }

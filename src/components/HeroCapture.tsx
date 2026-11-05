@@ -126,7 +126,7 @@ export function HeroCapture() {
               </div>
 
               <div className="mt-3 hidden items-center gap-2 rounded-xl border border-ink/10 bg-white px-4 py-3 text-[13px] text-ink/60 sm:flex">
-                Pregunte sobre sus documentos…
+                Pregunta sobre tus documentos…
                 <span className="ml-auto rounded-md bg-ink/5 px-2 py-0.5 font-mono text-[10.5px]">
                   ⏎
                 </span>
