@@ -100,7 +100,7 @@ export const ONTOLOGY_PACKS = [
         primitives: [
           { name: 'Proceso', value: 'Compras · responsable: Dirección financiera' },
           { name: 'Objeto', value: 'Pedido PC-0412 · 18.450,00 €' },
-          { name: 'Relación', value: 'Emitido a Suministros Industriales del Norte S.L.' },
+          { name: 'Relación', value: 'Emitido a Proveedor Ficticio Norte' },
         ],
       },
       {
@@ -127,7 +127,7 @@ export const ONTOLOGY_PACKS = [
         step: 'Aprobación',
         code: 'Dirección financiera',
         example:
-          'Borrador: emitir la orden de compra PC-0412 a Suministros Industriales del Norte S.L.',
+          'Borrador: emitir la orden de compra PC-0412 a Proveedor Ficticio Norte',
         primitives: [
           { name: 'Acción', value: 'Borrador editable; no se envía solo' },
           { name: 'Revisión', value: 'Aprueba o rechaza el rol que exige R-03' },
@@ -349,7 +349,7 @@ export const DEMO_QA: DemoAnswer[] = [
     },
   },
   {
-    question: '¿Puedo emitir un pedido a Logística y Embalajes Delta?',
+    question: '¿Puedo emitir un pedido a Proveedor Ficticio Delta?',
     answer:
       'Todavía no. Su certificado de obligaciones tributarias (AEAT) caducó el 12/10/2026 [1]. La regla R-01 retiene el pedido PC-0419 hasta que el proveedor aporte la renovación.',
     citations: [
@@ -440,7 +440,7 @@ export const DEMO_PENDING_DATA =
 export const DEMO_REQUIRED_ROLE = 'Dirección financiera'
 export const DEMO_ROLES = [DEMO_REQUIRED_ROLE, 'Solicitante (sin permiso de firma)'] as const
 export const DEMO_DRAFT =
-  'AUTORIZACIÓN DE EMISIÓN — Pedido PC-0412\nDestinatario: Suministros Industriales del Norte S.L. (PROV-018)\nImporte neto autorizado: 18.450,00 € (12 uds. válvula neumática DN80 INOX 316L)\nFundamento: Verificadas 3 ofertas comparativas conforme a § 2.1 (R-02) y autorizada excepción de umbral superior a 15.000,00 € (R-03) por Dirección Financiera.'
+  'AUTORIZACIÓN DE EMISIÓN — Pedido PC-0412\nDestinatario: Proveedor Ficticio Norte (PROV-018)\nImporte neto autorizado: 18.450,00 € (12 uds. válvula neumática DN80 INOX 316L)\nFundamento: Verificadas 3 ofertas comparativas conforme a § 2.1 (R-02) y autorizada excepción de umbral superior a 15.000,00 € (R-03) por Dirección Financiera.'
 
 // Explorar: el objeto PC-0412 y su cruce, tal como da el motor del producto
 // (product/tests/gaps.test.ts). R-01 no se evalúa sobre PC-0412: el motor mínimo no sigue relaciones.
@@ -448,7 +448,7 @@ export const DEMO_OBJECT = {
   id: 'PC-0412',
   type: 'Pedido',
   title: 'Válvulas DN80 INOX',
-  relation: 'Emitido a Suministros Industriales del Norte S.L. (PROV-018)',
+  relation: 'Emitido a Proveedor Ficticio Norte (PROV-018)',
   attributes: [
     { label: 'Importe neto', value: '18.450,00 €', source: 'Solicitud de pedido PC-0412 · pág. 1', rule: 'Lo usa el motor' },
     { label: 'Ofertas comparativas', value: '3 presupuestos verificados', source: 'Solicitud de pedido PC-0412 · pág. 1', rule: 'Lo usa el motor' },

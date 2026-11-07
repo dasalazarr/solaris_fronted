@@ -75,7 +75,9 @@ export function PrivacidadPage() {
                 <strong className="font-medium text-ink">
                   no introduzca datos personales ni documentos reales de su organización
                 </strong>
-                .
+                . Si escribe una pregunta libre, su texto se envía a Google junto con los documentos
+                de muestra para redactar la respuesta. No lo guardamos ni lo anotamos en nuestros
+                registros.
               </p>
               <p>
                 Todos los datos los facilita usted directamente o se generan al usar la web. No los
@@ -135,6 +137,10 @@ export function PrivacidadPage() {
                 <li>
                   <strong className="font-medium text-ink">Google (Gmail)</strong>: buzón donde se
                   guardan el aviso de su solicitud y nuestra respuesta.
+                </li>
+                <li>
+                  <strong className="font-medium text-ink">Google (API de Gemini)</strong>: redacta
+                  la respuesta a las preguntas libres de la demo. Recibe el texto de la pregunta.
                 </li>
               </ul>
               <p>
