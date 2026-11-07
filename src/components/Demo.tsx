@@ -334,7 +334,7 @@ function ReviewTab({
             <span className="font-mono text-[11px] text-ink/60">PC-0412</span>
           </div>
           <p className="mt-4 text-[16px] font-medium">
-            Válvulas DN80 INOX · Suministros Industriales del Norte
+            Válvulas DN80 INOX · Proveedor Ficticio Norte
           </p>
           <p className="mt-1 text-[26px] font-semibold tracking-[-0.02em]">18.450,00 €</p>
           <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-[13px]">

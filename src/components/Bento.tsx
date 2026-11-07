@@ -119,7 +119,7 @@ export function Bento() {
                 <span className="font-mono text-[11px] text-ink/60">PC-0412</span>
               </div>
               <p className="mt-4 text-[15px] font-medium">
-                Válvulas DN80 INOX · Suministros Industriales del Norte
+                Válvulas DN80 INOX · Proveedor Ficticio Norte
               </p>
               <p className="mt-1 text-[22px] font-semibold tracking-[-0.02em]">18.450,00 €</p>
               <ul className="mt-3 space-y-1.5 text-[13px] text-ink/65">
@@ -170,7 +170,7 @@ export function Bento() {
             delay={160}
             className="xl:col-span-3"
             title="En tu organización"
-            body="Con tus documentos reales, Solaris se instala dentro y sin salida a internet."
+            body="Con tus documentos reales, el plan es instalar Solaris dentro y sin salida a internet."
           >
             <div className="flex items-center gap-3 px-6 pt-6 md:px-7 md:pt-7">
               <span className="inline-flex h-11 items-center gap-2 rounded-xl bg-salvia px-4 font-mono text-[12px] text-salvia-ink">

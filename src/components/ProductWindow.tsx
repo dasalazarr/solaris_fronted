@@ -1,5 +1,13 @@
 import type { ReactNode } from 'react'
-import { Database, MessageSquareText, ListChecks, ShieldCheck, Lock } from 'lucide-react'
+import {
+  AlertTriangle,
+  BookOpenCheck,
+  CheckSquare,
+  Database,
+  FileClock,
+  Lock,
+  MessageSquareText,
+} from 'lucide-react'
 import { cx } from './ui'
 
 /** Window chrome around Solaris product surfaces (hero capture, demo, bento crops). */
@@ -17,11 +25,16 @@ export function ProductWindow({
   /** Menú lateral decorativo. Se oculta donde ya hay pestañas de verdad. */
   sidebar?: boolean
 }) {
+  // El mismo menú que product/components/workspace/Shell.tsx.
   const nav = [
     { label: 'Preguntar', icon: MessageSquareText },
     { label: 'Explorar', icon: Database },
-    { label: 'Huecos', icon: ListChecks },
-    { label: 'Revisar', icon: ShieldCheck },
+    { label: 'Huecos', icon: AlertTriangle },
+    { label: 'Revisar', icon: CheckSquare },
+  ]
+  const navSecundario = [
+    { label: 'Contrato', icon: BookOpenCheck },
+    { label: 'Registro', icon: FileClock },
   ]
   return (
     <div
@@ -39,7 +52,7 @@ export function ProductWindow({
         </div>
         <div className="mx-auto flex min-w-0 items-center gap-1.5 truncate rounded-md bg-white/70 px-3 py-1 whitespace-nowrap font-mono text-[11px] text-ink/60">
           <Lock className="size-3" aria-hidden="true" />
-          solaris · caso de muestra · Compras
+          solaris · caso de muestra · Proceso de compra
         </div>
         <span className="hidden font-mono text-[10.5px] text-ink/60 sm:block">{env}</span>
       </div>
@@ -64,8 +77,18 @@ export function ProductWindow({
               {label}
             </div>
           ))}
+          <div className="my-2 border-t border-ink/8" />
+          {navSecundario.map(({ label, icon: Icon }) => (
+            <div
+              key={label}
+              className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[12.5px] text-ink/60"
+            >
+              <Icon className="size-3.5" aria-hidden="true" />
+              {label}
+            </div>
+          ))}
           <div className="mt-auto rounded-md bg-salvia px-2 py-1.5 font-mono text-[10.5px] text-salvia-ink">
-            Compras · 5 docs
+            Proceso de compra · 5 docs
           </div>
         </aside>
         )}
