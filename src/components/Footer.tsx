@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL } from '../lib/site'
+import { BASE_PATH, CONTACT_EMAIL } from '../lib/site'
 import { Container, Logo } from './ui'
 
 const COLUMNS = [
@@ -13,16 +13,16 @@ const COLUMNS = [
   {
     title: 'Empresa',
     links: [
-      { label: 'Illarium', href: '/aviso-legal' },
+      { label: 'Illarium', href: `${BASE_PATH}/aviso-legal` },
       { label: 'Contacto', href: `mailto:${CONTACT_EMAIL}` },
     ],
   },
   {
     title: 'Legal',
     links: [
-      { label: 'Aviso legal', href: '/aviso-legal' },
-      { label: 'Privacidad', href: '/privacidad' },
-      { label: 'Cookies', href: '/cookies' },
+      { label: 'Aviso legal', href: `${BASE_PATH}/aviso-legal` },
+      { label: 'Privacidad', href: `${BASE_PATH}/privacidad` },
+      { label: 'Cookies', href: `${BASE_PATH}/cookies` },
     ],
   },
 ]

@@ -35,7 +35,7 @@ export function LegalShell({ draft, children }: { draft: boolean; children: Reac
       </a>
       <header className="bg-ink py-5">
         <Container>
-          <a href="/" aria-label="Solaris, volver al inicio" className="inline-block">
+          <a href="/solaris" aria-label="Solaris, volver al inicio" className="inline-block">
             <Logo tone="light" withBy />
           </a>
         </Container>

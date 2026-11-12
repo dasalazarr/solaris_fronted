@@ -479,7 +479,7 @@ export function DemoForm() {
                 <span>
                   He leído y acepto la{' '}
                   <a
-                    href="/privacidad"
+                    href="/solaris/privacidad"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-solar-ink underline underline-offset-2"
