@@ -90,7 +90,7 @@ export function CookiesPage() {
       <Section id="mas" title="5. Más información">
         <p>
           El tratamiento de sus datos personales se explica en la{' '}
-          <a href="/privacidad" className="text-solar-ink underline underline-offset-4">
+          <a href="/solaris/privacidad" className="text-solar-ink underline underline-offset-4">
             política de privacidad
           </a>
           . Para cualquier duda, escríbanos

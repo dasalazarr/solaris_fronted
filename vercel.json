@@ -1,0 +1,18 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "solaris.dasalazarr.com" }],
+      "destination": "https://illarium.com/solaris",
+      "permanent": true
+    },
+    {
+      "source": "/:path+",
+      "has": [{ "type": "host", "value": "solaris.dasalazarr.com" }],
+      "destination": "https://illarium.com/solaris/:path+",
+      "permanent": true
+    },
+    { "source": "/", "destination": "/solaris", "permanent": false }
+  ]
+}

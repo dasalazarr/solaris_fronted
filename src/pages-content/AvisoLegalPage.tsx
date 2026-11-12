@@ -107,11 +107,11 @@ export function AvisoLegalPage() {
       <Section id="datos-personales" title="7. Datos personales y cookies">
         <p>
           El tratamiento de datos personales se explica en la{' '}
-          <a href="/privacidad" className="text-solar-ink underline underline-offset-4">
+          <a href="/solaris/privacidad" className="text-solar-ink underline underline-offset-4">
             política de privacidad
           </a>{' '}
           y el uso de cookies, en la{' '}
-          <a href="/cookies" className="text-solar-ink underline underline-offset-4">
+          <a href="/solaris/cookies" className="text-solar-ink underline underline-offset-4">
             política de cookies
           </a>
           .

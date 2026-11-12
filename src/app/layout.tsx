@@ -1,7 +1,16 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import Script from 'next/script'
-import { NOINDEX, SITE_DESCRIPTION, SITE_TITLE, SITE_URL, UMAMI_SRC, UMAMI_WEBSITE_ID } from '@/lib/site'
+import {
+  BASE_PATH,
+  NOINDEX,
+  OPEN_GRAPH_BASE,
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+  SITE_URL,
+  UMAMI_SRC,
+  UMAMI_WEBSITE_ID,
+} from '@/lib/site'
 import { jetbrains, newsreader, schibsted } from './fonts'
 import './globals.css'
 
@@ -20,16 +29,10 @@ export const metadata: Metadata = {
     apple: { url: '/solaris/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
   },
   manifest: '/solaris/site.webmanifest',
-  alternates: { canonical: '/' },
+  alternates: { canonical: BASE_PATH },
   ...(NOINDEX && { robots: { index: false, follow: false } }),
-  openGraph: {
-    type: 'website',
-    locale: 'es_ES',
-    siteName: 'Solaris',
-    title: SITE_TITLE,
-    description: 'Tus procesos, con contrato.',
-    // Imagen Open Graph 1200×630 pendiente de contenido (PRD landing §10).
-  },
+  // Imagen Open Graph 1200×630 pendiente de contenido (PRD landing §10).
+  openGraph: OPEN_GRAPH_BASE,
 }
 
 export const viewport: Viewport = {
@@ -38,7 +41,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="es" className={`${schibsted.variable} ${newsreader.variable} ${jetbrains.variable}`}>
+    <html
+      lang="es"
+      className={`${schibsted.variable} ${newsreader.variable} ${jetbrains.variable}`}
+    >
       <body>
         {children}
         {UMAMI_WEBSITE_ID ? (
