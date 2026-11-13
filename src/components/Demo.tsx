@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { AlertTriangle, ArrowUpRight, Check, CircleCheck, KeyRound, OctagonX, RotateCcw, X } from 'lucide-react'
 import {
@@ -15,13 +15,17 @@ import {
 } from '../data/content'
 import type { Gap } from '../data/content'
 import { track } from '../lib/analytics'
+import { DEMO_APP_ID, DEMO_EVIDENCE_ID, useDemoIntent } from '../lib/demoIntent'
 import { useDemoRequest } from '../lib/demoRequest'
+import { usePrefersReducedMotion } from '../lib/hooks'
 import { EvidenceQuote, ProductWindow, WithCites } from './ProductWindow'
 import { Button, Container, Evidence, SectionTitle, cx } from './ui'
 
 const TABS = ['Preguntar', 'Explorar', 'Huecos', 'Revisar'] as const
 const OPEN_GAPS = DEMO_GAPS.filter((g) => g.severity !== 'cumplido').length
 type Tab = (typeof TABS)[number]
+/** Pausa entre que la demo entra en pantalla y se ilumina el fragmento citado. */
+const ARRIVAL_LIGHT_MS = 250
 
 function nowHHMM() {
   return new Date().toLocaleTimeString('es-ES', {
@@ -32,11 +36,24 @@ function nowHHMM() {
 
 /* ---------- Preguntar ---------- */
 
-function AskTab({ onReview }: { onReview: () => void }) {
-  const [qi, setQi] = useState<number | null>(0)
-  const [cite, setCite] = useState<number | null>(1)
-  const qa = qi === null ? null : DEMO_QA[qi]
-  const active = qa?.citations.find((c) => c.n === cite) ?? null
+function AskTab({
+  qi,
+  cite,
+  lit,
+  onQuestion,
+  onCite,
+  onReview,
+}: {
+  qi: number
+  cite: number | null
+  /** Falso un instante al llegar desde el hero: el fragmento vuelve a iluminarse. */
+  lit: boolean
+  onQuestion: (i: number) => void
+  onCite: (n: number | null) => void
+  onReview: () => void
+}) {
+  const qa = DEMO_QA[qi]
+  const active = qa.citations.find((c) => c.n === cite) ?? null
 
   return (
     <div className="flex min-h-[460px] flex-col lg:flex-row">
@@ -51,8 +68,7 @@ function AskTab({ onReview }: { onReview: () => void }) {
               type="button"
               aria-pressed={qi === i}
               onClick={() => {
-                setQi(i)
-                setCite(1)
+                onQuestion(i)
                 track('demo_pregunta', { index: i })
               }}
               className={cx(
@@ -67,57 +83,57 @@ function AskTab({ onReview }: { onReview: () => void }) {
           ))}
         </div>
 
-        {qa && (
-          <div className="mt-6 flex gap-3" aria-live="polite">
-            <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-solar-soft">
-              <span className="size-3 rounded-full bg-solar" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-[15px] leading-[1.65]">
-                <WithCites text={qa.answer} active={cite} onCite={setCite} />
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {qa.citations.map((c) => (
+        <div className="mt-6 flex gap-3" aria-live="polite">
+          <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-solar-soft">
+            <span className="size-3 rounded-full bg-solar" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[15px] leading-[1.65]">
+              <WithCites text={qa.answer} active={cite} onCite={onCite} />
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {qa.citations.map((c) => (
+                <button
+                  type="button"
+                  key={c.n}
+                  onClick={() => onCite(c.n)}
+                  aria-pressed={cite === c.n}
+                  className={cx(
+                    'rounded-md border px-2 py-1 text-left font-mono text-[10.5px] transition-colors',
+                    cite === c.n
+                      ? 'border-solar bg-solar-soft text-solar-ink'
+                      : 'border-ink/10 bg-white text-ink/60 hover:border-ink/25',
+                  )}
+                >
+                  [{c.n}] {c.doc} · pág. {c.page} · {c.section}
+                </button>
+              ))}
+            </div>
+            {qa.action && (
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 rounded-lg bg-solar-soft px-3 py-2.5 text-[13px]">
+                <span>
+                  <span className="font-mono text-[12px]">Regla {qa.action.rule}</span> ·{' '}
+                  {qa.action.text}
+                </span>
+                {qa.action.review && (
                   <button
                     type="button"
-                    key={c.n}
-                    onClick={() => setCite(c.n)}
-                    aria-pressed={cite === c.n}
-                    className={cx(
-                      'rounded-md border px-2 py-1 text-left font-mono text-[10.5px] transition-colors',
-                      cite === c.n
-                        ? 'border-solar bg-solar-soft text-solar-ink'
-                        : 'border-ink/10 bg-white text-ink/60 hover:border-ink/25',
-                    )}
+                    onClick={onReview}
+                    className="inline-flex items-center gap-1 rounded-full bg-solar px-3 py-1 text-[12.5px] font-medium hover:brightness-95"
                   >
-                    [{c.n}] {c.doc} · pág. {c.page} · {c.section}
+                    Abrir en Revisar <ArrowUpRight className="size-3.5" aria-hidden="true" />
                   </button>
-                ))}
+                )}
               </div>
-              {qa.action && (
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 rounded-lg bg-solar-soft px-3 py-2.5 text-[13px]">
-                  <span>
-                    <span className="font-mono text-[12px]">Regla {qa.action.rule}</span> ·{' '}
-                    {qa.action.text}
-                  </span>
-                  {qa.action.review && (
-                    <button
-                      type="button"
-                      onClick={onReview}
-                      className="inline-flex items-center gap-1 rounded-full bg-solar px-3 py-1 text-[12.5px] font-medium hover:brightness-95"
-                    >
-                      Abrir en Revisar <ArrowUpRight className="size-3.5" aria-hidden="true" />
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
+      {/* El margen deja a la vista la cita pulsada encima del párrafo al llegar desde el hero. */}
       <aside
-        className="border-t border-ink/8 bg-white p-5 md:p-6 lg:w-[360px] lg:shrink-0 lg:border-t-0 lg:border-l"
+        id={DEMO_EVIDENCE_ID}
+        className="scroll-mt-48 border-t border-ink/8 bg-white p-5 md:p-6 lg:w-[360px] lg:shrink-0 lg:border-t-0 lg:border-l"
         aria-label="Panel de evidencia"
       >
         {active ? (
@@ -128,7 +144,7 @@ function AskTab({ onReview }: { onReview: () => void }) {
               </p>
               <button
                 type="button"
-                onClick={() => setCite(null)}
+                onClick={() => onCite(null)}
                 className="grid size-6 place-items-center rounded text-ink/60 hover:bg-ink/5"
                 aria-label="Cerrar evidencia"
               >
@@ -140,7 +156,12 @@ function AskTab({ onReview }: { onReview: () => void }) {
               pág. {active.page} · {active.section}
             </p>
             <div className="mt-4 rounded-lg bg-sheet p-4 ring-1 ring-ink/6">
-              <EvidenceQuote key={`${qi}-${active.n}`} quote={active.quote} mark={active.mark} />
+              <EvidenceQuote
+                key={`${qi}-${active.n}`}
+                quote={active.quote}
+                mark={active.mark}
+                lit={lit}
+              />
             </div>
           </>
         ) : (
@@ -441,7 +462,63 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
   const [log, setLog] = useState<{ time: string; text: string; fresh?: boolean }[]>(DEMO_LOG_SEED)
   const [role, setRole] = useState<string>(DEMO_REQUIRED_ROLE)
   const [draft, setDraft] = useState(DEMO_DRAFT)
+  const [qi, setQi] = useState(0)
+  const [cite, setCite] = useState<number | null>(1)
+  const [arrival, setArrival] = useState(0)
+  const [litFor, setLitFor] = useState(0)
+  const reduced = usePrefersReducedMotion()
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const appRef = useRef<HTMLDivElement>(null)
+
+  // Desde el hero se llega a la cita pulsada o a la aprobación, no al principio.
+  useDemoIntent((intent) => {
+    setTab(intent.tab)
+    if (intent.tab === 'Preguntar') {
+      setQi(0)
+      setCite(intent.cite)
+    }
+    setArrival((n) => n + 1)
+  })
+
+  // El foco acompaña al salto, sin mover el scroll que ya hace el enlace.
+  useEffect(() => {
+    if (!arrival) return
+    const el = tabRefs.current[TABS.indexOf(tab)]
+    const list = el?.parentElement
+    if (!el || !list) return
+    el.focus({ preventScroll: true })
+    // En móvil las pestañas se desplazan: la activa no puede quedar cortada.
+    const cut = el.getBoundingClientRect().right - list.getBoundingClientRect().right
+    if (cut > 0) list.scrollLeft += cut
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [arrival])
+
+  // El fragmento citado se ilumina cuando la página ya ha llegado, no antes.
+  useEffect(() => {
+    const el = document.getElementById(DEMO_EVIDENCE_ID) ?? appRef.current
+    if (!arrival || !el) return
+    let timer = 0
+    const light = () => {
+      timer = window.setTimeout(() => setLitFor(arrival), ARRIVAL_LIGHT_MS)
+    }
+    if (typeof IntersectionObserver === 'undefined') {
+      light()
+      return () => window.clearTimeout(timer)
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        io.disconnect()
+        light()
+      },
+      { threshold: 0.5 },
+    )
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      window.clearTimeout(timer)
+    }
+  }, [arrival])
 
   const select = (t: Tab) => {
     setTab(t)
@@ -504,7 +581,7 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
           Míralo en un proceso que <Evidence italic>todos</Evidence> tienen.
         </SectionTitle>
 
-        <div className="mt-12">
+        <div id={DEMO_APP_ID} ref={appRef} className="mt-12 scroll-mt-6">
           <div
             role="tablist"
             aria-label="Pantallas de la demostración"
@@ -555,7 +632,19 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
                 aria-labelledby={`demo-tab-${tab}`}
                 tabIndex={0}
               >
-                {tab === 'Preguntar' && <AskTab onReview={() => select('Revisar')} />}
+                {tab === 'Preguntar' && (
+                  <AskTab
+                    qi={qi}
+                    cite={cite}
+                    lit={reduced || litFor === arrival}
+                    onQuestion={(i) => {
+                      setQi(i)
+                      setCite(1)
+                    }}
+                    onCite={setCite}
+                    onReview={() => select('Revisar')}
+                  />
+                )}
                 {tab === 'Explorar' && <ExploreTab />}
                 {tab === 'Huecos' && (
                   <GapsTab approved={status === 'aprobado'} onReview={() => select('Revisar')} />

@@ -58,7 +58,10 @@ export function ProductWindow({
       </div>
       <div className="flex min-h-0">
         {sidebar && (
-        <aside className="hidden w-[176px] shrink-0 flex-col gap-0.5 border-r border-ink/8 bg-[#f7f6f2] p-3 md:flex">
+        <aside
+          aria-hidden="true"
+          className="hidden w-[176px] shrink-0 flex-col gap-0.5 border-r border-ink/8 bg-[#f7f6f2] p-3 md:flex"
+        >
           <div className="mb-3 flex items-center gap-2 px-2 pt-1">
             <span className="size-3.5 rounded-full bg-solar" />
             <span className="text-[13px] font-semibold">Solaris</span>
@@ -103,15 +106,30 @@ export function CiteChip({
   n,
   active,
   onClick,
+  href,
 }: {
   n: number
   active?: boolean
   onClick?: () => void
+  /** Con `href` es un enlace solo de puntero: duplica otro que sí recibe el foco. */
+  href?: string
 }) {
   const cls = cx(
     'mx-0.5 inline-flex h-[18px] min-w-[18px] items-center justify-center rounded px-1 align-[1px] font-mono text-[10.5px] font-medium transition-colors',
     active ? 'bg-solar text-ink' : 'bg-solar-soft text-solar-ink',
   )
+  if (href)
+    return (
+      <a
+        href={href}
+        tabIndex={-1}
+        aria-hidden="true"
+        className={cx(cls, 'hover:bg-solar hover:text-ink')}
+        onClick={onClick}
+      >
+        {n}
+      </a>
+    )
   if (onClick)
     return (
       <button
@@ -131,10 +149,12 @@ export function WithCites({
   text,
   active,
   onCite,
+  href,
 }: {
   text: string
   active?: number | null
   onCite?: (n: number) => void
+  href?: string
 }) {
   const parts = text.split(/(\[\d+\])/g)
   return (
@@ -149,6 +169,7 @@ export function WithCites({
             n={n}
             active={active === n}
             onClick={onCite ? () => onCite(n) : undefined}
+            href={href}
           />
         )
       })}
