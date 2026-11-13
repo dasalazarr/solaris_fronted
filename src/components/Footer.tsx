@@ -1,4 +1,4 @@
-import { BASE_PATH, CONTACT_EMAIL } from '../lib/site'
+import { BASE_PATH, CONTACT_EMAIL, PRODUCT_URL } from '../lib/site'
 import { Container, Logo } from './ui'
 
 const COLUMNS = [
@@ -8,6 +8,7 @@ const COLUMNS = [
       { label: 'Cómo funciona', href: '#demo' },
       { label: 'Procesos', href: '#procesos' },
       { label: 'Preguntas', href: '#preguntas' },
+      { label: 'Entrar con tu código', href: PRODUCT_URL },
     ],
   },
   {
