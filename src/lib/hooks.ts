@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 export function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(() =>
@@ -42,6 +42,19 @@ export function useInView<T extends Element>(options: { threshold?: number; once
     return () => io.disconnect()
   }, [threshold, once])
   return [ref, inView] as const
+}
+
+/** Si la consulta de medios se cumple. En el servidor y al hidratar vale `fallback`. */
+export function useMediaQuery(query: string, fallback = false) {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(query)
+      mq.addEventListener('change', onChange)
+      return () => mq.removeEventListener('change', onChange)
+    },
+    () => window.matchMedia(query).matches,
+    () => fallback,
+  )
 }
 
 /** True while the document tab is visible. */

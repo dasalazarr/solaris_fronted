@@ -49,7 +49,7 @@ export function Hero() {
             variant="ghost-dark"
             onClick={() => track('ver_como_funciona', { section: 'hero' })}
           >
-            Ver cómo funciona <ArrowDown className="size-4" aria-hidden="true" />
+            Probar la demo <ArrowDown className="size-4" aria-hidden="true" />
           </Button>
         </div>
         <div className="relative mx-auto mt-10 max-w-[1200px] md:mt-12">
