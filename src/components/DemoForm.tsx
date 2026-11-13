@@ -147,7 +147,13 @@ export function DemoForm() {
   const chosenPains = pains.filter((p) => painOptions.includes(p))
   const togglePain = (p: string) =>
     setPains((prev) => (prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]))
-  const outgoing: Fields = { ...f, comentario: composeComment(chosenPains, f.comentario) }
+  // Con opciones, el texto libre solo se habilita si eligen «Otra cosa»; sin opciones, siempre.
+  const [other, setOther] = useState(false)
+  const showText = painOptions.length === 0 || other
+  const outgoing: Fields = {
+    ...f,
+    comentario: composeComment(chosenPains, showText ? f.comentario : ''),
+  }
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({})
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
@@ -233,9 +239,9 @@ export function DemoForm() {
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
       <div
-        className="absolute inset-0 bg-ink/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-ink/50 backdrop-blur-md"
         onClick={close}
         aria-hidden="true"
       />
@@ -244,7 +250,7 @@ export function DemoForm() {
         role="dialog"
         aria-modal="true"
         aria-labelledby="form-title"
-        className="absolute inset-y-0 right-0 flex w-full max-w-[520px] flex-col overflow-y-auto bg-sheet text-ink shadow-2xl"
+        className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-[480px] flex-col overflow-y-auto overscroll-contain rounded-3xl bg-sheet text-ink shadow-[0_24px_80px_-12px_rgba(0,0,0,0.45)] ring-1 ring-ink/10 sm:max-h-[calc(100dvh-3rem)]"
       >
         <div className="flex items-center justify-between border-b border-ink/8 px-6 py-4 md:px-8">
           <Logo tone="dark" withBy />
@@ -267,7 +273,7 @@ export function DemoForm() {
             <p className="mt-4 text-[16px] leading-relaxed text-ink/68">
               Te escribiremos a <strong className="font-medium text-ink">{f.correo}</strong> en un
               día laborable con una propuesta de fecha.
-              {AGENDA_URL && ' Si lo prefiere, reserve ya la llamada de 30 minutos.'}
+              {AGENDA_URL && ' Si lo prefieres, reserva ya la llamada de 30 minutos.'}
             </p>
             {AGENDA_URL && (
               <Button
@@ -288,6 +294,7 @@ export function DemoForm() {
                 setSent(false)
                 setF(EMPTY)
                 setPains([])
+                setOther(false)
                 setProceso('')
                 setPerfil('')
                 close()
@@ -406,6 +413,8 @@ export function DemoForm() {
                         value={p}
                         checked={f.proceso === p}
                         onChange={() => chooseProceso(p)}
+                        aria-invalid={!!errors.proceso}
+                        aria-describedby={errors.proceso ? 'f-proceso-error' : undefined}
                         className="sr-only"
                       />
                       {p}
@@ -413,14 +422,17 @@ export function DemoForm() {
                   ))}
                 </div>
                 {errors.proceso && (
-                  <p className="mt-1.5 text-[13px] text-arcilla-ink">{errors.proceso}</p>
+                  <p id="f-proceso-error" className="mt-1.5 text-[13px] text-arcilla-ink">
+                    {errors.proceso}
+                  </p>
                 )}
               </fieldset>
             )}
             {painOptions.length > 0 && (
               <fieldset>
                 <legend className="mb-2 text-[13.5px] font-medium">
-                  ¿Qué te gustaría resolver primero? <span className="font-normal text-ink/60">Opcional</span>
+                  ¿Qué te gustaría resolver primero?{' '}
+                  <span className="font-normal text-ink/60">Opcional</span>
                 </legend>
                 <div className="flex flex-col gap-2">
                   {painOptions.map((p) => (
@@ -439,20 +451,39 @@ export function DemoForm() {
                       {p}
                     </button>
                   ))}
+                  <button
+                    type="button"
+                    aria-pressed={other}
+                    onClick={() => setOther((v) => !v)}
+                    className={cx(
+                      'rounded-xl px-3.5 py-2 text-left text-[14px] leading-snug ring-1 transition-colors',
+                      other
+                        ? 'bg-ink text-white ring-ink'
+                        : 'bg-white ring-ink/12 hover:ring-ink/30',
+                    )}
+                  >
+                    Otra cosa
+                  </button>
                 </div>
               </fieldset>
             )}
-            <Field id="f-comentario" label={isClient ? 'Algo más' : 'Comentario'} optional>
-              <textarea
+            {showText && (
+              <Field
                 id="f-comentario"
-                rows={3}
-                maxLength={COMMENT_MAX}
-                value={f.comentario}
-                onChange={(e) => set('comentario', e.target.value)}
-                placeholder="Cuéntanos brevemente tu caso"
-                className={cx(inputCls(), 'resize-none')}
-              />
-            </Field>
+                label={isClient ? 'Cuéntanos tu caso' : 'Comentario'}
+                optional
+              >
+                <textarea
+                  id="f-comentario"
+                  rows={3}
+                  maxLength={COMMENT_MAX}
+                  value={f.comentario}
+                  onChange={(e) => set('comentario', e.target.value)}
+                  placeholder="Cuéntanos brevemente qué quieres resolver"
+                  className={cx(inputCls(), 'resize-none')}
+                />
+              </Field>
+            )}
 
             {/* Honeypot: hidden from people, filled by bots */}
             <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
@@ -474,6 +505,7 @@ export function DemoForm() {
                   checked={f.privacidad}
                   onChange={(e) => set('privacidad', e.target.checked)}
                   aria-invalid={!!errors.privacidad}
+                  aria-describedby={errors.privacidad ? 'f-privacidad-error' : undefined}
                   className="mt-0.5 size-4 shrink-0 accent-ink"
                 />
                 <span>
@@ -490,20 +522,11 @@ export function DemoForm() {
                 </span>
               </label>
               {errors.privacidad && (
-                <p className="mt-1.5 text-[13px] text-arcilla-ink">{errors.privacidad}</p>
+                <p id="f-privacidad-error" className="mt-1.5 text-[13px] text-arcilla-ink">
+                  {errors.privacidad}
+                </p>
               )}
             </div>
-
-            {isClient && (
-              <div className="rounded-xl bg-paper p-4 text-[13.5px] leading-relaxed ring-1 ring-ink/8">
-                <p className="font-medium">Qué ocurre en los 30 minutos</p>
-                <ul className="mt-1.5 text-ink/70">
-                  <li>10 min · tu proceso, tus reglas y tus documentos</li>
-                  <li>15 min · demostración con datos de muestra: citas, huecos y aprobación</li>
-                  <li>5 min · siguientes pasos: piloto e instalación local</li>
-                </ul>
-              </div>
-            )}
 
             <Button type="submit" size="lg" className="mt-2 w-full" disabled={sending}>
               {sending ? 'Enviando…' : COPY[f.perfil || 'cliente'].submit}
@@ -520,7 +543,7 @@ export function DemoForm() {
                     y te responderemos igual.
                   </>
                 ) : (
-                  'Inténtelo de nuevo en unos minutos.'
+                  'Inténtalo de nuevo en unos minutos.'
                 )}
               </p>
             )}
