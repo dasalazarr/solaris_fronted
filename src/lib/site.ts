@@ -31,6 +31,9 @@ export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'solaris@d
 /** Enlace de agenda para reservar la llamada. Sin él, el botón no se muestra. */
 export const AGENDA_URL = process.env.NEXT_PUBLIC_AGENDA_URL || ''
 
+/** Producto: quien ya tiene código entra en su espacio desde aquí. Cambia con NEXT_PUBLIC_PRODUCT_URL. */
+export const PRODUCT_URL = process.env.NEXT_PUBLIC_PRODUCT_URL || 'https://illariumcore.vercel.app'
+
 /** Analítica sin cookies (Umami Cloud). Sin id, no se carga ningún script. */
 export const UMAMI_WEBSITE_ID = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID || ''
 export const UMAMI_SRC = process.env.NEXT_PUBLIC_UMAMI_SRC || 'https://cloud.umami.is/script.js'
