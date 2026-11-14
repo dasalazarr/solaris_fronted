@@ -230,7 +230,92 @@ details > summary::-webkit-details-marker {
   display: none;
 }
 
+/* Solaris, la mascota (src/components/SolarisMascota.tsx, ADR-0023). Copia de product/app/globals.css. */
+.sol-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sol-parpadeo 5.5s infinite;
+}
+@keyframes sol-parpadeo {
+  0%, 93%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.12); }
+}
+.sol-flotar {
+  animation: sol-flotar 6s ease-in-out infinite;
+}
+@keyframes sol-flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4%); }
+}
+.sol-estado {
+  transition: transform 700ms var(--ease-solar);
+}
+.sol-anillo {
+  transform: translate(0px, 6px) rotate(-16deg);
+}
+.sol-pensando .sol-anillo {
+  transform: rotate(-52deg) scale(0.92);
+}
+.sol-pensando .sol-oscila {
+  animation: sol-oscila 1.4s ease-in-out infinite alternate;
+}
+@keyframes sol-oscila {
+  from { transform: rotate(-6deg); }
+  to { transform: rotate(6deg); }
+}
+.sol-pensando .sol-mirada {
+  transform: translate(-8px, -10px);
+}
+.sol-chispa {
+  opacity: 0;
+  transition: opacity 400ms var(--ease-solar);
+}
+.sol-pensando .sol-chispa {
+  opacity: 1;
+}
+.sol-pensando .sol-glow {
+  animation: sol-pulso 1.4s ease-in-out infinite alternate;
+}
+@keyframes sol-pulso {
+  from { opacity: 0.3; }
+  to { opacity: 0.6; }
+}
+.sol-parallax-ojos {
+  transform: translate(calc(var(--sol-mx, 0) * 7px), calc(var(--sol-my, 0) * 6px));
+  transition: transform 300ms var(--ease-solar);
+}
+.sol-parallax-cuerpo {
+  transform: translate(calc(var(--sol-mx, 0) * 2px), calc(var(--sol-my, 0) * 2px));
+  transition: transform 300ms var(--ease-solar);
+}
+.sol-parallax-aura {
+  transform: translate(calc(var(--sol-mx, 0) * -5px), calc(var(--sol-my, 0) * -4px));
+  transition: transform 300ms var(--ease-solar);
+}
+
+/* Entrada del hero: se enfoca desde el desenfoque, antes que el titular. */
+.sol-entra {
+  animation: sol-entra 900ms var(--ease-solar) both;
+}
+@keyframes sol-entra {
+  from { opacity: 0; filter: blur(12px); transform: translateY(10px); }
+  to { opacity: 1; filter: blur(0); transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .sol-entra,
+  .sol-eye,
+  .sol-flotar,
+  .sol-pensando .sol-oscila,
+  .sol-pensando .sol-glow {
+    animation: none;
+  }
+  .sol-estado,
+  .sol-parallax-ojos,
+  .sol-parallax-cuerpo,
+  .sol-parallax-aura {
+    transition: none;
+  }
   .reveal,
   .blur-in {
     opacity: 1;

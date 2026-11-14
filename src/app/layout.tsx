@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
-  // Iconos de public/solaris (sol dorado). Sin SVG: el arte es un raster y un SVG con PNG
-  // incrustado pesaba 2,9 MB.
+  // Iconos de public/solaris: Solaris, la mascota (kit en la raíz, mascota/solaris; ADR-0023).
   icons: {
     icon: [
       { url: '/solaris/favicon.ico', sizes: '16x16 32x32' },
+      { url: '/solaris/favicon.svg', type: 'image/svg+xml' },
       { url: '/solaris/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
       { url: '/solaris/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
     ],
