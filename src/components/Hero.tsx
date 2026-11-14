@@ -4,6 +4,7 @@ import { ArrowDown } from 'lucide-react'
 import { useDemoRequest } from '../lib/demoRequest'
 import { track } from '../lib/analytics'
 import { HeroCapture } from './HeroCapture'
+import { SolarisMascota } from './SolarisMascota'
 import { Button, Container, Evidence, Eyebrow } from './ui'
 
 function Words({ text, start = 0 }: { text: string; start?: number }) {
@@ -24,6 +25,10 @@ export function Hero() {
     <section id="top" className="relative overflow-hidden bg-ink pt-28 pb-20 md:pt-32 md:pb-28">
       <div className="sunbeam" aria-hidden="true" />
       <Container className="relative text-center">
+        {/* Solaris donde nace la luz del hero: presencia, no protagonismo (ADR-0023). */}
+        <div className="sol-entra mb-5 flex justify-center">
+          <SolarisMascota size={72} flota sigue />
+        </div>
         <Eyebrow tone="light">IA privada para procesos</Eyebrow>
         <h1 className="headline mx-auto mt-6 max-w-[980px] text-[44px] text-white sm:text-[64px] lg:text-[88px]">
           <Words text="Tus procesos," />
