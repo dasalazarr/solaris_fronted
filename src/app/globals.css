@@ -293,6 +293,50 @@ details > summary::-webkit-details-marker {
   transition: transform 300ms var(--ease-solar);
 }
 
+/* El sol de la cabecera respira: núcleo ±4 %, anillo que se abre y un halo que apenas se ve.
+   6 s, el compás de la flotación de la mascota. Lento a propósito: es pulso, no aviso. */
+.logo-sol circle {
+  transform-box: view-box;
+  transform-origin: 13px 13px;
+}
+.logo-respira .logo-nucleo {
+  animation: logo-nucleo 6s ease-in-out infinite;
+}
+.logo-respira .logo-anillo {
+  animation: logo-anillo 6s ease-in-out infinite;
+}
+.logo-halo {
+  opacity: 0;
+  filter: blur(4px);
+  animation: logo-halo 6s ease-in-out infinite;
+}
+@keyframes logo-nucleo {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+@keyframes logo-anillo {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+@keyframes logo-halo {
+  0%, 100% { opacity: 0; transform: scale(0.7); }
+  50% { opacity: 0.22; transform: scale(1); }
+}
+
+/* Viaje del hero a la cabecera: el hero escribe --sol-viaje (0 → 1) al hacer scroll.
+   Mientras la mascota está en el hero, el sol de la cabecera se aparta; cuando llega, aparece.
+   Sin JS o fuera de la portada la variable no existe y el logo se ve entero. */
+.logo-sol {
+  opacity: calc(1 - var(--sol-ausente, 0));
+  transform: scale(calc(1 - var(--sol-ausente, 0) * 0.4));
+  transition: opacity 160ms linear, transform 160ms linear;
+}
+.sol-viajero {
+  position: relative;
+  z-index: 45;
+  will-change: transform, opacity;
+}
+
 /* Entrada del hero: se enfoca desde el desenfoque, antes que el titular. */
 .sol-entra {
   animation: sol-entra 900ms var(--ease-solar) both;
@@ -304,6 +348,9 @@ details > summary::-webkit-details-marker {
 
 @media (prefers-reduced-motion: reduce) {
   .sol-entra,
+  .logo-respira .logo-nucleo,
+  .logo-respira .logo-anillo,
+  .logo-halo,
   .sol-eye,
   .sol-flotar,
   .sol-pensando .sol-oscila,

@@ -40,7 +40,7 @@ export function Nav() {
         className="mx-auto flex h-full max-w-[1200px] items-center gap-6 px-5 md:px-8 xl:px-0"
       >
         <a href="#top" className="shrink-0" aria-label="Solaris, inicio">
-          <Logo />
+          <Logo breathe />
         </a>
         <ul className="mx-auto hidden items-center gap-1 lg:flex">
           {NAV_LINKS.map((l) => (
