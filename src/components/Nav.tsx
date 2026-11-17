@@ -20,10 +20,14 @@ export function Nav() {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
+    document.body.toggleAttribute('data-menu-abierto', menuOpen)
     if (!menuOpen) return
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenuOpen(false)
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.removeAttribute('data-menu-abierto')
+    }
   }, [menuOpen])
 
   return (

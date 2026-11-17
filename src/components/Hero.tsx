@@ -44,7 +44,7 @@ function SolViajero({ children }: { children: ReactNode }) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let frame = 0
     const pinta = () => {
-      const logo = document.querySelector('header .logo-sol')
+      const logo = document.querySelector('header .logo-respira')
       if (!logo) return
       const a = ancla.getBoundingClientRect()
       const l = logo.getBoundingClientRect()

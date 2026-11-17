@@ -326,10 +326,14 @@ details > summary::-webkit-details-marker {
 /* Viaje del hero a la cabecera: el hero escribe --sol-viaje (0 → 1) al hacer scroll.
    Mientras la mascota está en el hero, el sol de la cabecera se aparta; cuando llega, aparece.
    Sin JS o fuera de la portada la variable no existe y el logo se ve entero. */
-.logo-sol {
+.logo-respira {
   opacity: calc(1 - var(--sol-ausente, 0));
   transform: scale(calc(1 - var(--sol-ausente, 0) * 0.4));
   transition: opacity 160ms linear, transform 160ms linear;
+}
+/* Con el menú móvil abierto la mascota no viaja: el menú es lo único en pantalla. */
+body[data-menu-abierto] .sol-viajero {
+  visibility: hidden;
 }
 .sol-viajero {
   position: relative;
