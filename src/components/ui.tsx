@@ -9,17 +9,28 @@ export { Evidence, Reveal }
 export function Logo({
   tone = 'light',
   withBy = false,
+  breathe = false,
   className,
 }: {
   tone?: 'light' | 'dark'
   withBy?: boolean
+  /** Respiración lenta del sol (6 s, al compás de la mascota). Solo en la cabecera. */
+  breathe?: boolean
   className?: string
 }) {
   const text = tone === 'light' ? 'text-white' : 'text-ink'
   return (
     <span className={cx('inline-flex items-center gap-2.5', className)}>
-      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 26 26"
+        aria-hidden="true"
+        className={cx('logo-sol overflow-visible', breathe && 'logo-respira')}
+      >
+        {breathe && <circle className="logo-halo" cx="13" cy="13" r="12" fill="#F2B544" />}
         <circle
+          className="logo-anillo"
           cx="13"
           cy="13"
           r="12"
@@ -28,7 +39,7 @@ export function Logo({
           strokeOpacity=".55"
           strokeWidth="1"
         />
-        <circle cx="13" cy="13" r="7.5" fill="#F2B544" />
+        <circle className="logo-nucleo" cx="13" cy="13" r="7.5" fill="#F2B544" />
       </svg>
       <span className={cx('text-[19px] font-semibold tracking-[-0.02em]', text)}>Solaris</span>
       {withBy && (
