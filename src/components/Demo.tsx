@@ -18,6 +18,8 @@ import { track } from '../lib/analytics'
 import { DEMO_APP_ID, DEMO_EVIDENCE_ID, useDemoIntent } from '../lib/demoIntent'
 import { useDemoRequest } from '../lib/demoRequest'
 import { usePrefersReducedMotion } from '../lib/hooks'
+import { GuideRail, GuideWelcome, HINT_RING, QUICK_REQUEST_ID, QuickRequest } from './DemoGuide'
+import type { GuideStep } from './DemoGuide'
 import { EvidenceQuote, ProductWindow, WithCites } from './ProductWindow'
 import { Button, Container, Evidence, SectionTitle, cx } from './ui'
 
@@ -43,6 +45,7 @@ function AskTab({
   onQuestion,
   onCite,
   onReview,
+  hint = false,
 }: {
   qi: number
   cite: number | null
@@ -51,6 +54,8 @@ function AskTab({
   onQuestion: (i: number) => void
   onCite: (n: number | null) => void
   onReview: () => void
+  /** Recorrido guiado: señala «Abrir en Revisar». */
+  hint?: boolean
 }) {
   const qa = DEMO_QA[qi]
   const active = qa.citations.find((c) => c.n === cite) ?? null
@@ -119,7 +124,10 @@ function AskTab({
                   <button
                     type="button"
                     onClick={onReview}
-                    className="inline-flex items-center gap-1 rounded-full bg-solar px-3 py-1 text-[12.5px] font-medium hover:brightness-95"
+                    className={cx(
+                      'inline-flex items-center gap-1 rounded-full bg-solar px-3 py-1 text-[12.5px] font-medium hover:brightness-95',
+                      hint && HINT_RING,
+                    )}
                   >
                     Abrir en Revisar <ArrowUpRight className="size-3.5" aria-hidden="true" />
                   </button>
@@ -303,6 +311,7 @@ function ReviewTab({
   onDraft,
   onDecide,
   onReset,
+  hint = null,
 }: {
   status: 'pendiente' | 'aprobado' | 'rechazado'
   log: { time: string; text: string; fresh?: boolean }[]
@@ -312,12 +321,19 @@ function ReviewTab({
   onDraft: (draft: string) => void
   onDecide: (d: 'aprobado' | 'rechazado') => void
   onReset: () => void
+  /** Recorrido guiado: señala el selector de rol o el botón de aprobar. */
+  hint?: 'rol' | 'aprobar' | null
 }) {
   const canSign = role === DEMO_REQUIRED_ROLE
   return (
     <div className="grid min-h-[460px] gap-0 lg:grid-cols-[1fr_340px]">
       <div className="p-5 md:p-7">
-        <div className="mb-4 flex max-w-[520px] flex-wrap items-center gap-2 rounded-lg bg-solar-soft/70 p-2.5 text-[13px] ring-1 ring-solar/40">
+        <div
+          className={cx(
+            'mb-4 flex max-w-[520px] flex-wrap items-center gap-2 rounded-lg bg-solar-soft/70 p-2.5 text-[13px] ring-1 ring-solar/40',
+            hint === 'rol' && HINT_RING,
+          )}
+        >
           <KeyRound className="size-3.5 text-solar-ink" aria-hidden="true" />
           <label htmlFor="demo-role" className="font-medium">
             Actuar como (rol simulado):
@@ -392,7 +408,10 @@ function ReviewTab({
                   onClick={() => onDecide('aprobado')}
                   disabled={!canSign}
                   aria-describedby={canSign ? undefined : 'demo-role-reason'}
-                  className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-full bg-ink text-[14px] font-medium text-white hover:bg-ink-3 disabled:cursor-not-allowed disabled:opacity-50"
+                  className={cx(
+                    'inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-full bg-ink text-[14px] font-medium text-white hover:bg-ink-3 disabled:cursor-not-allowed disabled:opacity-50',
+                    hint === 'aprobar' && HINT_RING,
+                  )}
                 >
                   <Check className="size-4" /> Aprobar
                 </button>
@@ -465,6 +484,8 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
   const [qi, setQi] = useState(0)
   const [cite, setCite] = useState<number | null>(1)
   const [arrival, setArrival] = useState(0)
+  // Solo la página propia de la demo, adonde llegan las publicaciones, guía el primer minuto.
+  const [step, setStep] = useState<GuideStep>(standalone ? 'bienvenida' : 'libre')
   const [litFor, setLitFor] = useState(0)
   const reduced = usePrefersReducedMotion()
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -538,9 +559,42 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
     tabRefs.current[next]?.focus()
   }
 
+  const goStep = (next: GuideStep) => {
+    setStep(next)
+    track('demo_guia', { paso: String(next) })
+  }
+
+  const startGuide = () => {
+    reset()
+    setQi(0)
+    setCite(1)
+    setTab('Preguntar')
+    goStep(1)
+    // Tras plegarse la bienvenida, para no pasarse de largo.
+    window.setTimeout(
+      () => appRef.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }),
+      60,
+    )
+  }
+
+  const skipGuide = () => {
+    setStep('libre')
+    track('demo_guia_saltada', { paso: String(step) })
+  }
+
+  const openReview = () => {
+    select('Revisar')
+    if (step === 1) {
+      // Se empieza sin permiso de firma: la regla tiene que poder decir que no.
+      setRole(DEMO_ROLES[1])
+      goStep(2)
+    }
+  }
+
   const changeRole = (next: string) => {
     setRole(next)
     if (next !== DEMO_REQUIRED_ROLE) track('demo_rol_bloqueado')
+    else if (step === 2) goStep(3)
   }
 
   const decide = (d: 'aprobado' | 'rechazado') => {
@@ -548,6 +602,14 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
     const edited = draft !== DEMO_DRAFT ? ' · borrador editado' : ''
     setStatus(d)
     if (d === 'aprobado') track('demo_aprobacion')
+    if (typeof step === 'number') {
+      goStep('hecho')
+      window.setTimeout(() => {
+        const el = document.getElementById(QUICK_REQUEST_ID)
+        el?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
+        el?.focus({ preventScroll: true })
+      }, 900)
+    }
     setLog((prev) => [
       {
         time: nowHHMM(),
@@ -574,14 +636,19 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
       className={cx('bg-paper', standalone ? 'min-h-screen py-16' : 'py-24 md:py-32')}
     >
       <Container>
-        <SectionTitle
-          eyebrow="Demostración interactiva"
-          sub="Empresa ficticia, datos de muestra. Prueba a preguntar, explorar el pedido, revisar los huecos y aprobarlo con el rol que exige el contrato."
-        >
-          Míralo en un proceso que <Evidence italic>todos</Evidence> tienen.
-        </SectionTitle>
+        {standalone ? (
+          <GuideWelcome step={step} onStart={startGuide} onSkip={skipGuide} />
+        ) : (
+          <SectionTitle
+            eyebrow="Demostración interactiva"
+            sub="Empresa ficticia, datos de muestra. Prueba a preguntar, explorar el pedido, revisar los huecos y aprobarlo con el rol que exige el contrato."
+          >
+            Míralo en un proceso que <Evidence italic>todos</Evidence> tienen.
+          </SectionTitle>
+        )}
 
-        <div id={DEMO_APP_ID} ref={appRef} className="mt-12 scroll-mt-6">
+        <div id={DEMO_APP_ID} ref={appRef} className={cx('scroll-mt-6', standalone ? 'mt-10' : 'mt-12')}>
+          <GuideRail step={step} onSkip={skipGuide} />
           <div
             role="tablist"
             aria-label="Pantallas de la demostración"
@@ -642,12 +709,13 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
                       setCite(1)
                     }}
                     onCite={setCite}
-                    onReview={() => select('Revisar')}
+                    onReview={openReview}
+                    hint={step === 1}
                   />
                 )}
                 {tab === 'Explorar' && <ExploreTab />}
                 {tab === 'Huecos' && (
-                  <GapsTab approved={status === 'aprobado'} onReview={() => select('Revisar')} />
+                  <GapsTab approved={status === 'aprobado'} onReview={openReview} />
                 )}
                 {tab === 'Revisar' && (
                   <ReviewTab
@@ -659,6 +727,7 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
                     onDraft={setDraft}
                     onDecide={decide}
                     onReset={reset}
+                    hint={step === 2 ? 'rol' : step === 3 ? 'aprobar' : null}
                   />
                 )}
               </div>
@@ -667,7 +736,7 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
               Demostración con datos de muestra
             </p>
           </div>
-          {!standalone && <DemoCta />}
+          {standalone ? <QuickRequest done={step === 'hecho'} /> : <DemoCta />}
         </div>
       </Container>
     </section>
