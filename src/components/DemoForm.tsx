@@ -52,7 +52,7 @@ const COPY: Record<Profile, { title: string; sub: string; submit: string }> = {
 // La API corta en 2000 y las fricciones ocupan hasta 383: así nunca se pierde lo escrito.
 const COMMENT_MAX = 1600
 
-const FREE_MAIL = /@(gmail|hotmail|outlook|yahoo|icloud|live|proton)\./i
+export const FREE_MAIL = /@(gmail|hotmail|outlook|yahoo|icloud|live|proton)\./i
 
 function validate(f: Fields) {
   const e: Partial<Record<keyof Fields, string>> = {}
@@ -107,7 +107,7 @@ const inputCls = (err?: string) =>
   )
 
 /** Envía la solicitud al producto (`/api/solicitud`). Nunca simula un envío. */
-async function sendSolicitud(payload: Record<string, unknown>): Promise<boolean> {
+export async function sendSolicitud(payload: Record<string, unknown>): Promise<boolean> {
   if (!SOLICITUD_URL) {
     if (process.env.NODE_ENV === 'development')
       console.debug('[form] sin NEXT_PUBLIC_SOLICITUD_URL', payload)
