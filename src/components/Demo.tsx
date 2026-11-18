@@ -18,7 +18,16 @@ import { track } from '../lib/analytics'
 import { DEMO_APP_ID, DEMO_EVIDENCE_ID, useDemoIntent } from '../lib/demoIntent'
 import { useDemoRequest } from '../lib/demoRequest'
 import { usePrefersReducedMotion } from '../lib/hooks'
-import { GuideRail, GuideWelcome, HINT_RING, QUICK_REQUEST_ID, QuickRequest } from './DemoGuide'
+import {
+  ANCHORS,
+  CoachMark,
+  HINT_RING,
+  RequestDialog,
+  RequestPill,
+  WelcomeDialog,
+  guideSeen,
+  markGuideSeen,
+} from './DemoGuide'
 import type { GuideStep } from './DemoGuide'
 import { EvidenceQuote, ProductWindow, WithCites } from './ProductWindow'
 import { Button, Container, Evidence, SectionTitle, cx } from './ui'
@@ -123,6 +132,7 @@ function AskTab({
                 {qa.action.review && (
                   <button
                     type="button"
+                    id={ANCHORS[1]}
                     onClick={onReview}
                     className={cx(
                       'inline-flex items-center gap-1 rounded-full bg-solar px-3 py-1 text-[12.5px] font-medium hover:brightness-95',
@@ -329,6 +339,7 @@ function ReviewTab({
     <div className="grid min-h-[460px] gap-0 lg:grid-cols-[1fr_340px]">
       <div className="p-5 md:p-7">
         <div
+          id={ANCHORS[2]}
           className={cx(
             'mb-4 flex max-w-[520px] flex-wrap items-center gap-2 rounded-lg bg-solar-soft/70 p-2.5 text-[13px] ring-1 ring-solar/40',
             hint === 'rol' && HINT_RING,
@@ -405,6 +416,7 @@ function ReviewTab({
               <>
                 <button
                   type="button"
+                  id={ANCHORS[3]}
                   onClick={() => onDecide('aprobado')}
                   disabled={!canSign}
                   aria-describedby={canSign ? undefined : 'demo-role-reason'}
@@ -486,6 +498,18 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
   const [arrival, setArrival] = useState(0)
   // Solo la página propia de la demo, adonde llegan las publicaciones, guía el primer minuto.
   const [step, setStep] = useState<GuideStep>(standalone ? 'bienvenida' : 'libre')
+  const [askOpen, setAskOpen] = useState(false)
+  const [sent, setSent] = useState(false)
+  // El botón flotante no compite con el cierre: tras aprobar, aparece cuando se cierra.
+  const [asked, setAsked] = useState(false)
+
+  // Quien ya vio la bienvenida en esta sesión entra directo a explorar. La ventana
+  // espera a saberlo, para no asomar y cerrarse al recargar.
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    if (standalone && guideSeen()) setStep('libre')
+    setReady(true)
+  }, [standalone])
   const [litFor, setLitFor] = useState(0)
   const reduced = usePrefersReducedMotion()
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -569,15 +593,12 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
     setQi(0)
     setCite(1)
     setTab('Preguntar')
+    markGuideSeen()
     goStep(1)
-    // Tras plegarse la bienvenida, para no pasarse de largo.
-    window.setTimeout(
-      () => appRef.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }),
-      60,
-    )
   }
 
   const skipGuide = () => {
+    markGuideSeen()
     setStep('libre')
     track('demo_guia_saltada', { paso: String(step) })
   }
@@ -604,11 +625,11 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
     if (d === 'aprobado') track('demo_aprobacion')
     if (typeof step === 'number') {
       goStep('hecho')
+      // Primero se ve el hueco cerrarse en el registro; después, el cierre.
       window.setTimeout(() => {
-        const el = document.getElementById(QUICK_REQUEST_ID)
-        el?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
-        el?.focus({ preventScroll: true })
-      }, 900)
+        setAskOpen(true)
+        setAsked(true)
+      }, 1100)
     }
     setLog((prev) => [
       {
@@ -637,7 +658,12 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
     >
       <Container>
         {standalone ? (
-          <GuideWelcome step={step} onStart={startGuide} onSkip={skipGuide} />
+          <SectionTitle
+            eyebrow="Demo · datos de muestra"
+            sub="Tu política exige la firma de Dirección financiera por encima de 15.000 €. Pregunta, revisa los huecos y apruébalo con el rol que exige la regla."
+          >
+            Un pedido de 18.450&nbsp;€, a punto de salir <Evidence italic>sin la firma.</Evidence>
+          </SectionTitle>
         ) : (
           <SectionTitle
             eyebrow="Demostración interactiva"
@@ -648,7 +674,6 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
         )}
 
         <div id={DEMO_APP_ID} ref={appRef} className={cx('scroll-mt-6', standalone ? 'mt-10' : 'mt-12')}>
-          <GuideRail step={step} onSkip={skipGuide} />
           <div
             role="tablist"
             aria-label="Pantallas de la demostración"
@@ -736,7 +761,27 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
               Demostración con datos de muestra
             </p>
           </div>
-          {standalone ? <QuickRequest done={step === 'hecho'} /> : <DemoCta />}
+          {!standalone && <DemoCta />}
+          {standalone && (
+            <>
+              <WelcomeDialog open={ready && step === 'bienvenida'} onStart={startGuide} onSkip={skipGuide} />
+              <CoachMark step={step} onSkip={skipGuide} />
+              <RequestDialog
+                open={askOpen}
+                done={step === 'hecho'}
+                onClose={() => setAskOpen(false)}
+                onSent={() => setSent(true)}
+              />
+              {ready && !askOpen && !sent && (step === 'libre' || (step === 'hecho' && asked)) && (
+                <RequestPill
+                  onOpen={() => {
+                    setAskOpen(true)
+                    track('cta_solicitar_demo', { section: 'demo-pildora' })
+                  }}
+                />
+              )}
+            </>
+          )}
         </div>
       </Container>
     </section>
