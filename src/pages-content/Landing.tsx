@@ -3,7 +3,6 @@ import { Closing } from '../components/Closing'
 import { Demo } from '../components/Demo'
 import { DemoForm } from '../components/DemoForm'
 import { Faq } from '../components/Faq'
-import { Figure } from '../components/Figure'
 import { Footer } from '../components/Footer'
 import { Hero } from '../components/Hero'
 import { HowWeWork } from '../components/HowWeWork'
@@ -32,7 +31,6 @@ export function Landing({ formOpen = false }: { formOpen?: boolean }) {
         <Thesis />
         <Loop />
         <Bento />
-        <Figure />
         <Demo />
         <Packs />
         <Roadmap />

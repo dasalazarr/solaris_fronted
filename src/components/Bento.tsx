@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Building2, Check, FileSignature, Layers, ScanSearch } from 'lucide-react'
+import { Building2, Check, FileSignature, Lock, ScanSearch } from 'lucide-react'
 import { DEMO_QA } from '../data/content'
 import { EvidenceQuote } from './ProductWindow'
 import { Container, Evidence, Reveal, SectionTitle, cx } from './ui'
@@ -109,7 +109,7 @@ export function Bento() {
             delay={80}
             className="md:col-span-2 xl:col-span-5"
             title="Tú apruebas"
-            body="Solaris propone; una persona decide. Nada se ejecuta sin aprobación y todo queda registrado."
+            body="Solaris propone; una persona decide. Lo que incumple queda retenido hasta la firma del rol que exige la regla, y todo queda registrado."
           >
             <div className="m-3 mb-0 rounded-xl bg-sheet p-5 ring-1 ring-ink/6 md:p-6">
               <div className="flex items-center justify-between">
@@ -181,12 +181,14 @@ export function Bento() {
           <Cell
             delay={240}
             className="xl:col-span-3"
-            title="Un motor, muchos procesos"
-            body="Cada proceso con su contrato, sus reglas y su vista."
+            title="Importe expuesto"
+            body="Suma lo retenido hasta la firma, cada importe con la página de la que sale. En la demo, dos pedidos."
           >
-            <SmallIcon>
-              <Layers className="size-5" strokeWidth={1.5} />
-            </SmallIcon>
+            <div className="flex items-center gap-3 px-6 pt-6 md:px-7 md:pt-7">
+              <span className="inline-flex h-11 items-center gap-2 rounded-xl bg-arcilla px-4 font-mono text-[13px] text-arcilla-ink tabular-nums">
+                <Lock className="size-4" strokeWidth={1.5} aria-hidden="true" /> 27.650,00 €
+              </span>
+            </div>
           </Cell>
         </div>
       </Container>
