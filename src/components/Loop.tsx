@@ -87,9 +87,9 @@ export function Loop() {
     <section id="producto" className="relative overflow-hidden bg-ink py-24 text-white md:py-32">
       <Container>
         <SectionTitle
-          eyebrow="La ontología de procesos"
+          eyebrow="Del documento a la firma"
           tone="light"
-          sub="Siete piezas conectadas: Proceso, Objeto, Relación, Evidencia, Regla, Acción y Revisión. La IA redacta y explica, el código evalúa las reglas y las personas deciden. El motor es el mismo en cada sector; cada proceso define sus tipos."
+          sub="Escribimos tus normas como reglas. Solaris las comprueba en cada expediente y enseña la página que lo prueba. Si algo no cumple, queda retenido hasta que firma quien debe. La IA redacta y explica; la regla la decide el código."
         >
           Cómo{' '}
           <Evidence italic onDark>

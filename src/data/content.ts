@@ -33,6 +33,8 @@ export const ROADMAP = [
       'Reglas que evalúa el código, siempre igual.',
       'Huecos: lo que incumple, lo que falta y el dato sin evidencia.',
       'Aprobación por el rol que exige la regla, con registro exportable.',
+      'Importe expuesto: la suma de lo retenido hasta la firma, cada importe con su cita.',
+      'Tiempo de cada revisión, para medir el antes y el después de un piloto.',
     ],
   },
   {
@@ -57,20 +59,21 @@ export const ROADMAP = [
 ] as const
 
 export const THESIS_CARDS = [
+  // Los tres casos son los de la demo de Compras (product/lib/solaris-data.ts): PC-0412, PC-0419 y FAC-2026-889.
   {
-    icon: 'eyeOff',
-    title: 'IA usada a escondidas',
-    body: 'Contratos y pedidos subidos a herramientas públicas, sin control de la empresa.',
+    icon: 'firma',
+    title: 'Un pedido de 18.450 € sale sin la firma',
+    body: 'La política exige la de Dirección financiera por encima de 15.000 €. Nadie la ha dado.',
   },
   {
-    icon: 'help',
-    title: 'Respuestas a ciegas',
-    body: 'Textos convincentes, sin enlace al documento ni a la página.',
+    icon: 'caducado',
+    title: 'Un proveedor con el certificado caducado',
+    body: 'Recibe un pedido de 9.200 €. El certificado de Hacienda venció hace semanas, en otro documento.',
   },
   {
-    icon: 'files',
-    title: 'Normas muertas en PDFs',
-    body: 'Políticas escritas que nadie alcanza a cruzar a mano con cada expediente.',
+    icon: 'escaneo',
+    title: 'Una cifra leída de un escaneo',
+    body: 'Entra en la cuenta sin que nadie la confirme, aunque la lectura sea dudosa.',
   },
 ] as const
 

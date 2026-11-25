@@ -101,31 +101,32 @@ export function Hero() {
             </div>
           </SolViajero>
         </div>
-        <Eyebrow tone="light">IA privada para procesos</Eyebrow>
+        <Eyebrow tone="light">Para Compras y Dirección financiera</Eyebrow>
         <h1 className="headline mx-auto mt-6 max-w-[980px] text-[44px] text-white sm:text-[64px] lg:text-[88px]">
-          <Words text="Tus procesos," />
-          <span className="word" style={{ animationDelay: '80ms' }}>
+          <Words text="Lo que tu política exige," />
+          {/* Tras las cinco palabras de arriba (40 ms cada una). */}
+          <span className="word" style={{ animationDelay: '200ms' }}>
             <Evidence italic onDark>
-              con contrato
-            </Evidence>
-            .
+              comprobado
+            </Evidence>{' '}
+            antes de que salga.
           </span>
         </h1>
         <p className="mx-auto mt-7 max-w-[640px] text-[17px] leading-relaxed text-white/68 md:text-[19px]">
-          Lo que vence, lo que falta y lo que incumple. Con la página exacta.
+          Firmas que faltan, certificados caducados, datos sin confirmar. Cada uno con la página que lo
+          exige, y retenido hasta que firma quien debe.
         </p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Button size="lg" onClick={() => requestDemo('hero')}>
-            Solicitar demostración
-          </Button>
           <Button
             as="a"
             href="#demo"
             size="lg"
-            variant="ghost-dark"
             onClick={() => track('ver_como_funciona', { section: 'hero' })}
           >
-            Probar la demo <ArrowDown className="size-4" aria-hidden="true" />
+            Ver un caso en 2 minutos <ArrowDown className="size-4" aria-hidden="true" />
+          </Button>
+          <Button size="lg" variant="ghost-dark" onClick={() => requestDemo('hero')}>
+            Solicitar demostración
           </Button>
         </div>
         {/* Prueba tangible del mismo caso que enseña la captura de abajo (DEMO_QA[0], content.ts). */}
