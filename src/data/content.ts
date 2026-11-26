@@ -33,7 +33,7 @@ export const ROADMAP = [
       'Reglas que evalúa el código, siempre igual.',
       'Huecos: lo que incumple, lo que falta y el dato sin evidencia.',
       'Aprobación por el rol que exige la regla, con registro exportable.',
-      'Importe expuesto: la suma de lo retenido hasta la firma, cada importe con su cita.',
+      'Importe expuesto: la suma de lo retenido, cada importe con su cita.',
       'Tiempo de cada revisión, para medir el antes y el después de un piloto.',
     ],
   },
@@ -97,7 +97,7 @@ export const ONTOLOGY_PACKS = [
     nodes: [
       {
         step: 'Pregunta',
-        code: 'PROC-COMP-01 · PC-0412',
+        code: 'Pedido PC-0412',
         example:
           '¿Por qué está retenido el pedido PC-0412 y qué exige el contrato del proceso para emitirlo?',
         primitives: [
@@ -115,7 +115,7 @@ export const ONTOLOGY_PACKS = [
       },
       {
         step: 'Regla',
-        code: 'R-03',
+        code: 'Política de compras · § 2.1',
         example: 'Importe neto > 15.000 € ⇒ firma de Dirección financiera antes de emitir',
         primitives: [{ name: 'Regla', value: 'La evalúa el código, no el modelo' }],
       },
@@ -124,7 +124,7 @@ export const ONTOLOGY_PACKS = [
         code: 'PC-0412',
         example:
           'Tiene sus 3 ofertas, pero supera 15.000 € y falta la firma de Dirección financiera.',
-        primitives: [{ name: 'Regla', value: 'R-03 · requiere aprobación' }],
+        primitives: [{ name: 'Regla', value: 'Requiere la firma de Dirección financiera' }],
       },
       {
         step: 'Aprobación',
@@ -133,12 +133,12 @@ export const ONTOLOGY_PACKS = [
           'Borrador: emitir la orden de compra PC-0412 a Proveedor Ficticio Norte',
         primitives: [
           { name: 'Acción', value: 'Borrador editable; no se envía solo' },
-          { name: 'Revisión', value: 'Aprueba o rechaza el rol que exige R-03' },
+          { name: 'Revisión', value: 'Aprueba o rechaza Dirección financiera, nadie más' },
         ],
       },
       {
         step: 'Registro',
-        code: 'REV-COMP-01',
+        code: 'Firma de Dirección financiera',
         example: 'Aprobación registrada con la versión del contrato y la evidencia enlazada. Repetir el paso no duplica la acción.',
         primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
       },
@@ -150,7 +150,7 @@ export const ONTOLOGY_PACKS = [
     nodes: [
       {
         step: 'Pregunta',
-        code: 'PROC-JUR-01 · AV-9041',
+        code: 'Aval AV-9041',
         example: '¿Qué contratos tienen garantías próximas a vencer y qué falta en el expediente?',
         primitives: [
           { name: 'Proceso', value: 'Vigencia contractual · responsable: Socio director' },
@@ -167,7 +167,7 @@ export const ONTOLOGY_PACKS = [
       },
       {
         step: 'Regla',
-        code: 'R-JUR-03',
+        code: 'Criterio del despacho',
         example:
           'Aval a menos de 30 días de vencer ⇒ requerimiento de renovación aprobado por el socio',
         primitives: [{ name: 'Regla', value: 'La evalúa el código, no el modelo' }],
@@ -177,7 +177,7 @@ export const ONTOLOGY_PACKS = [
         code: 'AV-9041',
         // Fecha fija: la landing es estática y no puede depender de cuándo se lea.
         example: 'A fecha de la muestra (03/11/2026) quedan 12 días y no consta la renovación.',
-        primitives: [{ name: 'Regla', value: 'R-JUR-03 · requiere aprobación' }],
+        primitives: [{ name: 'Regla', value: 'Requiere la firma del socio director' }],
       },
       {
         step: 'Aprobación',
@@ -185,12 +185,12 @@ export const ONTOLOGY_PACKS = [
         example: 'Borrador: instrucción de renovación del aval AV-9041.',
         primitives: [
           { name: 'Acción', value: 'Borrador editable; no se envía solo' },
-          { name: 'Revisión', value: 'Aprueba o rechaza el rol que exige R-JUR-03' },
+          { name: 'Revisión', value: 'Aprueba o rechaza el socio director, nadie más' },
         ],
       },
       {
         step: 'Registro',
-        code: 'REV-JUR-02',
+        code: 'Firma del socio director',
         example: 'Aprobación registrada con la versión del contrato y la evidencia enlazada. Repetir el paso no duplica la acción.',
         primitives: [{ name: 'Revisión', value: 'Trazada con la versión del contrato' }],
       },
@@ -245,8 +245,8 @@ export const STEPS = [
     body: 'Revisamos un proceso, sus documentos y sus reglas.',
   },
   {
-    title: 'Piloto con tus documentos',
-    body: 'Solaris trabaja con tu caso real durante unas semanas.',
+    title: 'Piloto con tu caso real',
+    body: 'Revisamos contigo tus expedientes con tus normas escritas como reglas. Tus documentos no entran en Solaris hasta la instalación.',
   },
   {
     title: 'Instalación',
@@ -267,7 +267,7 @@ const FAQ_ALL: FaqItem[] = [
   },
   {
     q: '¿Qué modelo usa?',
-    a: 'En la instalación local, un modelo de pesos abiertos que se ejecuta en un equipo de tu organización. Te indicamos cuál y por qué durante el diagnóstico, según tu volumen de documentos.',
+    a: 'En la demostración, Gemini de Google, solo con datos de muestra: no escribas en ella datos tuyos. En la instalación local, un modelo de pesos abiertos que se ejecuta en un equipo de tu organización; te indicamos cuál y por qué durante el diagnóstico, según tu volumen de documentos.',
   },
   {
     q: '¿Qué pasa si se equivoca?',

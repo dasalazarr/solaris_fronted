@@ -89,7 +89,7 @@ export function Loop() {
         <SectionTitle
           eyebrow="Del documento a la firma"
           tone="light"
-          sub="Escribimos tus normas como reglas. Solaris las comprueba en cada expediente y enseña la página que lo prueba. Si algo no cumple, queda retenido hasta que firma quien debe. La IA redacta y explica; la regla la decide el código."
+          sub="Escribimos tus normas como reglas. Solaris las comprueba en cada expediente y enseña la página que lo prueba. Si algo no cumple, queda retenido hasta que firma quien debe o llega lo que falta. La IA redacta y explica; la regla la decide el código."
         >
           Cómo{' '}
           <Evidence italic onDark>
@@ -197,16 +197,14 @@ export function Loop() {
                     >
                       {node.example}
                     </p>
-                    <dl className="mt-4 space-y-2 border-t border-white/8 pt-3">
+                    {/* La primitiva de la ontología queda en los datos; al comprador se le dice qué hace, no cómo se llama. */}
+                    <ul className="mt-4 space-y-1.5 border-t border-white/8 pt-3">
                       {node.primitives.map((pr) => (
-                        <div key={pr.name}>
-                          <dt className="font-mono text-[10.5px] tracking-[0.08em] text-lavanda uppercase">
-                            {pr.name}
-                          </dt>
-                          <dd className="text-[12.5px] leading-snug text-white/70">{pr.value}</dd>
-                        </div>
+                        <li key={pr.name} className="text-[12.5px] leading-snug text-white/70">
+                          {pr.value}
+                        </li>
                       ))}
-                    </dl>
+                    </ul>
                   </div>
                 </li>
               )

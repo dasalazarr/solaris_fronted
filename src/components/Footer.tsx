@@ -36,7 +36,7 @@ export function Footer() {
           <div>
             <Logo withBy />
             <p className="mt-4 max-w-[260px] text-[14px] leading-relaxed text-white/50">
-              IA privada para procesos. Respuestas con cita, reglas que se evalúan solas y
+              Procesos con contrato. Respuestas con cita, reglas que se evalúan solas y
               aprobación humana.
             </p>
           </div>
