@@ -109,7 +109,7 @@ export function Bento() {
             delay={80}
             className="md:col-span-2 xl:col-span-5"
             title="Tú apruebas"
-            body="Solaris propone; una persona decide. Lo que incumple queda retenido hasta la firma del rol que exige la regla, y todo queda registrado."
+            body="Solaris propone; una persona decide. Lo que incumple queda retenido hasta que firma el rol que exige la regla o llega el documento que falta, y todo queda registrado."
           >
             <div className="m-3 mb-0 rounded-xl bg-sheet p-5 ring-1 ring-ink/6 md:p-6">
               <div className="flex items-center justify-between">
@@ -182,7 +182,7 @@ export function Bento() {
             delay={240}
             className="xl:col-span-3"
             title="Importe expuesto"
-            body="Suma lo retenido hasta la firma, cada importe con la página de la que sale. En la demo, dos pedidos."
+            body="Suma lo retenido, cada importe con la página de la que sale. En el producto, con los datos de muestra: dos pedidos."
           >
             <div className="flex items-center gap-3 px-6 pt-6 md:px-7 md:pt-7">
               <span className="inline-flex h-11 items-center gap-2 rounded-xl bg-arcilla px-4 font-mono text-[13px] text-arcilla-ink tabular-nums">

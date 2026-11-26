@@ -26,7 +26,7 @@ const WAYS = [
     body: 'Tus documentos reales, sin salir de tu organización.',
     items: [
       'Diagnóstico de un proceso y sus reglas',
-      'Piloto con tus documentos reales',
+      'Piloto con tu caso real, revisado contigo',
       'Instalación y acompañamiento',
     ],
     cta: 'Hablar de una instalación',

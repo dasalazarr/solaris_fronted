@@ -114,7 +114,7 @@ export function Hero() {
         </h1>
         <p className="mx-auto mt-7 max-w-[640px] text-[17px] leading-relaxed text-white/68 md:text-[19px]">
           Firmas que faltan, certificados caducados, datos sin confirmar. Cada uno con la página que lo
-          exige, y retenido hasta que firma quien debe.
+          exige, y retenido hasta que se resuelve.
         </p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button
