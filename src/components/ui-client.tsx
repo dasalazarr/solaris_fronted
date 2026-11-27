@@ -4,18 +4,24 @@ import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react'
 import { cx } from '../lib/cx'
 import { useInView } from '../lib/hooks'
 
-/** Wraps a headline fragment with the amber evidence highlight sweep. */
+/**
+ * Resalta el giro de un titular con el subrayado ámbar.
+ * `giro`: empieza siempre en línea propia; en escritorio no se parte.
+ * Regla de qué se resalta: estrategia/resaltado.md del área de contenido.
+ */
 export function Evidence({
   children,
   italic = false,
   onDark = false,
+  giro = false,
 }: {
   children: ReactNode
   italic?: boolean
   onDark?: boolean
+  giro?: boolean
 }) {
   const [ref, inView] = useInView<HTMLSpanElement>({ threshold: 0.6 })
-  return (
+  const fragmento = (
     <span
       ref={ref}
       className={cx(
@@ -23,10 +29,18 @@ export function Evidence({
         onDark && 'evidence-dark',
         inView && 'is-lit',
         italic && 'font-serif font-normal tracking-[-0.01em] italic',
+        giro && 'md:whitespace-nowrap',
       )}
     >
       {children}
     </span>
+  )
+  if (!giro) return fragmento
+  return (
+    <>
+      <br />
+      {fragmento}
+    </>
   )
 }
 

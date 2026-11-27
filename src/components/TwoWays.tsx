@@ -41,11 +41,10 @@ export function TwoWays() {
     <section id="empezar" className="bg-ink py-24 text-white md:py-32">
       <Container>
         <SectionTitle eyebrow="Para empezar" tone="light">
-          Dos formas de{' '}
-          <Evidence italic onDark>
-            empezar
+          Empieza por la demo.{' '}
+          <Evidence italic onDark giro>
+            O por tu proceso.
           </Evidence>
-          .
         </SectionTitle>
         <div className="mt-14 grid gap-4 md:grid-cols-2">
           {WAYS.map((w, i) => (

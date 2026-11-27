@@ -52,7 +52,10 @@ export function Bento() {
     <section id="capacidades" className="bg-paper pt-24 pb-24 md:pt-32 md:pb-32">
       <Container>
         <SectionTitle eyebrow="Capacidades">
-          Lo que hace <Evidence>Solaris</Evidence>
+          Lo que hace Solaris.{' '}
+          <Evidence italic giro>
+            Y lo que no.
+          </Evidence>
         </SectionTitle>
 
         <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
@@ -174,7 +177,8 @@ export function Bento() {
           >
             <div className="flex items-center gap-3 px-6 pt-6 md:px-7 md:pt-7">
               <span className="inline-flex h-11 items-center gap-2 rounded-xl bg-salvia px-4 font-mono text-[12px] text-salvia-ink">
-                <Building2 className="size-4" strokeWidth={1.5} aria-hidden="true" /> tu organización
+                <Building2 className="size-4" strokeWidth={1.5} aria-hidden="true" /> tu
+                organización
               </span>
             </div>
           </Cell>

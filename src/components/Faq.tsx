@@ -4,7 +4,7 @@ import { Plus } from 'lucide-react'
 import { FAQ } from '../data/content'
 import { track } from '../lib/analytics'
 import { useDemoRequest } from '../lib/demoRequest'
-import { Container, Evidence, Reveal } from './ui'
+import { Container, Reveal } from './ui'
 
 const FAQ_LD = {
   '@context': 'https://schema.org',
@@ -25,8 +25,8 @@ export function Faq() {
           <p className="mb-5 font-mono text-[12px] tracking-[0.08em] text-ink/60 uppercase">
             Preguntas
           </p>
-          <h2 className="headline text-[40px] md:text-[56px]">
-            Lo que suelen <Evidence italic>preguntarnos</Evidence>.
+          <h2 className="headline text-[40px] md:text-[56px] lg:text-[64px]">
+            Lo que suelen preguntarnos.
           </h2>
           <p className="mt-5 max-w-[400px] text-[17px] leading-relaxed text-ink/65">
             Si tu duda no está aquí, la resolvemos en la demostración.

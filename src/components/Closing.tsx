@@ -78,10 +78,9 @@ export function Closing() {
       <Container className="relative">
         <h2 className="headline mx-auto max-w-[900px] text-[44px] md:text-[72px] lg:text-[80px]">
           Pon tus procesos{' '}
-          <Evidence italic onDark>
-            bajo contrato
+          <Evidence italic onDark giro>
+            bajo contrato.
           </Evidence>
-          .
         </h2>
         <p className="mx-auto mt-6 max-w-[520px] text-[17px] leading-relaxed text-white/65">
           Una reunión de 30 minutos con tu sector y datos de muestra. Sin compromiso.

@@ -91,11 +91,10 @@ export function Loop() {
           tone="light"
           sub="Escribimos tus normas como reglas. Solaris las comprueba en cada expediente y enseña la página que lo prueba. Si algo no cumple, queda retenido hasta que firma quien debe o llega lo que falta. La IA redacta y explica; la regla la decide el código."
         >
-          Cómo{' '}
-          <Evidence italic onDark>
-            funciona
+          La regla decide.{' '}
+          <Evidence italic onDark giro>
+            Firma una persona.
           </Evidence>
-          .
         </SectionTitle>
 
         <div
