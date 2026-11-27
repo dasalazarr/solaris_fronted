@@ -26,7 +26,10 @@ export function Packs() {
     <section id="procesos" className="scroll-mt-10 bg-paper pb-24 md:pb-32">
       <Container>
         <SectionTitle eyebrow="Por proceso">
-          Un motor. Un contrato por <Evidence italic>proceso</Evidence>.
+          Un motor.{' '}
+          <Evidence italic giro>
+            Un contrato por proceso.
+          </Evidence>
         </SectionTitle>
         <div className="mt-14 grid gap-4 md:grid-cols-2">
           {PACKS.map((p, i) => {

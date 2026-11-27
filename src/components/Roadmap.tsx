@@ -16,7 +16,10 @@ export function Roadmap() {
           eyebrow="Hoy · En tu piloto · Visión"
           sub="Separamos lo que ya funciona de lo que viene y de lo que todavía es una hipótesis."
         >
-          Lo que hay, lo que viene y lo que <Evidence italic>imaginamos</Evidence>.
+          Lo que hay, lo que viene{' '}
+          <Evidence italic giro>
+            y lo que imaginamos.
+          </Evidence>
         </SectionTitle>
         <div className="mt-14 grid gap-4 md:grid-cols-3">
           {ROADMAP.map((col, i) => (

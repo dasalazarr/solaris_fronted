@@ -9,7 +9,10 @@ export function Thesis() {
     <section id="tesis" className="bg-paper py-24 md:py-32">
       <Container>
         <SectionTitle eyebrow="El problema">
-          El fallo no está en el pedido. Está en el documento <Evidence italic>que nadie cruzó</Evidence>.
+          El pedido está bien.{' '}
+          <Evidence italic giro>
+            El fallo, en otro documento.
+          </Evidence>
         </SectionTitle>
         <div className="mt-14 grid gap-4 md:grid-cols-3">
           {THESIS_CARDS.map((c, i) => {
@@ -28,9 +31,9 @@ export function Thesis() {
           })}
         </div>
         <Reveal className="mt-12 max-w-[640px] text-[19px] leading-relaxed text-ink/75">
-          Con un <span className="font-serif italic">contrato</span> del proceso, cada norma es una regla
-          que el código comprueba en cada expediente, con su página al lado. Y nada sale sin la firma de
-          quien debe darla.
+          Con un <span className="font-serif italic">contrato</span> del proceso, cada norma es una
+          regla que el código comprueba en cada expediente, con su página al lado. Y nada sale sin
+          la firma de quien debe darla.
         </Reveal>
       </Container>
     </section>

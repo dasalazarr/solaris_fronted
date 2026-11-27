@@ -38,7 +38,7 @@ export const PRODUCT_URL = process.env.NEXT_PUBLIC_PRODUCT_URL || 'https://illar
 export const UMAMI_WEBSITE_ID = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID || ''
 export const UMAMI_SRC = process.env.NEXT_PUBLIC_UMAMI_SRC || 'https://cloud.umami.is/script.js'
 
-export const SITE_TITLE = 'Solaris · Lo que tu política exige, comprobado antes de que salga'
+export const SITE_TITLE = 'Solaris · Lo que tu política exige, comprobado antes de salir'
 export const SITE_DESCRIPTION =
   'Solaris responde con la cita exacta de tus documentos, detecta lo que incumple tus reglas y no ejecuta nada sin la aprobación de una persona.'
 

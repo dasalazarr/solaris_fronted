@@ -15,11 +15,10 @@ export function HowWeWork() {
             tone="light"
             sub="Illarium implanta Solaris contigo o con tu consultora. Cada proceso se adapta a tus documentos y a tus reglas."
           >
-            Cuatro pasos, con{' '}
-            <Evidence italic onDark>
-              tus
-            </Evidence>{' '}
-            documentos.
+            Cuatro pasos,{' '}
+            <Evidence italic onDark giro>
+              con tus documentos.
+            </Evidence>
           </SectionTitle>
           <div className="relative mt-16">
             <div

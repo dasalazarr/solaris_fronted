@@ -124,7 +124,10 @@ export function WelcomeDialog({
           Demo · datos de muestra
         </p>
         <h2 id="bienvenida-titulo" className="headline mt-3 text-[30px] md:text-[38px]">
-          Un pedido de 18.450&nbsp;€, a punto de salir <Evidence italic>sin la firma.</Evidence>
+          Un pedido de 18.450&nbsp;€, a punto de salir{' '}
+          <Evidence italic giro>
+            sin la firma.
+          </Evidence>
         </h2>
         <p className="mt-4 text-[16px] leading-relaxed text-ink/70">
           Tu política exige la firma de Dirección financiera por encima de 15.000&nbsp;€. En tres pasos
@@ -437,7 +440,10 @@ export function RequestDialog({
           </div>
         )}
         <h2 id="pedir-titulo" className="headline pr-8 text-[28px] md:text-[34px]">
-          ¿Lo vemos con <Evidence italic>tu política</Evidence> de compras?
+          ¿Lo vemos{' '}
+          <Evidence italic giro>
+            con tu política?
+          </Evidence>
         </h2>
         <p className="mt-3 mb-6 text-[15.5px] leading-relaxed text-ink/70">
           Una llamada de 30 minutos con tu caso. Déjanos tres datos y te respondemos en un día laborable.

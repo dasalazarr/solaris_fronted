@@ -662,14 +662,20 @@ export function Demo({ standalone = false }: { standalone?: boolean }) {
             eyebrow="Demo · datos de muestra"
             sub="Tu política exige la firma de Dirección financiera por encima de 15.000 €. Pregunta, revisa los huecos y apruébalo con el rol que exige la regla."
           >
-            Un pedido de 18.450&nbsp;€, a punto de salir <Evidence italic>sin la firma.</Evidence>
+            Un pedido de 18.450&nbsp;€, a punto de salir{' '}
+            <Evidence italic giro>
+              sin la firma.
+            </Evidence>
           </SectionTitle>
         ) : (
           <SectionTitle
             eyebrow="Demostración interactiva"
             sub="Empresa ficticia, datos de muestra. Prueba a preguntar, explorar el pedido, revisar los huecos y aprobarlo con el rol que exige el contrato."
           >
-            Míralo en un proceso que <Evidence italic>todos</Evidence> tienen.
+            Míralo en un proceso{' '}
+            <Evidence italic giro>
+              que ya tienes.
+            </Evidence>
           </SectionTitle>
         )}
 
